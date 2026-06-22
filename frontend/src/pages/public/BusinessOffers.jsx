@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Search, Tag, ChevronLeft, ChevronRight, TrendingUp } from 'lucide-react'
 import api from '../../api'
-import SlidePanel from '../../components/SlidePanel'
+import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
 
 export default function BusinessOffers() {
@@ -95,7 +95,7 @@ export default function BusinessOffers() {
 
       <LogoScroller label="Business Partners" accent="#FFD700" logoKey="businessLogos" />
 
-      <SlidePanel
+      <PopupForm
         open={panel.open} onClose={() => setPanel({ open: false, offer: null })}
         type="offer" refId={panel.offer?._id}
         refTitle={panel.offer ? `${panel.offer.title} by ${panel.offer.company}` : ''} />

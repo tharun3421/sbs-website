@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Search, GraduationCap, Clock, Award, ChevronLeft, ChevronRight } from 'lucide-react'
 import api from '../../api'
-import SlidePanel from '../../components/SlidePanel'
+import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
 
 const COURSES = ['All','B.Com','BBA','MBA','BA','B.Sc','M.Sc','MCA','BCA']
@@ -113,7 +113,7 @@ export default function OnlineDegrees() {
 
       <LogoScroller label="University Partners" accent="#4488FF" logoKey="degreeLogos" />
 
-      <SlidePanel
+      <PopupForm
         open={panel.open} onClose={() => setPanel({ open: false, degree: null })}
         type="degree" refId={panel.degree?._id}
         refTitle={panel.degree ? `${panel.degree.course} – ${panel.degree.university}` : ''} />

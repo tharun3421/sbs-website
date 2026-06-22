@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight } from 'lucide-react'
 import api from '../../api'
-import SlidePanel from '../../components/SlidePanel'
+import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
 
 const TABS = [
@@ -139,7 +139,7 @@ export default function Jobs() {
 
       <LogoScroller label="Hiring Partners" accent="#44DD88" logoKey="jobLogos" />
 
-      <SlidePanel
+      <PopupForm
         open={panel.open}
         onClose={() => setPanel({ open: false, job: null })}
         type="job"
