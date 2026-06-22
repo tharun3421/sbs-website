@@ -34,7 +34,7 @@ export default function Home() {
     <div className="page-enter bg-theme-primary min-h-screen">
 
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden min-h-[55vh] flex items-center">
+      {/* <section className="relative overflow-hidden min-h-[55vh] flex items-center">
         <div className="absolute inset-0 opacity-5 pointer-events-none"
           style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, #FFD700 0%, transparent 50%), radial-gradient(circle at 75% 75%, #FFD700 0%, transparent 50%)' }} />
         <div className="absolute inset-0 pointer-events-none"
@@ -61,10 +61,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── STATS ── */}
-      <section className="border-y border-theme bg-theme-secondary">
+      {/* <section className="border-y border-theme bg-theme-secondary">
         <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
           {STATS.map(({ label, value, icon: Icon }) => (
             <div key={label} className="text-center">
@@ -74,7 +74,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* ── SERVICE CARDS ── */}
       <section className="max-w-6xl mx-auto px-4 py-14">
@@ -107,7 +107,7 @@ export default function Home() {
       </section>
 
       {/* ── WHY SBS ── */}
-      <section className="border-t border-theme bg-theme-secondary">
+      {/* <section className="border-t border-theme bg-theme-secondary">
         <div className="max-w-6xl mx-auto px-4 py-14">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -135,10 +135,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── CTA ── */}
-      <section className="max-w-6xl mx-auto px-4 py-10">
+      {/* <section className="max-w-6xl mx-auto px-4 py-10">
         <div className="relative rounded-2xl overflow-hidden bg-[#FFD700] p-8 md:p-12">
           <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 50%, #000 0%, transparent 60%)' }} />
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
@@ -151,7 +151,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   )
 }
