@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sbs-yellow: #FFD700;
+  --color-sbs-yellow-dark: #E6C200;
+  --color-sbs-yellow-light: #FFF3B0;
+  --color-sbs-black: #0A0A0A;
+  --color-sbs-dark: #111111;
+  --color-sbs-gray: #1A1A1A;
+  --color-sbs-muted: #6B7280;
+  --font-sans: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* ─── DARK MODE (default) ─── */
+:root {
+  --bg-primary:    #0A0A0A;
+  --bg-secondary:  #111111;
+  --bg-tertiary:   #1A1A1A;
+  --bg-card:       #111111;
+  --border-color:  rgba(255,255,255,0.08);
+  --border-gold:   rgba(255,215,0,0.2);
+  --text-primary:  #F9F9F9;
+  --text-secondary:#9CA3AF;
+  --text-muted:    #4B5563;
+  --nav-bg:        rgba(10,10,10,0.95);
+  --sidebar-bg:    #111111;
+  --input-bg:      #1A1A1A;
+  --scrollbar-bg:  #111;
+}
+
+/* ─── LIGHT MODE ─── */
+html.light {
+  --bg-primary:    #F8F7F2;
+  --bg-secondary:  #FFFFFF;
+  --bg-tertiary:   #F1EFE8;
+  --bg-card:       #FFFFFF;
+  --border-color:  rgba(0,0,0,0.08);
+  --border-gold:   rgba(180,130,0,0.25);
+  --text-primary:  #111111;
+  --text-secondary:#4B5563;
+  --text-muted:    #9CA3AF;
+  --nav-bg:        rgba(248,247,242,0.96);
+  --sidebar-bg:    #FFFFFF;
+  --input-bg:      #F1EFE8;
+  --scrollbar-bg:  #e5e4df;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ─── THEME UTILITY CLASSES ─── */
+.bg-theme-primary   { background: var(--bg-primary); }
+.bg-theme-secondary { background: var(--bg-secondary); }
+.bg-theme-tertiary  { background: var(--bg-tertiary); }
+.bg-theme-card      { background: var(--bg-card); }
+.border-theme       { border-color: var(--border-color); }
+.border-theme-gold  { border-color: var(--border-gold); }
+.text-theme-primary { color: var(--text-primary); }
+.text-theme-secondary { color: var(--text-secondary); }
+.text-theme-muted   { color: var(--text-muted); }
+.nav-bg             { background: var(--nav-bg); }
+.sidebar-bg         { background: var(--sidebar-bg); }
+.input-bg           { background: var(--input-bg); }
+
+/* ─── MARQUEE ─── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ─── CARD HOVER ─── */
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(255,215,0,0.12);
+}
+
+/* ─── GOLD TEXT ─── */
+.gold-text {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── SLIDE PANEL ─── */
+.slide-panel {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-bg); }
+::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 3px; }
+
+/* ─── INPUT FOCUS ─── */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,215,0,0.35);
+}
+
+/* ─── PAGE TRANSITION ─── */
+.page-enter {
+  animation: fadeUp 0.4s ease forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── PULSE ─── */
+@keyframes pulse-gold {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.4); }
+  50%     { box-shadow: 0 0 0 8px rgba(255,215,0,0); }
+}
+.pulse-gold { animation: pulse-gold 2s infinite; }
+
+
+
+/* ─── LOGO SCROLLER ─── */
+@keyframes scroll-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes scroll-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.logo-scroll-left  { animation: scroll-left  28s linear infinite; }
+.logo-scroll-right { animation: scroll-right 28s linear infinite; }
+.logo-scroll-left:hover,
+.logo-scroll-right:hover { animation-play-state: paused; }
+
+
+
+/* ─── LIGHT MODE OVERRIDES for cards/inputs ─── */
+html.light .card-hover:hover {
+  box-shadow: 0 20px 40px rgba(180,130,0,0.10);
+}
+html.light input:focus,
+html.light select:focus,
+html.light textarea:focus {
+  box-shadow: 0 0 0 2px rgba(180,130,0,0.3);
+}
