@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { X, CheckCircle, Upload, User, Phone } from 'lucide-react'
 import api from '../api'
 import toast from 'react-hot-toast'
@@ -12,6 +12,20 @@ export default function SlidePanel({ open, onClose, type, refId, refTitle }) {
 
   const MAX_RESUME_MB = 5
   const ALLOWED_RESUME_TYPES = ['.pdf', '.doc', '.docx']
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+    }
+  }, [open])
 
   const handleResumeChange = (e) => {
     const file = e.target.files[0]
@@ -64,7 +78,13 @@ export default function SlidePanel({ open, onClose, type, refId, refTitle }) {
 
   return (
     <>
-      {open && <div className="fixed inset-0 bg-black/60 z-[70] backdrop-blur-sm" onClick={handleClose} />}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/60 z-[70] backdrop-blur-sm"
+          onClick={handleClose}
+          onTouchMove={(e) => e.preventDefault()}
+        />
+      )}
       <div className={`fixed right-0 top-0 h-full w-full max-w-md ${panelBg} z-[80] shadow-2xl flex flex-col
         transition-transform duration-350 ease-in-out ${open ? 'translate-x-0' : 'translate-x-full'}`}>
 

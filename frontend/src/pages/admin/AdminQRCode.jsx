@@ -189,7 +189,7 @@ export default function AdminQRCode() {
               {/* SBS Branding */}
               <div className="text-center">
                 <div className="bg-[#FFD700] text-[#0A0A0A] font-black text-lg px-4 py-1.5 rounded-lg inline-block mb-2">SBS</div>
-                <p className="text-theme-primary font-bold text-sm">Sai Business Solutions</p>
+                <p className="text-theme-primary font-bold text-sm">Sai Business Services</p>
                 <p className="text-theme-muted text-xs mt-0.5">We Find Your Way</p>
                 <p className="text-theme-muted text-xs mt-3 max-w-[200px] break-all">{url}</p>
               </div>

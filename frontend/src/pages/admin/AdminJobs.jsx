@@ -7,7 +7,7 @@ const EMPTY = { title: '', company: '', location: '', salary: '', type: 'free', 
 
 export default function AdminJobs() {
   const [jobs, setJobs] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)  
   const [modal, setModal] = useState({ open: false, job: null })
   const [form, setForm] = useState(EMPTY)
   const [logo, setLogo] = useState(null)

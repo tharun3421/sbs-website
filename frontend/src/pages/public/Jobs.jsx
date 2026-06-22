@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Search, MapPin, Briefcase, DollarSign, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight } from 'lucide-react'
 import api from '../../api'
 import SlidePanel from '../../components/SlidePanel'
 import LogoScroller from '../../components/LogoScroller'
@@ -103,7 +103,7 @@ export default function Jobs() {
                   <h3 className="font-bold text-base mb-2 line-clamp-2 text-theme-primary">{job.title}</h3>
                   <div className="flex flex-wrap gap-3 text-xs text-theme-secondary">
                     <span className="flex items-center gap-1"><MapPin size={11} />{job.location}</span>
-                    <span className="flex items-center gap-1"><DollarSign size={11} />{job.salary}</span>
+                    <span className="flex items-center gap-1"><IndianRupee size={11} />{job.salary}</span>
                     <span className="flex items-center gap-1"><Briefcase size={11} />{job.experience}</span>
                   </div>
                 </div>
