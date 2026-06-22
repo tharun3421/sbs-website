@@ -18,7 +18,7 @@ exports.getOffers = async (req, res) => {
 
 exports.createOffer = async (req, res) => {
   try {
-    const image = req.file ? `/uploads/${req.file.filename}` : '';
+    const image = req.file ? req.file.path : '';
     const offer = await Offer.create({ ...req.body, image });
     res.status(201).json(offer);
   } catch (err) {
@@ -29,7 +29,7 @@ exports.createOffer = async (req, res) => {
 exports.updateOffer = async (req, res) => {
   try {
     const update = { ...req.body };
-    if (req.file) update.image = `/uploads/${req.file.filename}`;
+    if (req.file) update.image = req.file.path;
     const offer = await Offer.findByIdAndUpdate(req.params.id, update, { new: true });
     res.json(offer);
   } catch (err) {

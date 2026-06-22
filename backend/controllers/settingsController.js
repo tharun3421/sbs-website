@@ -32,7 +32,7 @@ exports.addPartnerLogo = async (req, res) => {
     if (!['jobLogos', 'businessLogos', 'degreeLogos'].includes(section))
       return res.status(400).json({ message: 'Invalid section' });
 
-    const logo = req.file ? `/uploads/${req.file.filename}` : '';
+    const logo = req.file ? req.file.path : '';
 
     const setting = await Settings.findOne({ key: 'partnerLogos' });
     const current = setting ? (setting.value || {}) : {};

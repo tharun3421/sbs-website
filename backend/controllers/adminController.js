@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const Job = require('../models/Job');
 const Degree = require('../models/Degree');
 const Offer = require('../models/Offer');

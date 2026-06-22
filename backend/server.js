@@ -1,26 +1,21 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
-const fs = require('fs');
 const multer = require('multer');
 require('dotenv').config();
 
 const app = express();
 
-// Ensure the uploads folder exists (resume/file uploads write here).
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
-  credentials: true
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://sbs-website-frontend.vercel.app', // replace with your actual frontend URL
+  ],
+  credentials: true,
 }));
 app.use(express.json());
-app.use('/uploads', express.static(uploadsDir));
 
 // Routes
 app.use('/api/jobs', require('./routes/jobRoutes'));
@@ -35,7 +30,7 @@ app.use('/api/settings', require('./routes/settingsRoutes'));
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'SBS API running' }));
 
-// Global error handler — must be AFTER all routes
+// Global error handler
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {

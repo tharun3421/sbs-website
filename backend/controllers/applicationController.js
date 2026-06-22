@@ -5,7 +5,7 @@ const TYPE_TO_MODEL = { job: 'Job', degree: 'Degree', offer: 'Offer' };
 exports.apply = async (req, res) => {
   try {
     const { name, mobile, refId, refTitle, type } = req.body;
-    const resumeUrl = req.file ? `/uploads/${req.file.filename}` : '';
+    const resumeUrl = req.file ? req.file.path : '';
     const app = await Application.create({
       name,
       mobile,

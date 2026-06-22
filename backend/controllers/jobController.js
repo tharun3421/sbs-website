@@ -20,7 +20,7 @@ exports.getJobs = async (req, res) => {
 
 exports.createJob = async (req, res) => {
   try {
-    const logo = req.file ? `/uploads/${req.file.filename}` : '';
+    const logo = req.file ? req.file.path : '';
     const job = await Job.create({ ...req.body, logo });
     res.status(201).json(job);
   } catch (err) {
@@ -31,7 +31,7 @@ exports.createJob = async (req, res) => {
 exports.updateJob = async (req, res) => {
   try {
     const update = { ...req.body };
-    if (req.file) update.logo = `/uploads/${req.file.filename}`;
+    if (req.file) update.logo = req.file.path;
     const job = await Job.findByIdAndUpdate(req.params.id, update, { new: true });
     res.json(job);
   } catch (err) {

@@ -18,7 +18,7 @@ exports.getDegrees = async (req, res) => {
 
 exports.createDegree = async (req, res) => {
   try {
-    const logo = req.file ? `/uploads/${req.file.filename}` : '';
+    const logo = req.file ? req.file.path : '';
     const degree = await Degree.create({ ...req.body, logo });
     res.status(201).json(degree);
   } catch (err) {
@@ -29,7 +29,7 @@ exports.createDegree = async (req, res) => {
 exports.updateDegree = async (req, res) => {
   try {
     const update = { ...req.body };
-    if (req.file) update.logo = `/uploads/${req.file.filename}`;
+    if (req.file) update.logo = req.file.path;
     const degree = await Degree.findByIdAndUpdate(req.params.id, update, { new: true });
     res.json(degree);
   } catch (err) {
