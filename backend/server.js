@@ -11,11 +11,14 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:3000',
-    'https://sbs-website-frontend.vercel.app', // replace with your actual frontend URL
+    'https://sbs-website-frontend.vercel.app',
   ],
   credentials: true,
 }));
 app.use(express.json());
+
+// Root route
+app.get('/', (req, res) => res.json({ message: 'SBS API is running' }));
 
 // Routes
 app.use('/api/jobs', require('./routes/jobRoutes'));
