@@ -30,15 +30,6 @@ export default function JobsLanding() {
     >
       <section className="w-full max-w-3xl px-4">
 
-        {/* Back Button */}
-        <button
-          onClick={() => navigate('/')}
-          className="absolute top-5 left-5 flex items-center gap-2 text-theme-secondary hover:text-theme-primary transition-colors mb-6"
-        >
-          <ArrowLeft size={18} strokeWidth={1.5} />
-          <span className="text-sm font-medium">Back to Home</span>
-        </button>
-
         <div className="flex flex-col gap-4">
           {OPTIONS.map(({ to, label, subtitle, icon: Icon, accent, accentBg }) => (
             <Link

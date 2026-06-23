@@ -16,9 +16,9 @@ export default function Contact() {
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="mb-10">
-          <p className="text-[#FFD700] text-xs font-semibold uppercase tracking-widest mb-2">Get In Touch</p>
+          {/* <p className="text-[#FFD700] text-xs font-semibold uppercase tracking-widest mb-2">Get In Touch</p> */}
           <h1 className="text-3xl font-black text-theme-primary mb-1">Contact Us</h1>
-          <p className="text-theme-secondary text-sm">Reach our regional offices · We respond within 24 hours</p>
+          {/* <p className="text-theme-secondary text-sm">Reach our regional offices · We respond within 24 hours</p> */}
         </div>
 
         <div className="bg-[#FFD700]/10 border border-[#FFD700]/20 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-center gap-4">
@@ -26,7 +26,7 @@ export default function Contact() {
             <Building2 size={26} className="text-[#0A0A0A]" />
           </div>
           <div>
-            <h2 className="text-theme-primary font-bold text-lg">SBS — Sai Business Solutions</h2>
+            <h2 className="text-theme-primary font-bold text-lg">SBS — Sai Business Services</h2>
             <p className="text-theme-secondary text-sm mt-1">Operating across Andhra Pradesh, Telangana, and Odisha since 2010.</p>
           </div>
         </div>

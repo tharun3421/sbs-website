@@ -28,19 +28,19 @@ export default function BusinessOffers() {
   return (
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
-
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-theme-secondary hover:text-theme-primary transition-colors mb-6"
-        >
-          <ArrowLeft size={18} strokeWidth={1.5} />
-          <span className="text-sm font-medium">Back to Home</span>
-        </button>
-
-        <div className="mb-8">
-          <p className="text-[#FFD700] text-xs font-semibold uppercase tracking-widest mb-2">Business Promotions</p>
-          <h1 className="text-3xl font-black text-theme-primary mb-1">Business Offers</h1>
-          <p className="text-theme-secondary text-sm">{offers.length} offers available</p>
+        {/* Heading — matches card style */}
+        <div className="flex items-center gap-4 mb-8">
+          <div
+            className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
+            style={{ background: 'rgba(255,215,0,0.08)' }}
+          >
+            <Tag size={22} strokeWidth={1.5} style={{ color: '#FFD700' }} />
+          </div>
+          <div className="flex flex-col">
+            <h1 className="text-theme-primary font-semibold text-xl leading-tight">
+              Business Offers
+            </h1>
+          </div>
         </div>
 
         <div className="relative mb-8">
