@@ -1,18 +1,34 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react'
+import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight, ArrowLeft, GraduationCap } from 'lucide-react'
 import api from '../../api'
 import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
 
 const TYPE_CONFIG = {
-  free: { label: 'Free Jobs',          color: '#44DD88', applyLabel: 'Apply Now',   hoverColor: '#33BB77' },
-  paid: { label: 'Jobs with Training', color: '#FFD700', applyLabel: 'Enquire Now', hoverColor: '#E6C200' },
+  free: {
+    label: 'Free Jobs',
+    color: '#44DD88',
+    accentBg: 'rgba(68,221,136,0.08)',
+    icon: Briefcase,
+    applyLabel: 'Apply Now',
+    hoverColor: '#33BB77',
+  },
+  paid: {
+    label: 'Jobs with Training',
+    subtitle: 'Paid Programs',
+    color: '#FFD700',
+    accentBg: 'rgba(255,215,0,0.08)',
+    icon: GraduationCap,
+    applyLabel: 'Enquire Now',
+    hoverColor: '#E6C200',
+  },
 }
 
 export default function Jobs() {
   const { type = 'free' } = useParams()
   const config = TYPE_CONFIG[type] || TYPE_CONFIG.free
+  const Icon = config.icon
 
   const [jobs, setJobs]         = useState([])
   const [loading, setLoading]   = useState(true)
@@ -38,22 +54,22 @@ export default function Jobs() {
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
 
-        {/* Back link + heading */}
-        <div className="mb-8">
-          <Link
-            to="/jobs"
-            className="inline-flex items-center gap-1.5 text-xs text-theme-secondary hover:text-theme-primary transition mb-4"
+        {/* Heading — matches card style from JobsLanding */}
+        <div className="flex items-center gap-4 mb-8">
+          <div
+            className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
+            style={{ background: config.accentBg }}
           >
-            <ArrowLeft size={14} />
-            Back to Job Types
-          </Link>
-          <p className="text-[#FFD700] text-xs font-semibold uppercase tracking-widest mb-2">
-            Recruitments / Manpower Supply
-          </p>
-          <h1 className="text-3xl font-black mb-1 text-theme-primary">{config.label}</h1>
-          <p className="text-sm text-theme-secondary">
-            For Top Companies · All Verticals · {jobs.length} positions available
-          </p>
+            <Icon size={22} strokeWidth={1.5} style={{ color: config.color }} />
+          </div>
+          <div className="flex flex-col">
+            <h1 className="text-theme-primary font-semibold text-base leading-tight">
+              {config.label}
+            </h1>
+            {config.subtitle && (
+              <p className="text-theme-primary text-base mt-0.5">{config.subtitle}</p>
+            )}
+          </div>
         </div>
 
         {/* Search */}
@@ -98,11 +114,6 @@ export default function Jobs() {
                       <p className="text-xs text-theme-secondary">{job.category}</p>
                     </div>
                   </div>
-                  <span className={`text-xs px-2.5 py-1 rounded-full font-semibold shrink-0 ${
-                    job.type === 'free' ? 'bg-[#44DD88]/10 text-[#44DD88]' : 'bg-[#FFD700]/10 text-[#B8860B]'
-                  }`}>
-                    {job.type === 'free' ? 'Free' : 'Paid'}
-                  </span>
                 </div>
 
                 <div>
