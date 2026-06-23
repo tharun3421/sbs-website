@@ -196,7 +196,7 @@ export default function AdminQRCode() {
 
               <div className="w-full input-bg border border-theme rounded-xl p-3 text-center">
                 <p className="text-theme-muted text-xs">
-                  📱 Share this QR code on flyers, banners, or social media.
+                  Share this QR code on flyers, banners, or social media.
                   Anyone who scans it will land directly on your website.
                 </p>
               </div>

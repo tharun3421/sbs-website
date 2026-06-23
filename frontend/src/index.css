@@ -60,6 +60,10 @@ body {
   padding: 0;
   transition: background 0.3s ease, color 0.3s ease;
 }
+body.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
 
 /* ─── THEME UTILITY CLASSES ─── */
 .bg-theme-primary   { background: var(--bg-primary); }
