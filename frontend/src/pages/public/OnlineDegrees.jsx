@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Search, GraduationCap, Clock, Award, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Search, GraduationCap, Clock, Award, ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import api from '../../api'
 import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
@@ -7,6 +8,7 @@ import LogoScroller from '../../components/LogoScroller'
 const COURSES = ['All','B.Com','BBA','MBA','BA','B.Sc','M.Sc','MCA','BCA']
 
 export default function OnlineDegrees() {
+  const navigate = useNavigate()
   const [degrees, setDegrees] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch]   = useState('')
@@ -29,6 +31,14 @@ export default function OnlineDegrees() {
   return (
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
+
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 text-theme-secondary hover:text-theme-primary transition-colors mb-6"
+        >
+          <ArrowLeft size={18} strokeWidth={1.5} />
+          <span className="text-sm font-medium">Back to Home</span>
+        </button>
 
         <div className="mb-8">
           <p className="text-[#4488FF] text-xs font-semibold uppercase tracking-widest mb-2">UGC & AICTE Recognized</p>

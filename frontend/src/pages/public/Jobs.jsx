@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useParams, Link } from 'react-router-dom'
+import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react'
 import api from '../../api'
 import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
 
-const TABS = [
-  { key: 'free', label: 'Free Jobs',          color: '#44DD88' },
-  { key: 'paid', label: 'Jobs with Training', color: '#FFD700' },
-]
+const TYPE_CONFIG = {
+  free: { label: 'Free Jobs',          color: '#44DD88', applyLabel: 'Apply Now',   hoverColor: '#33BB77' },
+  paid: { label: 'Jobs with Training', color: '#FFD700', applyLabel: 'Enquire Now', hoverColor: '#E6C200' },
+}
 
 export default function Jobs() {
-  const [tab, setTab]         = useState('free')
+  const { type = 'free' } = useParams()
+  const config = TYPE_CONFIG[type] || TYPE_CONFIG.free
+
   const [jobs, setJobs]       = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch]   = useState('')
@@ -21,12 +24,12 @@ export default function Jobs() {
 
   useEffect(() => {
     setLoading(true)
-    api.get('/jobs', { params: { type: tab, search, location } })
+    api.get('/jobs', { params: { type, search, location } })
       .then(r => setJobs(r.data))
       .catch(() => setJobs([]))
       .finally(() => setLoading(false))
     setPage(1)
-  }, [tab, search, location])
+  }, [type, search, location])
 
   const paginated  = jobs.slice((page - 1) * PER_PAGE, page * PER_PAGE)
   const totalPages = Math.ceil(jobs.length / PER_PAGE)
@@ -35,22 +38,41 @@ export default function Jobs() {
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
 
+        {/* Back link + heading */}
         <div className="mb-8">
-          <p className="text-[#FFD700] text-xs font-semibold uppercase tracking-widest mb-2">Recruitments / Manpower Supply</p>
-          <h1 className="text-3xl font-black mb-1 text-theme-primary">Job Opportunities</h1>
-          <p className="text-sm text-theme-secondary">For Top Companies · All Verticals · {jobs.length} positions available</p>
+          <Link
+            to="/jobs"
+            className="inline-flex items-center gap-1.5 text-xs text-theme-secondary hover:text-theme-primary transition mb-4"
+          >
+            <ArrowLeft size={14} />
+            Back to Job Types
+          </Link>
+          <p className="text-[#FFD700] text-xs font-semibold uppercase tracking-widest mb-2">
+            Recruitments / Manpower Supply
+          </p>
+          <h1 className="text-3xl font-black mb-1 text-theme-primary">{config.label}</h1>
+          <p className="text-sm text-theme-secondary">
+            For Top Companies · All Verticals · {jobs.length} positions available
+          </p>
         </div>
 
+        {/* Tab switcher */}
         <div className="flex gap-2 mb-6 bg-theme-secondary p-1 rounded-xl w-fit">
-          {TABS.map(({ key, label, color }) => (
-            <button key={key} onClick={() => setTab(key)}
-              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${tab === key ? 'text-[#0A0A0A]' : 'text-theme-secondary hover:text-theme-primary'}`}
-              style={tab === key ? { background: color } : {}}>
-              {label}
-            </button>
+          {Object.entries(TYPE_CONFIG).map(([key, cfg]) => (
+            <Link
+              key={key}
+              to={`/jobs/${key}`}
+              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+                type === key ? 'text-[#0A0A0A]' : 'text-theme-secondary hover:text-theme-primary'
+              }`}
+              style={type === key ? { background: cfg.color } : {}}
+            >
+              {cfg.label}
+            </Link>
           ))}
         </div>
 
+        {/* Search */}
         <div className="flex flex-col sm:flex-row gap-3 mb-8">
           <div className="relative flex-1">
             <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-secondary" />
@@ -109,12 +131,12 @@ export default function Jobs() {
                 </div>
 
                 <button onClick={() => setPanel({ open: true, job })}
-                  className={`mt-auto w-full py-2.5 rounded-xl font-bold text-sm transition ${
-                    job.type === 'free'
-                      ? 'bg-[#44DD88] text-[#0A0A0A] hover:bg-[#33BB77]'
-                      : 'bg-[#FFD700] text-[#0A0A0A] hover:bg-[#E6C200]'
-                  }`}>
-                  {job.type === 'free' ? 'Apply Now' : 'Enquire Now'}
+                  className="mt-auto w-full py-2.5 rounded-xl font-bold text-sm transition"
+                  style={{ background: config.color, color: '#0A0A0A' }}
+                  onMouseEnter={e => e.currentTarget.style.background = config.hoverColor}
+                  onMouseLeave={e => e.currentTarget.style.background = config.color}
+                >
+                  {config.applyLabel}
                 </button>
               </div>
             ))}

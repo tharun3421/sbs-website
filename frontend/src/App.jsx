@@ -5,6 +5,7 @@ import AdminLayout from './components/admin/AdminLayout'
 import AdminRoute from './components/admin/AdminRoute'
 
 import Home from './pages/public/Home'
+import JobsLanding from './pages/public/JobsLanding'
 import Jobs from './pages/public/Jobs'
 import OnlineDegrees from './pages/public/OnlineDegrees'
 import BusinessOffers from './pages/public/BusinessOffers'
@@ -25,7 +26,11 @@ export default function App() {
       {/* Public */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/jobs" element={<Jobs />} />
+
+        {/* Jobs: landing → /jobs, listings → /jobs/free or /jobs/paid */}
+        <Route path="/jobs" element={<JobsLanding />} />
+        <Route path="/jobs/:type" element={<Jobs />} />
+
         <Route path="/online-degrees" element={<OnlineDegrees />} />
         <Route path="/business-offers" element={<BusinessOffers />} />
         <Route path="/contact" element={<Contact />} />

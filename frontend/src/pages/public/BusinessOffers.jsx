@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Search, Tag, ChevronLeft, ChevronRight, TrendingUp } from 'lucide-react'
+import { Search, Tag, ChevronLeft, ChevronRight, TrendingUp, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import api from '../../api'
 import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
 
 export default function BusinessOffers() {
+  const navigate = useNavigate()
   const [offers, setOffers]   = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch]   = useState('')
@@ -26,6 +28,14 @@ export default function BusinessOffers() {
   return (
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
+
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 text-theme-secondary hover:text-theme-primary transition-colors mb-6"
+        >
+          <ArrowLeft size={18} strokeWidth={1.5} />
+          <span className="text-sm font-medium">Back to Home</span>
+        </button>
 
         <div className="mb-8">
           <p className="text-[#FFD700] text-xs font-semibold uppercase tracking-widest mb-2">Business Promotions</p>
