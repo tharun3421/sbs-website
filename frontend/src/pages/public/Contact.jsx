@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Phone, Mail, MapPin, Building2, Clock } from 'lucide-react'
+import { Phone, Mail, MapPin, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import api from '../../api'
 
 const COLORS = ['#FFD700','#4488FF','#FF4444','#44DD88']
 
 export default function Contact() {
+  const navigate = useNavigate()
   const [contacts, setContacts] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -13,26 +15,30 @@ export default function Contact() {
   }, [])
 
   return (
-    <div className="page-enter bg-theme-primary min-h-screen">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-10">
-          {/* <p className="text-[#FFD700] text-xs font-semibold uppercase tracking-widest mb-2">Get In Touch</p> */}
-          <h1 className="text-3xl font-black text-theme-primary mb-1">Contact Us</h1>
-          {/* <p className="text-theme-secondary text-sm">Reach our regional offices · We respond within 24 hours</p> */}
-        </div>
-
-        <div className="bg-[#FFD700]/10 border border-[#FFD700]/20 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-[#FFD700] flex items-center justify-center flex-shrink-0">
-            <Building2 size={26} className="text-[#0A0A0A]" />
+    <div
+      className="page-enter bg-theme-primary overflow-y-hidden"
+      style={{ height: 'calc(100vh - 64px - 40px)' }}
+    >
+      <div className="max-w-4xl mx-auto px-4 py-8 h-full overflow-y-auto scrollbar-hide">
+        {/* Heading — matches card style */}
+        <div className="flex items-center gap-4 mb-8">
+          <div
+            className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
+            style={{ background: 'rgba(255,68,68,0.08)' }}
+          >
+            <Phone size={22} strokeWidth={1.5} style={{ color: '#FF4444' }} />
           </div>
-          <div>
-            <h2 className="text-theme-primary font-bold text-lg">SBS — Sai Business Services</h2>
-            <p className="text-theme-secondary text-sm mt-1">Operating across Andhra Pradesh, Telangana, and Odisha since 2010.</p>
+          <div className="flex flex-col">
+            <h1 className="text-theme-primary font-semibold text-xl leading-tight">
+              Contact Us
+            </h1>
           </div>
         </div>
 
         {loading ? (
-          <div className="space-y-4">{[...Array(3)].map((_,i) => <div key={i} className="bg-theme-card border border-theme rounded-2xl h-40 animate-pulse" />)}</div>
+          <div className="space-y-4">
+            {[...Array(3)].map((_,i) => <div key={i} className="bg-theme-card border border-theme rounded-2xl h-40 animate-pulse" />)}
+          </div>
         ) : (
           <div className="space-y-5">
             {contacts.map((c, i) => (
@@ -69,23 +75,6 @@ export default function Contact() {
           </div>
         )}
 
-        <div className="mt-8 bg-theme-card border border-theme rounded-2xl p-6">
-          <h3 className="text-theme-primary font-bold mb-4 flex items-center gap-2">
-            <Clock size={15} className="text-[#FFD700]" /> Office Hours
-          </h3>
-          <div className="grid sm:grid-cols-2 gap-3 text-sm">
-            {[
-              { day:'Monday – Friday', hours:'9:00 AM – 6:00 PM' },
-              { day:'Saturday',        hours:'9:00 AM – 2:00 PM' },
-              { day:'Sunday',          hours:'Closed' },
-            ].map(({ day, hours }) => (
-              <div key={day} className="flex justify-between text-theme-secondary">
-                <span>{day}</span>
-                <span className={hours === 'Closed' ? 'text-theme-muted' : 'text-theme-primary font-medium'}>{hours}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   )

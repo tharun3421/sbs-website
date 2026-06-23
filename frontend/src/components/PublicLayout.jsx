@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X, Phone, MapPin, Briefcase, GraduationCap, Tag, Home, Sun, Moon, ShieldCheck } from 'lucide-react'
 import api from '../api'
+import logo from '../assets/logo-sbs.jpeg'
 
 const NAV_LINKS = [
   { to: '/',                label: 'Home',            icon: Home },
@@ -75,7 +76,9 @@ export default function PublicLayout() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="bg-[#FFD700] text-[#0A0A0A] font-black text-lg px-3 py-1 rounded-lg tracking-wide">SBS</div>
+            <div >
+              <img className='w-22 h-full' src={logo} alt="" />
+            </div>
             <div className="hidden sm:block">
               <p className={`font-semibold text-sm leading-none ${logoText}`}>Sai Business Services</p>
               <p className={`text-xs mt-0.5 ${logoSub}`}>We Find Your Way</p>
@@ -137,7 +140,6 @@ export default function PublicLayout() {
             <div className={`flex items-center justify-between p-5 border-b ${sidebarBorder}`}>
               <div className="flex items-center gap-2">
                 <div className="bg-[#FFD700] text-[#0A0A0A] font-black text-lg px-3 py-1 rounded-lg">SBS</div>
-                <span className={`text-xs font-medium ${dark ? 'text-gray-400' : 'text-gray-500'}`}>Menu</span>
               </div>
               <button
                 onClick={() => setMenuOpen(false)}
@@ -181,20 +183,20 @@ export default function PublicLayout() {
 
       {/* ── PAGE CONTENT ── */}
       {/* pt-16 = navbar height, pb-10 = ticker height */}
-      <main className="flex-1 pt-16 pb-10">
-        <Outlet />
-      </main>
+      <main className="flex-1 pt-16" style={{ paddingBottom: '40px' }}>
+  <Outlet />
+</main>
 
       {/* ── STICKY FOOTER TICKER ── */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#FFD700] h-10 flex items-center overflow-hidden border-t-2 border-[#E6C200]">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#FFD700] flex items-center overflow-hidden border-t-2 border-[#E6C200]" style={{ height: '40px' }}>
         <Link to="/contact"
-          className="flex-shrink-0 bg-[#0A0A0A] text-[#FFD700] font-bold text-xs px-4 h-full flex items-center gap-1.5 hover:bg-[#1A1A1A] transition z-10 border-r-2 border-[#E6C200]"
+          className="shrink-0 bg-[#013383] text-[#FFD700] font-bold text-xs px-4 h-full flex items-center gap-1.5 hover:bg-[#1A1A1A] transition z-10 "
         >
           <Phone size={12} />
           Contact Us
         </Link>
         <div className="overflow-hidden flex-1 flex items-center">
-          <div className="marquee-track">
+          <div className="marquee-track ">
             {ticker.map((city, i) => (
               <span key={i} className="flex items-center gap-1.5 text-[#0A0A0A] text-xs font-semibold px-4">
                 <MapPin size={10} />
