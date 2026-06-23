@@ -14,12 +14,12 @@ export default function Jobs() {
   const { type = 'free' } = useParams()
   const config = TYPE_CONFIG[type] || TYPE_CONFIG.free
 
-  const [jobs, setJobs]       = useState([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch]   = useState('')
+  const [jobs, setJobs]         = useState([])
+  const [loading, setLoading]   = useState(true)
+  const [search, setSearch]     = useState('')
   const [location, setLocation] = useState('')
-  const [page, setPage]       = useState(1)
-  const [panel, setPanel]     = useState({ open: false, job: null })
+  const [page, setPage]         = useState(1)
+  const [panel, setPanel]       = useState({ open: false, job: null })
   const PER_PAGE = 6
 
   useEffect(() => {
@@ -54,22 +54,6 @@ export default function Jobs() {
           <p className="text-sm text-theme-secondary">
             For Top Companies · All Verticals · {jobs.length} positions available
           </p>
-        </div>
-
-        {/* Tab switcher */}
-        <div className="flex gap-2 mb-6 bg-theme-secondary p-1 rounded-xl w-fit">
-          {Object.entries(TYPE_CONFIG).map(([key, cfg]) => (
-            <Link
-              key={key}
-              to={`/jobs/${key}`}
-              className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                type === key ? 'text-[#0A0A0A]' : 'text-theme-secondary hover:text-theme-primary'
-              }`}
-              style={type === key ? { background: cfg.color } : {}}
-            >
-              {cfg.label}
-            </Link>
-          ))}
         </div>
 
         {/* Search */}
