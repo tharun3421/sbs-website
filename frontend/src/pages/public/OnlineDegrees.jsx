@@ -16,7 +16,6 @@ export default function OnlineDegrees() {
   const [panel, setPanel] = useState({ open: false, degree: null })
   const PER_PAGE = 4
 
-  // Fetch all degrees once
   useEffect(() => {
     setLoading(true)
     api.get('/degrees')
@@ -25,7 +24,6 @@ export default function OnlineDegrees() {
       .finally(() => setLoading(false))
   }, [])
 
-  // Filter client-side whenever search or course changes
   useEffect(() => {
     let data = [...allDegrees]
 
@@ -115,12 +113,6 @@ export default function OnlineDegrees() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {paginated.map(deg => (
               <div key={deg._id} className="card-hover bg-theme-card border border-theme rounded-2xl p-5 flex flex-col gap-4">
-                <div className="flex items-center gap-3">
-                  {deg.logo
-                    ? <img src={deg.logo} alt={deg.university} className="h-10 object-contain bg-white rounded-xl px-2 py-1 max-w-[100px]" />
-                    : <div className="w-12 h-10 rounded-xl bg-[#4488FF]/10 flex items-center justify-center text-[#4488FF] font-black">{deg.university[0]}</div>
-                  }
-                </div>
                 <div>
                   <h3 className="text-theme-primary font-bold text-base mb-1 line-clamp-2">{deg.course}</h3>
                   <p className="text-theme-secondary text-sm mb-3">{deg.university}</p>

@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Search, Tag, ChevronLeft, ChevronRight, TrendingUp, ArrowLeft } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { Search, Tag, ChevronLeft, ChevronRight, TrendingUp } from 'lucide-react'
 import api from '../../api'
 import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
 
 export default function BusinessOffers() {
-  const navigate = useNavigate()
-  const [offers, setOffers]   = useState([])
+  const [offers, setOffers] = useState([])
   const [loading, setLoading] = useState(true)
-  const [search, setSearch]   = useState('')
-  const [page, setPage]       = useState(1)
-  const [panel, setPanel]     = useState({ open: false, offer: null })
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
+  const [panel, setPanel] = useState({ open: false, offer: null })
   const PER_PAGE = 6
 
   useEffect(() => {
@@ -22,13 +20,14 @@ export default function BusinessOffers() {
     setPage(1)
   }, [search])
 
-  const paginated  = offers.slice((page - 1) * PER_PAGE, page * PER_PAGE)
+  const paginated = offers.slice((page - 1) * PER_PAGE, page * PER_PAGE)
   const totalPages = Math.ceil(offers.length / PER_PAGE)
 
   return (
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Heading — matches card style */}
+
+        {/* Heading */}
         <div className="flex items-center gap-4 mb-8">
           <div
             className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
@@ -36,11 +35,9 @@ export default function BusinessOffers() {
           >
             <Tag size={22} strokeWidth={1.5} style={{ color: '#FFD700' }} />
           </div>
-          <div className="flex flex-col">
-            <h1 className="text-theme-primary font-semibold text-xl leading-tight">
-              Business Offers
-            </h1>
-          </div>
+          <h1 className="text-theme-primary font-semibold text-xl leading-tight">
+            Business Offers
+          </h1>
         </div>
 
         <div className="relative mb-8">
@@ -52,7 +49,9 @@ export default function BusinessOffers() {
 
         {loading ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[...Array(6)].map((_, i) => <div key={i} className="bg-theme-card border border-theme rounded-2xl h-64 animate-pulse" />)}
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-theme-card border border-theme rounded-2xl h-44 animate-pulse" />
+            ))}
           </div>
         ) : paginated.length === 0 ? (
           <div className="text-center py-20">
@@ -62,26 +61,20 @@ export default function BusinessOffers() {
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {paginated.map(offer => (
-              <div key={offer._id} className="card-hover bg-theme-card border border-theme rounded-2xl overflow-hidden flex flex-col">
-                {offer.image
-                  ? <div className="h-44 bg-theme-tertiary overflow-hidden"><img src={offer.image} alt={offer.title} className="w-full h-full object-contain p-4" /></div>
-                  : <div className="h-44 bg-[#FFD700]/5 flex items-center justify-center"><Tag size={40} className="text-[#FFD700]/30" /></div>
-                }
-                <div className="p-5 flex flex-col gap-3 flex-1">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <TrendingUp size={12} className="text-[#FFD700]" />
-                      <span className="text-[#FFD700] text-xs font-semibold">{offer.category}</span>
-                    </div>
-                    <h3 className="text-theme-primary font-bold text-base">{offer.title}</h3>
-                    <p className="text-theme-muted text-xs mt-0.5">{offer.company}</p>
+              <div key={offer._id} className="card-hover bg-theme-card border border-theme rounded-2xl p-5 flex flex-col gap-3">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <TrendingUp size={12} className="text-[#FFD700]" />
+                    <span className="text-[#FFD700] text-xs font-semibold">{offer.category}</span>
                   </div>
-                  <p className="text-theme-secondary text-sm line-clamp-3 leading-relaxed">{offer.description}</p>
-                  <button onClick={() => setPanel({ open: true, offer })}
-                    className="mt-auto w-full py-2.5 rounded-xl font-bold text-sm bg-[#FFD700] text-[#0A0A0A] hover:bg-[#E6C200] transition">
-                    Enquire Now
-                  </button>
+                  <h3 className="text-theme-primary font-bold text-base">{offer.title}</h3>
+                  <p className="text-theme-muted text-xs mt-0.5">{offer.company}</p>
                 </div>
+                <p className="text-theme-secondary text-sm line-clamp-3 leading-relaxed">{offer.description}</p>
+                <button onClick={() => setPanel({ open: true, offer })}
+                  className="mt-auto w-full py-2.5 rounded-xl font-bold text-sm bg-[#FFD700] text-[#0A0A0A] hover:bg-[#E6C200] transition">
+                  Enquire Now
+                </button>
               </div>
             ))}
           </div>

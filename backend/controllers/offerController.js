@@ -39,8 +39,8 @@ exports.updateOffer = async (req, res) => {
 
 exports.deleteOffer = async (req, res) => {
   try {
-    await Offer.findByIdAndUpdate(req.params.id, { isActive: false });
-    res.json({ message: 'Offer removed' });
+    await Offer.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Offer deleted' });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

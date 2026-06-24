@@ -39,8 +39,8 @@ exports.updateDegree = async (req, res) => {
 
 exports.deleteDegree = async (req, res) => {
   try {
-    await Degree.findByIdAndUpdate(req.params.id, { isActive: false });
-    res.json({ message: 'Degree removed' });
+    await Degree.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Degree deleted' });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

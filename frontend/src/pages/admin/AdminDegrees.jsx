@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, X, Upload } from 'lucide-react'
+import { Plus, Edit, Trash2, X } from 'lucide-react'
 import api from '../../api'
 import toast from 'react-hot-toast'
 
@@ -12,7 +12,6 @@ export default function AdminDegrees() {
   const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState({ open: false, degree: null })
   const [form, setForm] = useState(EMPTY)
-  const [logo, setLogo] = useState(null)
   const [saving, setSaving] = useState(false)
 
   const load = () => {
@@ -21,18 +20,15 @@ export default function AdminDegrees() {
   }
   useEffect(load, [])
 
-  const openAdd = () => { setForm(EMPTY); setLogo(null); setModal({ open: true, degree: null }) }
-  const openEdit = (deg) => { setForm({ ...deg }); setLogo(null); setModal({ open: true, degree: deg }) }
+  const openAdd = () => { setForm(EMPTY); setModal({ open: true, degree: null }) }
+  const openEdit = (deg) => { setForm({ ...deg }); setModal({ open: true, degree: deg }) }
 
   const handleSave = async (e) => {
     e.preventDefault()
     setSaving(true)
     try {
-      const fd = new FormData()
-      Object.entries(form).forEach(([k, v]) => fd.append(k, v))
-      if (logo) fd.append('logo', logo)
-      if (modal.degree) await api.put(`/degrees/${modal.degree._id}`, fd)
-      else await api.post('/degrees', fd)
+      if (modal.degree) await api.put(`/degrees/${modal.degree._id}`, form)
+      else await api.post('/degrees', form)
       toast.success(modal.degree ? 'Degree updated' : 'Degree added')
       setModal({ open: false, degree: null })
       load()
@@ -43,7 +39,7 @@ export default function AdminDegrees() {
   const handleDelete = async (id) => {
     if (!confirm('Remove this degree?')) return
     await api.delete(`/degrees/${id}`)
-    toast.success('Degree removed')
+    toast.success('Degree deleted')
     load()
   }
 
@@ -65,7 +61,7 @@ export default function AdminDegrees() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-theme">
-                {['University', 'Course', 'Duration', 'Type', 'Status', 'Actions'].map(h => (
+                {['University', 'Course', 'Duration', 'Type', 'Actions'].map(h => (
                   <th key={h} className="text-left px-5 py-3 text-theme-muted font-medium text-xs whitespace-nowrap">{h}</th>
                 ))}
               </tr>
@@ -74,18 +70,17 @@ export default function AdminDegrees() {
               {loading ? (
                 [...Array(4)].map((_, i) => (
                   <tr key={i} className="border-b border-theme">
-                    {[...Array(6)].map((_, j) => <td key={j} className="px-5 py-4"><div className="h-3 bg-theme-tertiary rounded animate-pulse" /></td>)}
+                    {[...Array(5)].map((_, j) => (
+                      <td key={j} className="px-5 py-4">
+                        <div className="h-3 bg-theme-tertiary rounded animate-pulse" />
+                      </td>
+                    ))}
                   </tr>
                 ))
               ) : degrees.map(deg => (
                 <tr key={deg._id} className="border-b border-theme hover:bg-theme-tertiary transition">
                   <td className="px-5 py-3">
-                    <div className="flex items-center gap-2">
-                      {deg.logo
-                        ? <img src={deg.logo} alt="" className="h-7 w-14 object-contain bg-white rounded px-1" />
-                        : <div className="w-7 h-7 rounded bg-[#4488FF]/10 flex items-center justify-center text-[#4488FF] text-xs font-bold">{deg.university[0]}</div>}
-                      <span className="text-theme-primary font-medium whitespace-nowrap">{deg.university}</span>
-                    </div>
+                    <span className="text-theme-primary font-medium whitespace-nowrap">{deg.university}</span>
                   </td>
                   <td className="px-5 py-3 text-theme-secondary max-w-[180px] truncate">{deg.course}</td>
                   <td className="px-5 py-3 text-theme-secondary whitespace-nowrap">{deg.duration}</td>
@@ -93,21 +88,22 @@ export default function AdminDegrees() {
                     <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#4488FF]/10 text-[#4488FF]">{deg.type}</span>
                   </td>
                   <td className="px-5 py-3">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${deg.isActive ? 'bg-[#44DD88]/10 text-[#44DD88]' : 'bg-red-500/10 text-red-400'}`}>
-                      {deg.isActive ? 'Active' : 'Hidden'}
-                    </span>
-                  </td>
-                  <td className="px-5 py-3">
                     <div className="flex gap-2">
-                      <button onClick={() => openEdit(deg)} className="p-1.5 rounded-lg bg-theme-tertiary hover:bg-[#FFD700]/10 hover:text-[#FFD700] text-theme-muted transition"><Edit size={13} /></button>
-                      <button onClick={() => handleDelete(deg._id)} className="p-1.5 rounded-lg bg-theme-tertiary hover:bg-red-500/10 hover:text-red-400 text-theme-muted transition"><Trash2 size={13} /></button>
+                      <button onClick={() => openEdit(deg)} className="p-1.5 rounded-lg bg-theme-tertiary hover:bg-[#FFD700]/10 hover:text-[#FFD700] text-theme-muted transition">
+                        <Edit size={13} />
+                      </button>
+                      <button onClick={() => handleDelete(deg._id)} className="p-1.5 rounded-lg bg-theme-tertiary hover:bg-red-500/10 hover:text-red-400 text-theme-muted transition">
+                        <Trash2 size={13} />
+                      </button>
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {!loading && !degrees.length && <div className="p-10 text-center text-theme-muted">No degrees listed yet.</div>}
+          {!loading && !degrees.length && (
+            <div className="p-10 text-center text-theme-muted">No degrees listed yet.</div>
+          )}
         </div>
       </div>
 
@@ -116,7 +112,9 @@ export default function AdminDegrees() {
           <div className="bg-theme-secondary border border-theme rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-theme">
               <h3 className="text-theme-primary font-bold">{modal.degree ? 'Edit Degree' : 'Add Degree Program'}</h3>
-              <button onClick={() => setModal({ open: false, degree: null })} className="text-theme-muted hover:text-theme-primary p-1"><X size={18} /></button>
+              <button onClick={() => setModal({ open: false, degree: null })} className="text-theme-muted hover:text-theme-primary p-1">
+                <X size={18} />
+              </button>
             </div>
             <form onSubmit={handleSave} className="p-5 space-y-4">
               {[
@@ -139,17 +137,11 @@ export default function AdminDegrees() {
                   onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                   className={`${inputClass} resize-none`} />
               </div>
-              <div>
-                <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">University Logo</label>
-                <label className="flex items-center gap-3 p-3 border border-dashed border-theme rounded-xl cursor-pointer hover:border-[#FFD700]/40 transition input-bg">
-                  <Upload size={16} className="text-theme-muted" />
-                  <span className="text-theme-secondary text-sm">{logo ? logo.name : 'Upload logo image'}</span>
-                  <input type="file" accept="image/*" onChange={e => setLogo(e.target.files[0])} className="hidden" />
-                </label>
-              </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setModal({ open: false, degree: null })}
-                  className="flex-1 py-3 rounded-xl border border-theme text-theme-secondary hover:text-theme-primary hover:border-theme-gold transition text-sm font-semibold">Cancel</button>
+                  className="flex-1 py-3 rounded-xl border border-theme text-theme-secondary hover:text-theme-primary transition text-sm font-semibold">
+                  Cancel
+                </button>
                 <button type="submit" disabled={saving}
                   className="flex-1 py-3 rounded-xl bg-[#FFD700] text-[#0A0A0A] font-bold hover:bg-[#E6C200] transition text-sm disabled:opacity-70">
                   {saving ? 'Saving...' : modal.degree ? 'Update' : 'Add Degree'}

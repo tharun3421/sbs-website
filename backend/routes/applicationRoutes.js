@@ -15,5 +15,6 @@ router.post('/enquire', ctrl.enquire);
 router.get('/', auth, ctrl.getAll);
 router.put('/:id/status', auth, ctrl.updateStatus);
 router.get('/export-csv', auth, ctrl.exportCSV);
+router.delete('/:id', auth, ctrl.deleteApplication);
 
 module.exports = router;

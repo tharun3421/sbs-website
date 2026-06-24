@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, X, Upload } from 'lucide-react'
+import { Plus, Edit, Trash2, X } from 'lucide-react'
 import api from '../../api'
 import toast from 'react-hot-toast'
 
@@ -12,7 +12,6 @@ export default function AdminOffers() {
   const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState({ open: false, offer: null })
   const [form, setForm] = useState(EMPTY)
-  const [image, setImage] = useState(null)
   const [saving, setSaving] = useState(false)
 
   const load = () => {
@@ -21,18 +20,15 @@ export default function AdminOffers() {
   }
   useEffect(load, [])
 
-  const openAdd = () => { setForm(EMPTY); setImage(null); setModal({ open: true, offer: null }) }
-  const openEdit = (o) => { setForm({ ...o }); setImage(null); setModal({ open: true, offer: o }) }
+  const openAdd = () => { setForm(EMPTY); setModal({ open: true, offer: null }) }
+  const openEdit = (o) => { setForm({ ...o }); setModal({ open: true, offer: o }) }
 
   const handleSave = async (e) => {
     e.preventDefault()
     setSaving(true)
     try {
-      const fd = new FormData()
-      Object.entries(form).forEach(([k, v]) => fd.append(k, v))
-      if (image) fd.append('image', image)
-      if (modal.offer) await api.put(`/offers/${modal.offer._id}`, fd)
-      else await api.post('/offers', fd)
+      if (modal.offer) await api.put(`/offers/${modal.offer._id}`, form)
+      else await api.post('/offers', form)
       toast.success(modal.offer ? 'Offer updated' : 'Offer added')
       setModal({ open: false, offer: null })
       load()
@@ -43,7 +39,7 @@ export default function AdminOffers() {
   const handleDelete = async (id) => {
     if (!confirm('Remove this offer?')) return
     await api.delete(`/offers/${id}`)
-    toast.success('Offer removed')
+    toast.success('Offer deleted')
     load()
   }
 
@@ -62,25 +58,25 @@ export default function AdminOffers() {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
-          [...Array(3)].map((_, i) => <div key={i} className="bg-theme-secondary rounded-2xl h-52 animate-pulse" />)
+          [...Array(3)].map((_, i) => (
+            <div key={i} className="bg-theme-secondary rounded-2xl h-40 animate-pulse" />
+          ))
         ) : offers.map(offer => (
-          <div key={offer._id} className="bg-theme-card border border-theme rounded-2xl overflow-hidden">
-            {offer.image
-              ? <div className="h-36 bg-theme-tertiary"><img src={offer.image} alt="" className="w-full h-full object-contain p-3" /></div>
-              : <div className="h-36 bg-[#FFD700]/5 flex items-center justify-center text-[#FFD700]/20 text-5xl font-black">{offer.company[0]}</div>
-            }
-            <div className="p-4">
+          <div key={offer._id} className="bg-theme-card border border-theme rounded-2xl p-4 flex flex-col gap-3">
+            <div>
               <span className="text-xs text-[#FFD700] font-semibold">{offer.category}</span>
               <h3 className="text-theme-primary font-bold text-sm mt-0.5 mb-0.5 line-clamp-1">{offer.title}</h3>
-              <p className="text-theme-muted text-xs mb-3 line-clamp-2">{offer.description}</p>
-              <div className="flex gap-2">
-                <button onClick={() => openEdit(offer)} className="flex-1 py-2 rounded-lg bg-theme-tertiary hover:bg-[#FFD700]/10 hover:text-[#FFD700] text-theme-secondary transition text-xs font-semibold flex items-center justify-center gap-1.5">
-                  <Edit size={12} /> Edit
-                </button>
-                <button onClick={() => handleDelete(offer._id)} className="flex-1 py-2 rounded-lg bg-theme-tertiary hover:bg-red-500/10 hover:text-red-400 text-theme-secondary transition text-xs font-semibold flex items-center justify-center gap-1.5">
-                  <Trash2 size={12} /> Delete
-                </button>
-              </div>
+              <p className="text-theme-muted text-xs line-clamp-2">{offer.description}</p>
+            </div>
+            <div className="flex gap-2 mt-auto">
+              <button onClick={() => openEdit(offer)}
+                className="flex-1 py-2 rounded-lg bg-theme-tertiary hover:bg-[#FFD700]/10 hover:text-[#FFD700] text-theme-secondary transition text-xs font-semibold flex items-center justify-center gap-1.5">
+                <Edit size={12} /> Edit
+              </button>
+              <button onClick={() => handleDelete(offer._id)}
+                className="flex-1 py-2 rounded-lg bg-theme-tertiary hover:bg-red-500/10 hover:text-red-400 text-theme-secondary transition text-xs font-semibold flex items-center justify-center gap-1.5">
+                <Trash2 size={12} /> Delete
+              </button>
             </div>
           </div>
         ))}
@@ -94,7 +90,9 @@ export default function AdminOffers() {
           <div className="bg-theme-secondary border border-theme rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-theme">
               <h3 className="text-theme-primary font-bold">{modal.offer ? 'Edit Offer' : 'Add Business Offer'}</h3>
-              <button onClick={() => setModal({ open: false, offer: null })} className="text-theme-muted hover:text-theme-primary p-1"><X size={18} /></button>
+              <button onClick={() => setModal({ open: false, offer: null })} className="text-theme-muted hover:text-theme-primary p-1">
+                <X size={18} />
+              </button>
             </div>
             <form onSubmit={handleSave} className="p-5 space-y-4">
               {[
@@ -116,17 +114,11 @@ export default function AdminOffers() {
                   onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                   className={`${inputClass} resize-none`} />
               </div>
-              <div>
-                <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Product Image</label>
-                <label className="flex items-center gap-3 p-3 border border-dashed border-theme rounded-xl cursor-pointer hover:border-[#FFD700]/40 transition input-bg">
-                  <Upload size={16} className="text-theme-muted" />
-                  <span className="text-theme-secondary text-sm">{image ? image.name : 'Upload product image'}</span>
-                  <input type="file" accept="image/*" onChange={e => setImage(e.target.files[0])} className="hidden" />
-                </label>
-              </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setModal({ open: false, offer: null })}
-                  className="flex-1 py-3 rounded-xl border border-theme text-theme-secondary hover:text-theme-primary hover:border-theme-gold transition text-sm font-semibold">Cancel</button>
+                  className="flex-1 py-3 rounded-xl border border-theme text-theme-secondary hover:text-theme-primary transition text-sm font-semibold">
+                  Cancel
+                </button>
                 <button type="submit" disabled={saving}
                   className="flex-1 py-3 rounded-xl bg-[#FFD700] text-[#0A0A0A] font-bold hover:bg-[#E6C200] transition text-sm disabled:opacity-70">
                   {saving ? 'Saving...' : modal.offer ? 'Update' : 'Add Offer'}

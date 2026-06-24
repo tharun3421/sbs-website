@@ -15,40 +15,35 @@ export default function LogoScroller({ label = 'Our Partners', accent = '#FFD700
 
   if (!logos.length) return null
 
-  // Repeat until we have at least 10 tiles before splitting
   let items = [...logos]
   while (items.length < 10) items = [...items, ...logos]
 
-  // Slice into two equal halves instead of odd/even
   const mid = Math.ceil(items.length / 2)
   const row1 = items.slice(0, mid)
   const row2 = items.slice(mid)
 
   const Tile = ({ item }) => (
-    <div
-      className="shrink-0 flex items-center gap-2.5 bg-theme-card border border-theme rounded-xl px-4 py-2.5 mx-2 hover:border-[#FFD700]/40 transition-colors"
-      title={item.name}
-    >
-      {item.logo ? (
-        <img
-          src={item.logo}
-          alt={item.name}
-          className="w-7 h-7 object-contain rounded bg-white p-0.5 shrink-0"
-          loading="lazy"
-        />
-      ) : (
-        <div
-          className="w-7 h-7 rounded flex items-center justify-center text-xs font-black shrink-0"
-          style={{ background: `${accent}18`, color: accent }}
-        >
-          {item.name[0]?.toUpperCase()}
-        </div>
-      )}
-      <span className="text-theme-secondary text-xs font-medium whitespace-nowrap max-w-[110px] truncate">
-        {item.name}
-      </span>
-    </div>
-  )
+  <div
+    className="shrink-0 flex flex-col items-center gap-2 bg-theme-card border border-theme rounded-2xl mx-2 hover:border-[#FFD700]/40 transition-colors w-28 overflow-hidden"
+    title={item.name}
+  >
+    {item.logo ? (
+      <img
+        src={item.logo}
+        alt={item.name}
+        className="w-full h-20 object-contain bg-white p-2"
+        loading="lazy"
+      />
+    ) : (
+      <div
+        className="w-full h-20 flex items-center justify-center text-2xl font-black"
+        style={{ background: `${accent}18`, color: accent }}
+      >
+        {item.name[0]?.toUpperCase()}
+      </div>
+    )}
+  </div>
+)
 
   const Row = ({ tiles, dir }) => (
     <div
@@ -58,7 +53,13 @@ export default function LogoScroller({ label = 'Our Partners', accent = '#FFD700
         maskImage: 'linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%)',
       }}
     >
-      <div className={dir === 'left' ? 'logo-scroll-left flex w-max' : 'logo-scroll-right flex w-max'}>
+      <div
+        style={{
+          display: 'flex',
+          width: 'max-content',
+          animation: `${dir === 'left' ? 'scroll-left' : 'scroll-right'} 50s linear infinite`,
+        }}
+      >
         {[...tiles, ...tiles, ...tiles, ...tiles].map((item, i) => (
           <Tile key={i} item={item} />
         ))}

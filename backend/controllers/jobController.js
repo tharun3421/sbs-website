@@ -41,8 +41,8 @@ exports.updateJob = async (req, res) => {
 
 exports.deleteJob = async (req, res) => {
   try {
-    await Job.findByIdAndUpdate(req.params.id, { isActive: false });
-    res.json({ message: 'Job removed' });
+    await Job.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Job deleted' });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

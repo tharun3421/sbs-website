@@ -67,6 +67,15 @@ exports.updateStatus = async (req, res) => {
   }
 };
 
+exports.deleteApplication = async (req, res) => {
+  try {
+    await Application.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Application deleted' });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 exports.exportCSV = async (req, res) => {
   try {
     const apps = await Application.find().sort({ createdAt: -1 });
