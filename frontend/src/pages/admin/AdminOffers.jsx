@@ -64,7 +64,6 @@ export default function AdminOffers() {
         ) : offers.map(offer => (
           <div key={offer._id} className="bg-theme-card border border-theme rounded-2xl p-4 flex flex-col gap-3">
             <div>
-              <span className="text-xs text-[#FFD700] font-semibold">{offer.category}</span>
               <h3 className="text-theme-primary font-bold text-sm mt-0.5 mb-0.5 line-clamp-1">{offer.title}</h3>
               <p className="text-theme-muted text-xs line-clamp-2">{offer.description}</p>
             </div>
@@ -96,9 +95,7 @@ export default function AdminOffers() {
             </div>
             <form onSubmit={handleSave} className="p-5 space-y-4">
               {[
-                { key: 'company', label: 'Company / Brand', placeholder: 'e.g. Kobra Alkaline Water' },
-                { key: 'title', label: 'Offer Title', placeholder: 'e.g. Dealership Opportunity' },
-                { key: 'category', label: 'Category', placeholder: 'e.g. Franchise, Energy, FMCG' },
+                { key: 'title', label: 'Offer Title', placeholder: 'e.g. Dealership Opportunity' },           
               ].map(({ key, label, placeholder }) => (
                 <div key={key}>
                   <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">{label}</label>

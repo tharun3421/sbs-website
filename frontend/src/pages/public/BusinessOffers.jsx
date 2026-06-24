@@ -63,12 +63,7 @@ export default function BusinessOffers() {
             {paginated.map(offer => (
               <div key={offer._id} className="card-hover bg-theme-card border border-theme rounded-2xl p-5 flex flex-col gap-3">
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <TrendingUp size={12} className="text-[#FFD700]" />
-                    <span className="text-[#FFD700] text-xs font-semibold">{offer.category}</span>
-                  </div>
                   <h3 className="text-theme-primary font-bold text-base">{offer.title}</h3>
-                  <p className="text-theme-muted text-xs mt-0.5">{offer.company}</p>
                 </div>
                 <p className="text-theme-secondary text-sm line-clamp-3 leading-relaxed">{offer.description}</p>
                 <button onClick={() => setPanel({ open: true, offer })}
