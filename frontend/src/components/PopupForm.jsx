@@ -5,12 +5,13 @@ import { X, CheckCircle, Upload, User, Phone } from 'lucide-react'
 import api from '../api'
 import toast from 'react-hot-toast'
 
-export default function PopupForm({ open, onClose, type, refId, refTitle }) {
+export default function PopupForm({ open, onClose, type, jobType, refId, refTitle }) {
   const [form, setForm] = useState({ name: '', mobile: '' })
   const [resume, setResume] = useState(null)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const isJob = type === 'job'
+  const isPaid = jobType === 'paid'
 
   useEffect(() => {
     if (open) {
@@ -170,7 +171,7 @@ export default function PopupForm({ open, onClose, type, refId, refTitle }) {
                 />
               </div>
 
-              {isJob && (
+              {isJob && !isPaid && (
                 <div>
                   <label className={labelCls}><Upload size={12} /> Resume (Optional, max 5MB)</label>
                   <label className="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-theme rounded-xl cursor-pointer hover:border-[#FFD700]/50 transition input-bg">

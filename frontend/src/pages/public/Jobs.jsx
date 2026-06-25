@@ -54,7 +54,7 @@ export default function Jobs() {
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
 
-        {/* Heading — matches card style from JobsLanding */}
+        {/* Heading */}
         <div className="flex items-center gap-4 mb-8">
           <div
             className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
@@ -104,7 +104,7 @@ export default function Jobs() {
             {paginated.map(job => (
               <div key={job._id} className="card-hover bg-theme-card border border-theme rounded-2xl p-5 flex flex-col gap-4">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">           
+                  <div className="flex items-center gap-3">
                     <div>
                       <p className="font-bold text-sm leading-tight text-theme-primary">{job.company}</p>
                     </div>
@@ -155,6 +155,7 @@ export default function Jobs() {
         open={panel.open}
         onClose={() => setPanel({ open: false, job: null })}
         type="job"
+        jobType={panel.job?.type}
         refId={panel.job?._id}
         refTitle={panel.job ? `${panel.job.title} @ ${panel.job.company}` : ''}
       />
