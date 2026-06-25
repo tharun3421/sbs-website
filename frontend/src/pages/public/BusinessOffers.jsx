@@ -10,7 +10,7 @@ export default function BusinessOffers() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [panel, setPanel] = useState({ open: false, offer: null })
-  const PER_PAGE = 6
+  const PER_PAGE = 4
 
   useEffect(() => {
     setLoading(true)

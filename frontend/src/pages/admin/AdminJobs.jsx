@@ -82,9 +82,9 @@ export default function AdminJobs() {
                 <tr key={job._id} className="border-b border-theme hover:bg-theme-tertiary transition">
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-2">
-                      {job.logo
+                      {/* {job.logo
                         ? <img src={job.logo} alt="" className="w-7 h-7 rounded bg-white object-contain p-0.5" />
-                        : <div className="w-7 h-7 rounded bg-[#FFD700]/10 flex items-center justify-center text-[#FFD700] text-xs font-bold">{job.company[0]}</div>}
+                        : <div className="w-7 h-7 rounded bg-[#FFD700]/10 flex items-center justify-center text-[#FFD700] text-xs font-bold">{job.company[0]}</div>} */}
                       <span className="text-theme-primary font-medium whitespace-nowrap">{job.company}</span>
                     </div>
                   </td>
@@ -151,7 +151,7 @@ export default function AdminJobs() {
                 </div>
               ))}
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Type</label>
                   <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
@@ -160,14 +160,14 @@ export default function AdminJobs() {
                     <option value="paid">Paid/Training</option>
                   </select>
                 </div>
-                <div>
+                {/* <div>
                   <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Category</label>
                   <input type="text" value={form.category} placeholder="e.g. IT, Finance"
                     onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
                     className={inputClass} />
-                </div>
+                </div> */}
               </div>
-
+{/* 
               <div>
                 <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Company Logo</label>
                 <label className="flex items-center gap-3 p-3 border border-dashed border-theme rounded-xl cursor-pointer hover:border-[#FFD700]/40 transition input-bg">
@@ -175,7 +175,7 @@ export default function AdminJobs() {
                   <span className="text-theme-secondary text-sm">{logo ? logo.name : 'Upload logo image'}</span>
                   <input type="file" accept="image/*" onChange={e => setLogo(e.target.files[0])} className="hidden" />
                 </label>
-              </div>
+              </div> */}
 
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setModal({ open: false, job: null })}

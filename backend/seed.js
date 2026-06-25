@@ -34,8 +34,18 @@ const contacts = [
         district: 'Vijayawada',
         persons: [
           { name: 'Chandrashekar',              phone: '9133949509' },
-          { name: 'Sri Satya Sai Shaik Suhel Basha', phone: '7893193160' },
-          { name: 'Prakasam Narendra',          phone: '7675084576' },
+        ],
+      },
+       {
+        district: 'Sri Satya Sai',
+        persons: [
+          { name: 'Shaik Suhel Basha', phone: '7893193160' },
+        ],
+      },
+       {
+        district: 'Prakasam',
+        persons: [
+          { name: 'Narendra', phone: '7675084576' },
         ],
       },
       {
@@ -53,6 +63,10 @@ const contacts = [
       {
         district: 'Nizamabad',
         persons: [{ name: 'Prudvi', phone: '7995913881' }],
+      },
+      {
+        district: 'Medak',
+        persons: [{ name: 'Manmohan Reddy', phone: '9666612259' }],
       },
       {
         district: 'Nalgonda',

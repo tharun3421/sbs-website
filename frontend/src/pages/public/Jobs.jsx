@@ -104,14 +104,9 @@ export default function Jobs() {
             {paginated.map(job => (
               <div key={job._id} className="card-hover bg-theme-card border border-theme rounded-2xl p-5 flex flex-col gap-4">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    {job.logo
-                      ? <img src={job.logo} alt={job.company} className="w-10 h-10 rounded-xl object-contain bg-white p-1" />
-                      : <div className="w-10 h-10 rounded-xl bg-[#FFD700]/10 flex items-center justify-center text-[#FFD700] font-black text-lg">{job.company[0]}</div>
-                    }
+                  <div className="flex items-center gap-3">           
                     <div>
                       <p className="font-bold text-sm leading-tight text-theme-primary">{job.company}</p>
-                      <p className="text-xs text-theme-secondary">{job.category}</p>
                     </div>
                   </div>
                 </div>
