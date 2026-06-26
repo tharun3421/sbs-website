@@ -8,10 +8,13 @@ const TABS = [
   { key: 'job', label: 'Job Applications' },
   { key: 'degree', label: 'Degree Enquiries' },
   { key: 'offer', label: 'Offer Enquiries' },
+  { key: 'loan', label: 'Loan Enquiries' },
+  { key: 'other_service', label: 'Other Services' },
 ]
+
 const STATUSES = ['pending', 'reviewed', 'shortlisted', 'rejected']
 const STATUS_COLORS = { pending: '#FF8800', reviewed: '#4488FF', shortlisted: '#44DD88', rejected: '#FF4444' }
-const TYPE_COLORS = { job: '#44DD88', degree: '#4488FF', offer: '#FFD700' }
+const TYPE_COLORS = { job: '#44DD88', degree: '#4488FF', offer: '#FFD700', loan: '#44DD88', other_service: '#AA88FF' }
 
 export default function AdminApplications() {
   const [apps, setApps] = useState([])

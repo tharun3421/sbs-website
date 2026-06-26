@@ -1,6 +1,6 @@
 const Application = require('../models/Application');
 
-const TYPE_TO_MODEL = { job: 'Job', degree: 'Degree', offer: 'Offer' };
+const TYPE_TO_MODEL = { job: 'Job', degree: 'Degree', offer: 'Offer', loan: 'LoanCategory', other_service: 'OtherService' };
 
 exports.apply = async (req, res) => {
   try {

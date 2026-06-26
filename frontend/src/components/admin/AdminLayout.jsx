@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Briefcase, GraduationCap, Tag, FileText, QrCode, Settings, LogOut, Menu, X, ChevronRight, Sun, Moon, ExternalLink } from 'lucide-react'
+import { LayoutDashboard, Briefcase, GraduationCap, Tag, FileText, QrCode, Settings, LogOut, Menu, X, ChevronRight, Sun, Moon, ExternalLink, Landmark, LayoutGrid } from 'lucide-react'
 const NAV = [
-  { to: '/admin',              label: 'Dashboard',      icon: LayoutDashboard, exact: true },
-  { to: '/admin/jobs',         label: 'Jobs',           icon: Briefcase },
-  { to: '/admin/degrees',      label: 'Online Degrees', icon: GraduationCap },
-  { to: '/admin/offers',       label: 'Business Offers',icon: Tag },
-  { to: '/admin/applications', label: 'Applications',   icon: FileText },
-  { to: '/admin/qr',           label: 'QR Generator',   icon: QrCode },
-  { to: '/admin/settings',     label: 'Settings',       icon: Settings },
+  { to: '/admin',                  label: 'Dashboard',      icon: LayoutDashboard, exact: true },
+  { to: '/admin/jobs',             label: 'Jobs',           icon: Briefcase },
+  { to: '/admin/degrees',          label: 'Online Degrees', icon: GraduationCap },
+  { to: '/admin/offers',           label: 'Business Offers',icon: Tag },
+  { to: '/admin/loans',            label: 'Loans',          icon: Landmark },
+  { to: '/admin/other-services',   label: 'Other Services', icon: LayoutGrid },
+  { to: '/admin/applications',     label: 'Applications',   icon: FileText },
+  { to: '/admin/qr',               label: 'QR Generator',   icon: QrCode },
+  { to: '/admin/settings',         label: 'Settings',       icon: Settings },
 ]
 
 function useTheme() {

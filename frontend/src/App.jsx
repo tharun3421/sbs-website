@@ -9,6 +9,8 @@ import JobsLanding from './pages/public/JobsLanding'
 import Jobs from './pages/public/Jobs'
 import OnlineDegrees from './pages/public/OnlineDegrees'
 import BusinessOffers from './pages/public/BusinessOffers'
+import Loans from './pages/public/Loans'
+import OtherServices from './pages/public/OtherServices'
 import Contact from './pages/public/Contact'
 
 import AdminLogin from './pages/admin/AdminLogin'
@@ -16,6 +18,8 @@ import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminJobs from './pages/admin/AdminJobs'
 import AdminDegrees from './pages/admin/AdminDegrees'
 import AdminOffers from './pages/admin/AdminOffers'
+import AdminLoans from './pages/admin/AdminLoans'
+import AdminOtherServices from './pages/admin/AdminOtherServices'
 import AdminApplications from './pages/admin/AdminApplications'
 import AdminQRCode from './pages/admin/AdminQRCode'
 import AdminSettings from './pages/admin/AdminSettings'
@@ -26,13 +30,12 @@ export default function App() {
       {/* Public */}
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
-
-        {/* Jobs: landing → /jobs, listings → /jobs/free or /jobs/paid */}
         <Route path="/jobs" element={<JobsLanding />} />
         <Route path="/jobs/:type" element={<Jobs />} />
-
         <Route path="/online-degrees" element={<OnlineDegrees />} />
         <Route path="/business-offers" element={<BusinessOffers />} />
+        <Route path="/loans" element={<Loans />} />
+        <Route path="/other-services" element={<OtherServices />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
 
@@ -45,6 +48,8 @@ export default function App() {
         <Route path="jobs" element={<AdminJobs />} />
         <Route path="degrees" element={<AdminDegrees />} />
         <Route path="offers" element={<AdminOffers />} />
+        <Route path="loans" element={<AdminLoans />} />
+        <Route path="other-services" element={<AdminOtherServices />} />
         <Route path="applications" element={<AdminApplications />} />
         <Route path="qr" element={<AdminQRCode />} />
         <Route path="settings" element={<AdminSettings />} />
