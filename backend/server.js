@@ -12,6 +12,8 @@ app.use(cors({
     'http://localhost:5173',
     'http://localhost:3000',
     'https://sbs-website-frontend.vercel.app',
+    'https://sbs.ind.in',
+    'https://www.sbs.ind.in',
   ],
   credentials: true,
 }));
