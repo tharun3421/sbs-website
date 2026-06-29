@@ -63,7 +63,7 @@ export default function AdminLogin() {
             </button>
           </form>
         </div>
-        <p className="text-center text-theme-muted text-xs mt-6">Default: admin@sbs.com / sbs@admin123</p>
+        {/* <p className="text-center text-theme-muted text-xs mt-6">Default: admin@sbs.com / sbs@admin123</p> */}
         <p className="text-center mt-4">
           <Link to="/" className="text-theme-secondary text-xs hover:text-[#FFD700] transition">
             ← Back to website
