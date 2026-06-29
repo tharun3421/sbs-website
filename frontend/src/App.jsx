@@ -23,6 +23,9 @@ import AdminOtherServices from './pages/admin/AdminOtherServices'
 import AdminApplications from './pages/admin/AdminApplications'
 import AdminQRCode from './pages/admin/AdminQRCode'
 import AdminSettings from './pages/admin/AdminSettings'
+import StudyAbroad from './pages/public/StudyAbroad'
+import AdminStudyAbroad from './pages/admin/AdminStudyAbroad'
+
 
 export default function App() {
   return (
@@ -36,6 +39,7 @@ export default function App() {
         <Route path="/business-offers" element={<BusinessOffers />} />
         <Route path="/loans" element={<Loans />} />
         <Route path="/other-services" element={<OtherServices />} />
+        <Route path="/study-abroad" element={<StudyAbroad />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
 
@@ -50,6 +54,7 @@ export default function App() {
         <Route path="offers" element={<AdminOffers />} />
         <Route path="loans" element={<AdminLoans />} />
         <Route path="other-services" element={<AdminOtherServices />} />
+        <Route path="study-abroad" element={<AdminStudyAbroad />} />
         <Route path="applications" element={<AdminApplications />} />
         <Route path="qr" element={<AdminQRCode />} />
         <Route path="settings" element={<AdminSettings />} />

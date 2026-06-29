@@ -74,7 +74,7 @@ const contacts = [
       },
       {
         district: 'Khammam',
-        persons: [{ name: 'Raju', phone: '8686653496' }],
+        persons: [{ name: 'Raju', phone: '8686653496' },{ name: 'Laxmi', phone: '8341061302' }],
       },
       {
         district: 'Karimnagar',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { Menu, X, Phone, MapPin, Briefcase, GraduationCap, Tag, Home, Sun, Moon, ShieldCheck, Landmark, LayoutGrid } from 'lucide-react'
+import { Menu, X, Phone, MapPin, Briefcase, GraduationCap, Tag, Home, Sun, Moon, ShieldCheck, Landmark, LayoutGrid, Plane } from 'lucide-react'
 import api from '../api'
 import logo from '../assets/logo-sbs.jpeg'
 
@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { to: '/loans',           label: 'Loans',           icon: Landmark },
   { to: '/other-services',  label: 'Other Services',  icon: LayoutGrid },
   { to: '/contact',         label: 'Contact Us',      icon: Phone },
+  { to: '/study-abroad', label: 'Study + Work Abroad', icon: Plane },
 ]
 
 function useTheme() {
