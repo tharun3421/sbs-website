@@ -6,13 +6,13 @@ import logo from '../assets/logo-sbs.jpeg'
 
 const NAV_LINKS = [
   { to: '/',                label: 'Home',            icon: Home },
+  { to: '/study-abroad', label: 'Study + Work Abroad', icon: Plane },
   { to: '/jobs',            label: 'Jobs',            icon: Briefcase },
   { to: '/online-degrees',  label: 'Online Degrees',  icon: GraduationCap },
   { to: '/business-offers', label: 'Business Offers', icon: Tag },
   { to: '/loans',           label: 'Loans',           icon: Landmark },
   { to: '/other-services',  label: 'Other Services',  icon: LayoutGrid },
   { to: '/contact',         label: 'Contact Us',      icon: Phone },
-  { to: '/study-abroad', label: 'Study + Work Abroad', icon: Plane },
 ]
 
 function useTheme() {
