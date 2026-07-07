@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Briefcase, GraduationCap, Tag, FileText, QrCode, Settings, LogOut, Menu, X, ChevronRight, Sun, Moon, ExternalLink, Landmark, LayoutGrid, Plane } from 'lucide-react'
+import { LayoutDashboard, Briefcase, GraduationCap, Tag, FileText, QrCode, Settings, LogOut, Menu, X, ChevronRight, Sun, Moon, ExternalLink, Landmark, LayoutGrid, Plane, Phone } from 'lucide-react'
 const NAV = [
   { to: '/admin',                  label: 'Dashboard',      icon: LayoutDashboard, exact: true },
   { to: '/admin/jobs',             label: 'Jobs',           icon: Briefcase },
@@ -8,10 +8,11 @@ const NAV = [
   { to: '/admin/offers',           label: 'Business Offers',icon: Tag },
   { to: '/admin/loans',            label: 'Loans',          icon: Landmark },
   { to: '/admin/other-services',   label: 'Other Services', icon: LayoutGrid },
+  { to: '/admin/study-abroad',     label: 'Study Abroad',   icon: Plane },
+  { to: '/admin/contacts',         label: 'Contacts',       icon: Phone },
   { to: '/admin/applications',     label: 'Applications',   icon: FileText },
   { to: '/admin/qr',               label: 'QR Generator',   icon: QrCode },
   { to: '/admin/settings',         label: 'Settings',       icon: Settings },
-  { to: '/admin/study-abroad', label: 'Study Abroad', icon: Plane },
 ]
 
 function useTheme() {

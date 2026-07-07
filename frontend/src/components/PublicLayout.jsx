@@ -80,11 +80,11 @@ export default function PublicLayout() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
             <div >
-              <img className='w-22 h-full' src={logo} alt="" />
+              <img className='w-20 h-full' src={logo} alt="" />
             </div>
             <div className="hidden sm:block">
-              <p className={`font-semibold text-sm leading-none ${logoText}`}>Sai Business Services</p>
-              <p className={`text-xs mt-0.5 ${logoSub}`}>We Find Your Way</p>
+              <p className={`font-semibold text-sm md:text-xs leading-none ${logoText}`}>Sai Business Services</p>
+              <p className={`text-[10px] mt-0.5 ${logoSub}`}>We Find Your Way</p>
             </div>
           </Link>
 
@@ -92,7 +92,7 @@ export default function PublicLayout() {
           <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
             {NAV_LINKS.map(({ to, label }) => (
               <Link key={to} to={to}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200
+                className={`px-4 py-2 rounded-lg text-sm md:text-xs font-medium transition-all duration-200
                   ${location.pathname === to ? linkActive : linkIdle}`}>
                 {label}
               </Link>

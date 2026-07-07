@@ -25,6 +25,7 @@ import AdminQRCode from './pages/admin/AdminQRCode'
 import AdminSettings from './pages/admin/AdminSettings'
 import StudyAbroad from './pages/public/StudyAbroad'
 import AdminStudyAbroad from './pages/admin/AdminStudyAbroad'
+import AdminContacts from './pages/admin/AdminContacts'
 
 
 export default function App() {
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="loans" element={<AdminLoans />} />
         <Route path="other-services" element={<AdminOtherServices />} />
         <Route path="study-abroad" element={<AdminStudyAbroad />} />
+        <Route path="contacts" element={<AdminContacts />} />
         <Route path="applications" element={<AdminApplications />} />
         <Route path="qr" element={<AdminQRCode />} />
         <Route path="settings" element={<AdminSettings />} />

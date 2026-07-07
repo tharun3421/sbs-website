@@ -54,6 +54,30 @@ const contacts = [
           { name: 'Mahesh Reddy', phone: '9110312358' },
         ],
       },
+      {
+        district: 'Guntur',
+        persons: [
+          { name: 'Mounica', phone: '8121318180' },
+        ],
+      },
+      {
+        district: 'Tirupati',
+        persons: [
+          { name: 'Srinivasulu ', phone: '9505960598' },
+        ],
+      },
+      {
+        district: 'Kakinada',
+        persons: [
+          { name: 'Parvathi ', phone: '7993481598' },
+        ],
+      },
+      {
+        district: 'Rajamundry ',
+        persons: [
+          { name: 'Parvathi  ', phone: '7993481598' },
+        ],
+      },
     ],
   },
   {
@@ -86,6 +110,7 @@ const contacts = [
           { name: 'Uday Kumar',     phone: '9296003018' },
           { name: 'Gopinath Reddy', phone: '9440760007' },
           { name: 'Srikanth',       phone: '7794905808' },
+          { name: 'Krishna ',       phone: '7097581224' },
         ],
       },
       {
@@ -101,6 +126,16 @@ const contacts = [
       {
         district: 'Bangalore',
         persons: [{ name: 'Gururaj', phone: '8050783006' }],
+      },
+    ],
+  },
+  {
+    order: 4,
+    state: 'Tamil Nadu',
+    districts: [
+      {
+        district: 'Chennai',
+        persons: [{ name: 'Evanson', phone: '8300137507' }],
       },
     ],
   },
