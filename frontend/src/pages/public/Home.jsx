@@ -4,7 +4,7 @@ import { Briefcase, GraduationCap, Tag, Landmark, LayoutGrid, Plane } from 'luci
 
 const SERVICES = [
   { to: '/study-abroad', label: 'Study + Work Abroad', icon: Plane, accent: '#22C5FF', accentBg: 'rgba(34,197,255,0.08)' },
-  { to: '/jobs',            label: 'Jobs',           icon: Briefcase,     accent: '#FF4444', accentBg: 'rgba(255,68,68,0.08)'   },
+  { to: '/jobs/free',            label: 'Free Jobs',           icon: Briefcase,     accent: '#FF4444', accentBg: 'rgba(255,68,68,0.08)'   },
   { to: '/online-degrees',  label: 'Online Degrees', icon: GraduationCap, accent: '#4488FF', accentBg: 'rgba(68,136,255,0.08)'  },
   { to: '/business-offers', label: 'Business Offers',icon: Tag,           accent: '#FFD700', accentBg: 'rgba(255,215,0,0.08)'   },
   { to: '/loans',           label: 'Loans',          icon: Landmark,      accent: '#44DD88', accentBg: 'rgba(68,221,136,0.08)'  },
