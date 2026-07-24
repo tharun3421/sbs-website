@@ -11,6 +11,7 @@ import OnlineDegrees from './pages/public/OnlineDegrees'
 import BusinessOffers from './pages/public/BusinessOffers'
 import Loans from './pages/public/Loans'
 import OtherServices from './pages/public/OtherServices'
+import MoreServices from './pages/public/MoreServices'
 import Contact from './pages/public/Contact'
 
 import AdminLogin from './pages/admin/AdminLogin'
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/business-offers" element={<BusinessOffers />} />
         <Route path="/loans" element={<Loans />} />
         <Route path="/other-services" element={<OtherServices />} />
+        <Route path="/more-services" element={<MoreServices />} />
         <Route path="/study-abroad" element={<StudyAbroad />} />
         <Route path="/contact" element={<Contact />} />
       </Route>

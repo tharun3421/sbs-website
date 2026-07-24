@@ -1,43 +1,66 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Briefcase, GraduationCap, Tag, Landmark, LayoutGrid, Plane } from 'lucide-react'
+import { ChevronRight, Users, ShieldCheck } from 'lucide-react'
 
-const SERVICES = [
-  { to: '/study-abroad', label: 'Study + Work Abroad', icon: Plane, accent: '#22C5FF', accentBg: 'rgba(34,197,255,0.08)' },
-  { to: '/jobs/free',            label: 'Free Jobs',           icon: Briefcase,     accent: '#FF4444', accentBg: 'rgba(255,68,68,0.08)'   },
-  { to: '/online-degrees',  label: 'Online Degrees', icon: GraduationCap, accent: '#4488FF', accentBg: 'rgba(68,136,255,0.08)'  },
-  { to: '/business-offers', label: 'Business Offers',icon: Tag,           accent: '#FFD700', accentBg: 'rgba(255,215,0,0.08)'   },
-  { to: '/loans',           label: 'Loans',          icon: Landmark,      accent: '#44DD88', accentBg: 'rgba(68,221,136,0.08)'  },
-  { to: '/other-services',  label: 'Other Services', icon: LayoutGrid,    accent: '#AA88FF', accentBg: 'rgba(170,136,255,0.08)' },
+const CORE_SERVICES = [
+  { to: '/study-abroad',   label: 'Study + Work Abroad' },
+  { to: '/jobs/free',      label: 'Free Jobs' },
+  { to: '/online-degrees', label: 'Online Degrees' },
+  { to: '/business-offers', label: 'Business Offers' },
 ]
 
 export default function Home() {
   return (
-    <div
-      className="page-enter bg-theme-primary flex items-center justify-center"
-      style={{ height: 'calc(100vh - 64px - 40px)' }}
-    >
-      <section className="w-full max-w-3xl px-4">
-        <div className="grid sm:grid-cols-3 gap-4">
-          {SERVICES.map(({ to, label, icon: Icon, accent, accentBg }) => (
-            <Link
-              key={to}
-              to={to}
-              className="card-hover group relative rounded-2xl border border-theme bg-theme-card px-5 py-4 flex flex-row items-center gap-4 overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: accent }} />
-              <div
-                className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
-                style={{ background: accentBg }}
-              >
-                <Icon size={22} strokeWidth={1.5} style={{ color: accent }} />
-              </div>
-              <p className="text-theme-primary font-semibold text-base leading-tight">
-                {label}
-              </p>
-            </Link>
-          ))}
+    <div className="page-enter bg-theme-primary min-h-full flex flex-col items-center px-4 py-10">
+      <section className="w-full max-w-xl">
+
+        {/* Top actions */}
+        <div className="flex items-center justify-between mb-10">
+          <button
+            type="button"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-theme text-theme-secondary text-sm font-medium hover:text-theme-primary hover:border-theme-gold transition-all"
+          >
+            <Users size={16} />
+            Associate Resources
+          </button>
+
+          <Link
+            to='/admin/login'
+            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#FFD700] text-[#0A0A0A] text-sm font-semibold hover:bg-[#FFE44D] transition-all"
+          >
+            <ShieldCheck size={16} />
+            Admin Login
+          </Link>
         </div>
+
+        {/* Services list */}
+        <h1 className="text-theme-primary text-lg font-semibold mb-4">Our Services</h1>
+
+        <ul className="border-t border-theme">
+          {CORE_SERVICES.map(({ to, label }) => (
+            <li key={to} className="border-b border-theme">
+              <Link
+                to={to}
+                className="flex items-center justify-between py-4 px-1 text-theme-primary text-base group"
+              >
+                <span className="flex items-center gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0" />
+                  {label}
+                </span>
+                <ChevronRight size={16} className="text-theme-muted group-hover:text-[#FFD700] transition-colors" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* More -> separate page */}
+        <Link
+          to="/more-services"
+          className="w-full flex items-center justify-center gap-1.5 mt-4 py-3 rounded-lg text-theme-secondary text-sm font-medium hover:text-[#FFD700] transition-colors"
+        >
+          More
+          <ChevronRight size={15} />
+        </Link>
       </section>
     </div>
   )
