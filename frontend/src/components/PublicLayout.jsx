@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Outlet, Link } from 'react-router-dom'
-import { Phone, MapPin, Headset, Sun, Moon } from 'lucide-react'
+import { Phone, MapPin, Headset, Sun, Moon, Home } from 'lucide-react'
 import api from '../api'
 import logo from '../assets/logo-sbs.jpeg'
 
@@ -43,6 +43,9 @@ export default function PublicLayout() {
   const supportBtn = dark
     ? 'bg-[#FFD700] text-[#0A0A0A] hover:bg-[#FFE44D]'
     : 'bg-[#013383] text-white hover:bg-[#01245e]'
+  const iconBtn = dark
+    ? 'text-[#FFD700] hover:bg-white/10'
+    : 'text-[#B8860B] hover:bg-black/8'
 
   return (
     <div className={`min-h-screen flex flex-col transition-colors duration-300 ${mainBg}`}
@@ -64,14 +67,22 @@ export default function PublicLayout() {
           </Link>
 
           <div className="flex items-center gap-2">
+            {/* Home */}
+            <Link
+              to="/"
+              title="Home"
+              aria-label="Home"
+              className={`p-2 rounded-lg transition-all duration-200 ${iconBtn}`}
+            >
+              <Home size={18} />
+            </Link>
+
             {/* Theme toggle */}
             <button
               onClick={() => setDark(d => !d)}
               title={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               aria-label="Toggle theme"
-              className={`p-2 rounded-lg transition-all duration-200 ${
-                dark ? 'text-[#FFD700] hover:bg-white/10' : 'text-[#B8860B] hover:bg-black/8'
-              }`}
+              className={`p-2 rounded-lg transition-all duration-200 ${iconBtn}`}
             >
               {dark ? <Sun size={18} /> : <Moon size={18} />}
             </button>
