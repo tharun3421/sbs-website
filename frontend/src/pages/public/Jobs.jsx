@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight, ArrowLeft, GraduationCap } from 'lucide-react'
+import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight, ArrowLeft, GraduationCap, Play, X } from 'lucide-react'
 import api from '../../api'
 import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
+import ReelPopup from '../../components/ReelPopup'
 
 const TYPE_CONFIG = {
   free: {
@@ -36,7 +37,16 @@ export default function Jobs() {
   const [location, setLocation] = useState('')
   const [page, setPage]         = useState(1)
   const [panel, setPanel]       = useState({ open: false, job: null })
+  const [reelJob, setReelJob]   = useState(null)
   const PER_PAGE = 6
+
+  useEffect(() => {
+    if (reelJob) {
+      const prevOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => { document.body.style.overflow = prevOverflow }
+    }
+  }, [reelJob])
 
   useEffect(() => {
     setLoading(true)
@@ -55,7 +65,7 @@ export default function Jobs() {
       <div className="max-w-6xl mx-auto px-4 py-8">
 
         {/* Heading */}
-        <div className="flex items-center gap-4 mb-8">
+        {/* <div className="flex items-center gap-4 mb-8">
           <div
             className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
             style={{ background: config.accentBg }}
@@ -70,7 +80,7 @@ export default function Jobs() {
               <p className="text-theme-primary text-base mt-0.5">{config.subtitle}</p>
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* Search */}
         <div className="flex flex-col sm:flex-row gap-3 mb-8">
@@ -120,14 +130,25 @@ export default function Jobs() {
                   </div>
                 </div>
 
-                <button onClick={() => setPanel({ open: true, job })}
-                  className="mt-auto w-full py-2.5 rounded-xl font-bold text-sm transition"
-                  style={{ background: config.color, color: '#0A0A0A' }}
-                  onMouseEnter={e => e.currentTarget.style.background = config.hoverColor}
-                  onMouseLeave={e => e.currentTarget.style.background = config.color}
-                >
-                  {config.applyLabel}
-                </button>
+                <div className="mt-auto flex gap-2">
+                  {job.reelUrl && (
+                    <button onClick={() => setReelJob(job)}
+                      title="Watch Reel"
+                      className="shrink-0 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl font-bold text-sm border border-theme text-theme-primary hover:border-[#FFD700]/60 hover:text-[#FFD700] transition"
+                    >
+                      <Play size={14} />
+                      <span className="hidden sm:inline">Reel</span>
+                    </button>
+                  )}
+                  <button onClick={() => setPanel({ open: true, job })}
+                    className="flex-1 py-2.5 rounded-xl font-bold text-sm transition"
+                    style={{ background: config.color, color: '#0A0A0A' }}
+                    onMouseEnter={e => e.currentTarget.style.background = config.hoverColor}
+                    onMouseLeave={e => e.currentTarget.style.background = config.color}
+                  >
+                    {config.applyLabel}
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -159,6 +180,31 @@ export default function Jobs() {
         refId={panel.job?._id}
         refTitle={panel.job ? `${panel.job.title} @ ${panel.job.company}` : ''}
       />
+
+      {/* Reel video modal */}
+     {/* Reel video modal */}
+{/* {reelJob && (
+  <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm" onClick={() => setReelJob(null)}>
+    <div className="flex flex-col items-center gap-3 w-full max-w-md" onClick={e => e.stopPropagation()}>
+      <div className="flex items-center justify-between w-full">
+        <p className="text-white font-semibold text-sm truncate">{reelJob.title} @ {reelJob.company}</p>
+        <button onClick={() => setReelJob(null)} className="text-white/70 hover:text-white p-1 shrink-0">
+          <X size={20} />
+        </button> 
+      </div>
+      <video
+        src={reelJob.reelUrl}
+        controls
+        autoPlay
+        playsInline
+        style={{ maxHeight: 'calc(100dvh - 7rem)', maxWidth: '100%' }}
+        className="w-auto h-auto rounded-xl bg-black object-contain"
+      />
+    </div>
+  </div>
+)} */}
+
+<ReelPopup job={reelJob} onClose={() => setReelJob(null)} />
     </div>
   )
 }

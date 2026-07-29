@@ -13,6 +13,7 @@ import Loans from './pages/public/Loans'
 import OtherServices from './pages/public/OtherServices'
 import MoreServices from './pages/public/MoreServices'
 import Contact from './pages/public/Contact'
+import AssociateResources from './pages/public/AssociateResources'
 
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -21,6 +22,7 @@ import AdminDegrees from './pages/admin/AdminDegrees'
 import AdminOffers from './pages/admin/AdminOffers'
 import AdminLoans from './pages/admin/AdminLoans'
 import AdminOtherServices from './pages/admin/AdminOtherServices'
+import AdminResources from './pages/admin/AdminResources'
 import AdminApplications from './pages/admin/AdminApplications'
 import AdminQRCode from './pages/admin/AdminQRCode'
 import AdminSettings from './pages/admin/AdminSettings'
@@ -43,6 +45,7 @@ export default function App() {
         <Route path="/other-services" element={<OtherServices />} />
         <Route path="/more-services" element={<MoreServices />} />
         <Route path="/study-abroad" element={<StudyAbroad />} />
+        <Route path="/associate-resources" element={<AssociateResources />} />
         <Route path="/contact" element={<Contact />} />
       </Route>
 
@@ -57,6 +60,7 @@ export default function App() {
         <Route path="offers" element={<AdminOffers />} />
         <Route path="loans" element={<AdminLoans />} />
         <Route path="other-services" element={<AdminOtherServices />} />
+        <Route path="resources" element={<AdminResources />} />
         <Route path="study-abroad" element={<AdminStudyAbroad />} />
         <Route path="contacts" element={<AdminContacts />} />
         <Route path="applications" element={<AdminApplications />} />

@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, X, Upload } from 'lucide-react'
+import { Plus, Edit, Trash2, X, Upload, Film } from 'lucide-react'
 import api from '../../api'
 import toast from 'react-hot-toast'
 
 const EMPTY = { title: '', company: '', location: '', salary: '', type: 'free', category: 'General', experience: 'Fresher', description: '' }
+
+// Only these keys are ever sent back to the server — prevents stray fields
+// like _id, __v, createdAt, updatedAt, logo, reelUrl (as text) from
+// corrupting the update.
+const EDITABLE_FIELDS = ['title', 'company', 'location', 'salary', 'type', 'category', 'experience', 'description']
 
 export default function AdminJobs() {
   const [jobs, setJobs] = useState([])
@@ -11,6 +16,7 @@ export default function AdminJobs() {
   const [modal, setModal] = useState({ open: false, job: null })
   const [form, setForm] = useState(EMPTY)
   const [logo, setLogo] = useState(null)
+  const [reel, setReel] = useState(null)
   const [saving, setSaving] = useState(false)
 
   const load = () => {
@@ -19,22 +25,25 @@ export default function AdminJobs() {
   }
   useEffect(load, [])
 
-  const openAdd = () => { setForm(EMPTY); setLogo(null); setModal({ open: true, job: null }) }
-  const openEdit = (job) => { setForm({ ...job }); setLogo(null); setModal({ open: true, job }) }
+  const openAdd = () => { setForm(EMPTY); setLogo(null); setReel(null); setModal({ open: true, job: null }) }
+  const openEdit = (job) => { setForm({ ...job }); setLogo(null); setReel(null); setModal({ open: true, job }) }
 
   const handleSave = async (e) => {
     e.preventDefault()
     setSaving(true)
     try {
       const fd = new FormData()
-      Object.entries(form).forEach(([k, v]) => fd.append(k, v))
+      EDITABLE_FIELDS.forEach(k => fd.append(k, form[k] ?? ''))
       if (logo) fd.append('logo', logo)
+      if (reel) fd.append('reel', reel)
       if (modal.job) await api.put(`/jobs/${modal.job._id}`, fd)
       else await api.post('/jobs', fd)
       toast.success(modal.job ? 'Job updated' : 'Job added')
       setModal({ open: false, job: null })
       load()
-    } catch { toast.error('Failed to save') }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Failed to save')
+    }
     finally { setSaving(false) }
   }
 
@@ -66,7 +75,7 @@ export default function AdminJobs() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-theme">
-                {['Company', 'Title', 'Location', 'Salary', 'Type', 'Status', 'Actions'].map(h => (
+                {['Company', 'Title', 'Location', 'Salary', 'Type', 'Reel', 'Status', 'Actions'].map(h => (
                   <th key={h} className="text-left px-5 py-3 text-theme-muted font-medium text-xs whitespace-nowrap">{h}</th>
                 ))}
               </tr>
@@ -75,16 +84,13 @@ export default function AdminJobs() {
               {loading ? (
                 [...Array(5)].map((_, i) => (
                   <tr key={i} className="border-b border-theme">
-                    {[...Array(7)].map((_, j) => <td key={j} className="px-5 py-4"><div className="h-3 bg-theme-tertiary rounded animate-pulse" /></td>)}
+                    {[...Array(8)].map((_, j) => <td key={j} className="px-5 py-4"><div className="h-3 bg-theme-tertiary rounded animate-pulse" /></td>)}
                   </tr>
                 ))
               ) : jobs.map(job => (
                 <tr key={job._id} className="border-b border-theme hover:bg-theme-tertiary transition">
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-2">
-                      {/* {job.logo
-                        ? <img src={job.logo} alt="" className="w-7 h-7 rounded bg-white object-contain p-0.5" />
-                        : <div className="w-7 h-7 rounded bg-[#FFD700]/10 flex items-center justify-center text-[#FFD700] text-xs font-bold">{job.company[0]}</div>} */}
                       <span className="text-theme-primary font-medium whitespace-nowrap">{job.company}</span>
                     </div>
                   </td>
@@ -95,6 +101,15 @@ export default function AdminJobs() {
                     <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${job.type === 'free' ? 'bg-[#44DD88]/10 text-[#44DD88]' : 'bg-[#FFD700]/10 text-[#FFD700]'}`}>
                       {job.type}
                     </span>
+                  </td>
+                  <td className="px-5 py-3">
+                    {job.reelUrl ? (
+                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#FFD700]/10 text-[#FFD700] flex items-center gap-1 w-fit">
+                        <Film size={11} /> Yes
+                      </span>
+                    ) : (
+                      <span className="text-theme-muted text-xs">—</span>
+                    )}
                   </td>
                   <td className="px-5 py-3">
                     <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${job.isActive ? 'bg-[#44DD88]/10 text-[#44DD88]' : 'bg-red-500/10 text-red-400'}`}>
@@ -160,22 +175,24 @@ export default function AdminJobs() {
                     <option value="paid">Paid/Training</option>
                   </select>
                 </div>
-                {/* <div>
-                  <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Category</label>
-                  <input type="text" value={form.category} placeholder="e.g. IT, Finance"
-                    onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-                    className={inputClass} />
-                </div> */}
               </div>
-{/* 
+
               <div>
-                <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Company Logo</label>
+                <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Job Reel Video</label>
                 <label className="flex items-center gap-3 p-3 border border-dashed border-theme rounded-xl cursor-pointer hover:border-[#FFD700]/40 transition input-bg">
-                  <Upload size={16} className="text-theme-muted" />
-                  <span className="text-theme-secondary text-sm">{logo ? logo.name : 'Upload logo image'}</span>
-                  <input type="file" accept="image/*" onChange={e => setLogo(e.target.files[0])} className="hidden" />
+                  <Film size={16} className="text-theme-muted shrink-0" />
+                  <span className="text-theme-secondary text-sm truncate">
+                    {reel ? reel.name : (modal.job?.reelUrl ? 'Replace existing reel video' : 'Upload a reel video (mp4, mov, webm)')}
+                  </span>
+                  <input type="file" accept="video/*" onChange={e => setReel(e.target.files[0])} className="hidden" />
                 </label>
-              </div> */}
+                {modal.job?.reelUrl && !reel && (
+                  <a href={modal.job.reelUrl} target="_blank" rel="noreferrer"
+                    className="inline-block mt-1.5 text-xs text-[#FFD700] hover:underline">
+                    View current reel
+                  </a>
+                )}
+              </div>
 
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setModal({ open: false, job: null })}

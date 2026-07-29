@@ -22,13 +22,13 @@ export default function Home() {
 
         {/* Top actions */}
         <div className="flex items-center justify-between mb-10">
-          <button
-            type="button"
+          <Link
+            to="/associate-resources"
             className="flex items-center gap-2 px-4 py-2 rounded-lg border border-theme text-theme-secondary text-sm font-medium hover:text-theme-primary hover:border-theme-gold transition-all"
           >
             <Users size={16} />
             Associate Resources
-          </button>
+          </Link>
 
           <Link
             to='/admin/login'

@@ -34,6 +34,7 @@ app.use('/api/settings', require('./routes/settingsRoutes'));
 app.use('/api/loans', require('./routes/loanRoutes'));
 app.use('/api/other-services', require('./routes/otherServiceRoutes'));
 app.use('/api/study-abroad', require('./routes/studyAbroadRoutes'));
+app.use('/api/resources', require('./routes/resourceRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'SBS API running' }));
@@ -42,7 +43,7 @@ app.get('/api/health', (req, res) => res.json({ status: 'SBS API running' }));
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({ message: 'File is too large. Max size is 5MB.' });
+      return res.status(400).json({ message: 'File is too large. Max size is 95MB.' });
     }
     return res.status(400).json({ message: err.message });
   }

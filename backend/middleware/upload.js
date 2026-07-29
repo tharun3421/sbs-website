@@ -12,6 +12,16 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: (req, file) => {
     const isResume = /pdf|doc|docx/.test(file.mimetype);
+    const isVideo = /^video\//.test(file.mimetype);
+
+    if (isVideo) {
+      return {
+        folder: 'sbs-videos',
+        resource_type: 'video',
+        allowed_formats: ['mp4', 'mov', 'webm', 'avi', 'mkv'],
+      };
+    }
+
     return {
       folder: isResume ? 'sbs-resumes' : 'sbs-logos',
       resource_type: isResume ? 'raw' : 'image',
@@ -21,16 +31,18 @@ const storage = new CloudinaryStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowed = /jpeg|jpg|png|gif|webp|pdf|doc|docx/;
-  const ext = allowed.test(file.originalname.toLowerCase());
+  const allowed = /jpeg|jpg|png|gif|webp|pdf|doc|docx|mp4|mov|webm|avi|mkv|quicktime/;
+  const ext = allowed.test(file.originalname.toLowerCase()) || allowed.test(file.mimetype);
   if (ext) cb(null, true);
-  else cb(new Error('Only PDF, DOC, DOCX, or image files are allowed'));
+  else cb(new Error('Only images, PDF/DOC/DOCX, or video files are allowed'));
 };
 
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  // Cloudinary's free plan caps video uploads at 100MB; staying at 95MB
+  // leaves a safety margin against byte-rounding at the boundary.
+  limits: { fileSize: 95 * 1024 * 1024 },
 });
 
 module.exports = upload;
