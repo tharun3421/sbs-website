@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import { ChevronRight, Users, ShieldCheck, Search } from 'lucide-react'
 
 const CORE_SERVICES = [
-  { to: '/study-abroad',   label: 'Study + Work Abroad' },
   { to: '/jobs/free',      label: 'Free Jobs' },
+  { to: '/study-abroad',   label: 'Abroad Study-Visit-PR' },
   { to: '/online-degrees', label: 'Online Degrees' },
   { to: '/business-offers', label: 'Business Offers' },
+  { to: '/business-offers', label: 'Hotel Management (India)' },
+  { to: '/business-offers', label: 'Hotel Management (Mauritious)' },
 ]
 
 export default function Home() {

@@ -12,13 +12,13 @@ export default function MoreServices() {
     <div className="page-enter bg-theme-primary min-h-full flex flex-col items-center px-4 py-10">
       <section className="w-full max-w-xl">
 
-        <Link
+        {/* <Link
           to="/"
           className="flex items-center gap-1.5 text-theme-secondary text-sm font-medium mb-6 hover:text-[#FFD700] transition-colors w-fit"
         >
           <ChevronLeft size={16} />
           Back
-        </Link>
+        </Link> */}
 
         <h1 className="text-theme-primary text-lg font-semibold mb-4">More Services</h1>
 
