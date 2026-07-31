@@ -56,7 +56,7 @@ export default function OnlineDegrees() {
       <div className="max-w-6xl mx-auto px-4 py-8">
 
         {/* Heading */}
-        <div className="flex items-center gap-4 mb-8">
+        {/* <div className="flex items-center gap-4 mb-8">
           <div
             className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
             style={{ background: 'rgba(68,136,255,0.08)' }}
@@ -66,7 +66,7 @@ export default function OnlineDegrees() {
           <h1 className="text-theme-primary font-semibold text-xl leading-tight">
             Online Degrees
           </h1>
-        </div>
+        </div> */}
 
         {/* Search & Filters */}
         <div className="flex flex-col gap-4 mb-8">

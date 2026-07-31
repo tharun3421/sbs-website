@@ -20,7 +20,7 @@ export default function MoreServices() {
           Back
         </Link> */}
 
-        <h1 className="text-theme-primary text-lg font-semibold mb-4">More Services</h1>
+        {/* <h1 className="text-theme-primary text-lg font-semibold mb-4">More Services</h1> */}
 
         <ul className="border-t border-theme">
           {MORE_SERVICES.map(({ to, label }) => (

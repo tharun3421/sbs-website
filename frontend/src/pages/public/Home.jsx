@@ -7,8 +7,8 @@ const CORE_SERVICES = [
   { to: '/study-abroad',   label: 'Abroad Study-Visit-PR' },
   { to: '/online-degrees', label: 'Online Degrees' },
   { to: '/business-offers', label: 'Business Offers' },
-  { to: '/business-offers', label: 'Hotel Management (India)' },
-  { to: '/business-offers', label: 'Hotel Management (Mauritious)' },
+  // { to: '/business-offers', label: 'Hotel Management (India)' },
+  // { to: '/business-offers', label: 'Hotel Management (Mauritious)' },
 ]
 
 export default function Home() {
