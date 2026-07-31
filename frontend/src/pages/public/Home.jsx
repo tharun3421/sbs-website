@@ -1,15 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronRight, Users, ShieldCheck, Search } from 'lucide-react'
-
-const CORE_SERVICES = [
-  { to: '/jobs/free',      label: 'Free Jobs' },
-  { to: '/study-abroad',   label: 'Abroad Study-Visit-PR' },
-  { to: '/online-degrees', label: 'Online Degrees' },
-  { to: '/business-offers', label: 'Business Offers' },
-  // { to: '/business-offers', label: 'Hotel Management (India)' },
-  // { to: '/business-offers', label: 'Hotel Management (Mauritious)' },
-]
+import { CORE_SERVICES } from '../../constants/coreServices'
 
 export default function Home() {
   const [query, setQuery] = useState('')

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Plus, Edit, Trash2, X, Upload, Image as ImageIcon, Video as VideoIcon, Link2, Youtube, Instagram, Facebook, MessageCircle, ExternalLink } from 'lucide-react'
 import api from '../../api'
 import toast from 'react-hot-toast'
+import { CORE_SERVICE_LABELS } from '../../constants/coreServices'
 
-const PRESET_CATEGORIES = ['Free Jobs', 'Loans', 'Abroad Study', 'Study Materials', 'General']
 const PLATFORMS = ['YouTube', 'Instagram', 'Facebook', 'WhatsApp', 'Other']
 
 const EMPTY = { title: '', category: '', type: 'image', url: '', platform: 'YouTube', isActive: true }
@@ -18,42 +18,60 @@ const platformIcon = (platform, size = 10) => {
   }
 }
 
+// Uploads straight to Cloudinary from the browser using a short-lived
+// signature from our API, so large image/video files never pass through
+// our Vercel serverless function's ~4.5MB request body limit.
+const uploadToCloudinary = async (file, resourceType) => {
+  const { data: sig } = await api.get(`/resources/upload-signature?resource_type=${resourceType}`)
+  const fd = new FormData()
+  fd.append('file', file)
+  fd.append('api_key', sig.apiKey)
+  fd.append('timestamp', sig.timestamp)
+  fd.append('signature', sig.signature)
+  fd.append('folder', sig.folder)
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${sig.cloudName}/${resourceType}/upload`, {
+    method: 'POST',
+    body: fd,
+  })
+  const json = await res.json()
+  if (!res.ok) throw new Error(json.error?.message || 'Upload failed')
+  return json.secure_url
+}
+
 export default function AdminResources() {
   const [resources, setResources] = useState([])
-  const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState({ open: false, resource: null })
   const [form, setForm] = useState(EMPTY)
   const [file, setFile] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
 
   const load = () => {
     setLoading(true)
-    Promise.all([
-      api.get('/resources/all'),
-      api.get('/resources/categories'),
-    ])
-      .then(([resR, catR]) => {
-        setResources(resR.data)
-        setCategories(catR.data)
-      })
+    api.get('/resources/all')
+      .then(r => setResources(r.data))
       .finally(() => setLoading(false))
   }
   useEffect(load, [])
 
-  const categoryOptions = useMemo(() => {
-    const merged = new Set([...PRESET_CATEGORIES, ...categories])
-    return Array.from(merged)
-  }, [categories])
-
+  // Every service gets its own section, in CORE_SERVICES order, even if it
+  // has no resources yet. Anything left over with an old/unmatched category
+  // (from before categories were locked to services) is grouped at the end.
   const grouped = useMemo(() => {
-    const map = new Map()
+    const byCategory = new Map()
     resources.forEach(r => {
-      const key = r.category || 'General'
-      if (!map.has(key)) map.set(key, [])
-      map.get(key).push(r)
+      const key = r.category || ''
+      if (!byCategory.has(key)) byCategory.set(key, [])
+      byCategory.get(key).push(r)
     })
-    return Array.from(map.entries())
+
+    const groups = CORE_SERVICE_LABELS.map(label => [label, byCategory.get(label) || []])
+    byCategory.forEach((items, key) => {
+      if (!CORE_SERVICE_LABELS.includes(key)) groups.push([key || 'Uncategorized', items])
+    })
+    return groups
   }, [resources])
 
   const openAdd = () => { setForm(EMPTY); setFile(null); setModal({ open: true, resource: null }) }
@@ -88,24 +106,39 @@ export default function AdminResources() {
 
     setSaving(true)
     try {
-      const fd = new FormData()
-      fd.append('title', form.title)
-      fd.append('category', form.category.trim())
-      fd.append('type', form.type)
-      fd.append('isActive', form.isActive)
-      if (form.type === 'link') {
-        fd.append('url', form.url.trim())
-        fd.append('platform', form.platform)
-      } else if (file) {
-        fd.append('file', file)
+      let url = form.url.trim()
+      let platform = form.platform
+
+      if (form.type !== 'link') {
+        platform = ''
+        if (file) {
+          setUploading(true)
+          try {
+            url = await uploadToCloudinary(file, form.type)
+          } finally {
+            setUploading(false)
+          }
+        } else if (modal.resource) {
+          url = modal.resource.url
+        }
       }
-      if (modal.resource) await api.put(`/resources/${modal.resource._id}`, fd)
-      else await api.post('/resources', fd)
+
+      const payload = {
+        title: form.title,
+        category: form.category.trim(),
+        type: form.type,
+        url,
+        platform,
+        isActive: form.isActive,
+      }
+
+      if (modal.resource) await api.put(`/resources/${modal.resource._id}`, payload)
+      else await api.post('/resources', payload)
       toast.success(modal.resource ? 'Resource updated' : 'Resource added')
       setModal({ open: false, resource: null })
       load()
-    } catch {
-      toast.error('Failed to save')
+    } catch (err) {
+      toast.error(err.message || 'Failed to save')
     } finally {
       setSaving(false)
     }
@@ -125,7 +158,7 @@ export default function AdminResources() {
       <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
         <div>
           <h1 className="text-theme-primary font-black text-2xl">Associate Resources</h1>
-          <p className="text-theme-secondary text-sm">{resources.length} total resources across {grouped.length} categories</p>
+          <p className="text-theme-secondary text-sm">{resources.length} total resources across {CORE_SERVICE_LABELS.length} services</p>
         </div>
         <button onClick={openAdd}
           className="flex items-center gap-2 bg-[#FFD700] text-[#0A0A0A] font-bold px-4 py-2.5 rounded-xl hover:bg-[#E6C200] transition text-sm">
@@ -133,15 +166,12 @@ export default function AdminResources() {
         </button>
       </div>
 
+      {/* Grouped by category */}
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {[...Array(10)].map((_, i) => (
             <div key={i} className="bg-theme-card border border-theme rounded-2xl h-44 animate-pulse" />
           ))}
-        </div>
-      ) : resources.length === 0 ? (
-        <div className="bg-theme-card border border-theme rounded-2xl p-10 text-center text-theme-muted">
-          No resources yet. Click "Add Resource" to start.
         </div>
       ) : (
         <div className="space-y-8">
@@ -151,6 +181,11 @@ export default function AdminResources() {
                 {category}
                 <span className="text-theme-muted font-normal text-xs">({items.length})</span>
               </h2>
+              {items.length === 0 ? (
+                <div className="bg-theme-card border border-dashed border-theme rounded-2xl p-5 text-theme-muted text-xs">
+                  No resources yet for this service.
+                </div>
+              ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {items.map(r => (
                   <div key={r._id} className="bg-theme-card border border-theme rounded-2xl overflow-hidden flex flex-col">
@@ -188,11 +223,13 @@ export default function AdminResources() {
                   </div>
                 ))}
               </div>
+              )}
             </div>
           ))}
         </div>
       )}
 
+      {/* Modal */}
       {modal.open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
           <div className="bg-theme-secondary border border-theme rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
@@ -209,22 +246,15 @@ export default function AdminResources() {
               </div>
 
               <div>
-                <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Category</label>
-                <input type="text" list="category-options" placeholder="e.g. Free Jobs, Loans, Abroad Study"
-                  value={form.category}
+                <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Service / Category</label>
+                <select value={form.category}
                   onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-                  className={inputClass} required />
-                <datalist id="category-options">
-                  {categoryOptions.map(c => <option key={c} value={c} />)}
-                </datalist>
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {PRESET_CATEGORIES.map(c => (
-                    <button type="button" key={c} onClick={() => setForm(f => ({ ...f, category: c }))}
-                      className="text-[11px] px-2.5 py-1 rounded-full border border-theme text-theme-secondary hover:border-[#FFD700]/60 hover:text-[#FFD700] transition">
-                      {c}
-                    </button>
+                  className={inputClass} required>
+                  <option value="" disabled>Select a service</option>
+                  {CORE_SERVICE_LABELS.map(label => (
+                    <option key={label} value={label}>{label}</option>
                   ))}
-                </div>
+                </select>
               </div>
 
               <div>
@@ -294,7 +324,7 @@ export default function AdminResources() {
                 </button>
                 <button type="submit" disabled={saving}
                   className="flex-1 py-3 rounded-xl bg-[#FFD700] text-[#0A0A0A] font-bold hover:bg-[#E6C200] transition text-sm disabled:opacity-70">
-                  {saving ? 'Saving...' : modal.resource ? 'Update Resource' : 'Add Resource'}
+                  {uploading ? 'Uploading file...' : saving ? 'Saving...' : modal.resource ? 'Update Resource' : 'Add Resource'}
                 </button>
               </div>
             </form>

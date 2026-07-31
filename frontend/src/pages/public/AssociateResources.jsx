@@ -4,6 +4,7 @@ import { ArrowLeft, Download, Share2, X, Image as ImageIcon, Video as VideoIcon,
 import api from '../../api'
 import toast from 'react-hot-toast'
 import MediaPopup from '../../components/MediaPopup'
+import { CORE_SERVICE_LABELS } from '../../constants/coreServices'
 
 const platformIcon = (platform, size = 14) => {
   switch (platform) {
@@ -27,14 +28,13 @@ export default function AssociateResources() {
       .finally(() => setLoading(false))
   }, [])
 
+  // Categories on this page are exactly the site's core services, in the
+  // same order they're presented on the home page. A resource only shows
+  // up here if its category matches one of those services.
   const grouped = useMemo(() => {
-    const map = new Map()
-    resources.forEach(r => {
-      const key = r.category || 'General'
-      if (!map.has(key)) map.set(key, [])
-      map.get(key).push(r)
-    })
-    return Array.from(map.entries())
+    return CORE_SERVICE_LABELS
+      .map(label => [label, resources.filter(r => r.category === label)])
+      .filter(([, items]) => items.length > 0)
   }, [resources])
 
   useEffect(() => {
@@ -105,9 +105,9 @@ export default function AssociateResources() {
 
                   {videos.length > 0 && (
                     <div className="mb-10">
-                      {/* <h2 className="text-theme-primary font-bold text-base mb-4 flex items-center gap-2">
+                      <h2 className="text-theme-primary font-bold text-base mb-4 flex items-center gap-2">
                         <VideoIcon size={16} className="text-[#FFD700]" /> Videos
-                      </h2> */}
+                      </h2>
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         {videos.map(r => (
                           <ResourceCard key={r._id} resource={r} onPreview={setPreview} onDownload={handleDownload} onShare={handleShare} compact />
@@ -118,9 +118,9 @@ export default function AssociateResources() {
 
                   {images.length > 0 && (
                     <div className="mb-10">
-                      {/* <h2 className="text-theme-primary font-bold text-base mb-4 flex items-center gap-2">
+                      <h2 className="text-theme-primary font-bold text-base mb-4 flex items-center gap-2">
                         <ImageIcon size={16} className="text-[#FFD700]" /> Images & Posters
-                      </h2> */}
+                      </h2>
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         {images.map(r => (
                           <ResourceCard key={r._id} resource={r} onPreview={setPreview} onDownload={handleDownload} onShare={handleShare} />
@@ -131,9 +131,9 @@ export default function AssociateResources() {
 
                   {links.length > 0 && (
                     <div>
-                      {/* <h2 className="text-theme-primary font-bold text-base mb-4 flex items-center gap-2">
+                      <h2 className="text-theme-primary font-bold text-base mb-4 flex items-center gap-2">
                         <Link2 size={16} className="text-[#FFD700]" /> Social Links
-                      </h2> */}
+                      </h2>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                         {links.map(r => (
                           <a key={r._id} href={r.url} target="_blank" rel="noreferrer"
@@ -158,6 +158,7 @@ export default function AssociateResources() {
         )}
       </div>
 
+      {/* Lightbox preview */}
       <MediaPopup
         resource={preview}
         onClose={() => setPreview(null)}
@@ -173,7 +174,7 @@ function ResourceCard({ resource: r, onPreview, onDownload, onShare, compact = f
     <div className="bg-theme-card border border-theme rounded-2xl overflow-hidden flex flex-col card-hover">
       <button
         onClick={() => onPreview(r)}
-        className={`relative ${compact ? 'h-48 sm:h-56' : 'h-32 sm:h-36'} bg-black/20 w-full overflow-hidden`}
+        className={`relative ${compact ? 'h-28 sm:h-32' : 'h-32 sm:h-36'} bg-black/20 w-full overflow-hidden`}
       >
         {r.type === 'video' ? (
           <video src={r.url} className="w-full h-full object-cover" muted />
@@ -185,17 +186,17 @@ function ResourceCard({ resource: r, onPreview, onDownload, onShare, compact = f
           {r.type}
         </span>
       </button>
-      <div className={`${compact ? 'p-2 gap-1.5' : 'p-3 gap-2'} flex flex-col flex-1`}>
-        <p className={`text-theme-primary font-semibold ${compact ? 'text-[11px]' : 'text-xs'} line-clamp-2`}>{r.title}</p>
+      <div className={`${compact ? 'p-2.5 gap-2' : 'p-4 gap-3'} flex flex-col flex-1`}>
+        <p className={`text-theme-primary font-semibold ${compact ? 'text-xs' : 'text-sm'} line-clamp-2`}>{r.title}</p>
         <div className="flex gap-1.5 mt-auto">
           <button onClick={() => onDownload(r)}
-            className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-[#FFD700] text-[#0A0A0A] font-bold hover:bg-[#FFE44D] transition ${compact ? 'py-1.5 text-[10px]' : 'py-2 text-[11px]'}`}>
-            <Download size={compact ? 10 : 12} /> Download
+            className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-[#FFD700] text-[#0A0A0A] font-bold hover:bg-[#FFE44D] transition ${compact ? 'py-1.5 text-[11px]' : 'py-2 text-xs'}`}>
+            <Download size={compact ? 11 : 13} /> Download
           </button>
           <button onClick={() => onShare(r)}
             title="Share"
-            className={`flex items-center justify-center rounded-lg border border-theme text-theme-secondary font-semibold hover:text-theme-primary hover:border-theme-gold transition ${compact ? 'px-2 py-1.5' : 'px-2.5 py-2 text-[11px]'}`}>
-            <Share2 size={compact ? 10 : 12} />
+            className={`flex items-center justify-center rounded-lg border border-theme text-theme-secondary font-semibold hover:text-theme-primary hover:border-theme-gold transition ${compact ? 'px-2 py-1.5' : 'px-3 py-2 text-xs'}`}>
+            <Share2 size={compact ? 11 : 13} />
           </button>
         </div>
       </div>
