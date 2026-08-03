@@ -5,9 +5,9 @@ const applicationSchema = new mongoose.Schema({
   mobile:    { type: String, required: true },
   resumeUrl: { type: String, default: '' },
   refId:     { type: mongoose.Schema.Types.ObjectId, refPath: 'refModel' },
-  refModel:  { type: String, enum: ['Job', 'Degree', 'Offer', 'LoanCategory', 'OtherService'] },
+  refModel:  { type: String, enum: ['Job', 'Degree', 'Offer', 'LoanCategory', 'OtherService', 'HotelManagement'] },
   refTitle:  { type: String, default: '' },
-  type:      { type: String, enum: ['job', 'degree', 'offer', 'loan', 'other_service'], required: true },
+  type:      { type: String, enum: ['job', 'degree', 'offer', 'loan', 'other_service', 'hotel_management'], required: true },
   status:    { type: String, enum: ['pending', 'reviewed', 'shortlisted', 'rejected'], default: 'pending' },
 }, { timestamps: true });
 

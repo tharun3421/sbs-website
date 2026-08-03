@@ -10,7 +10,7 @@ export default function PopupForm({ open, onClose, type, jobType, refId, refTitl
   const [resume, setResume] = useState(null)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const isJob = type === 'job'
+  const isJob = type === 'job' || type === 'hotel_management'
   const isPaid = jobType === 'paid'
 
   useEffect(() => {
@@ -173,7 +173,7 @@ export default function PopupForm({ open, onClose, type, jobType, refId, refTitl
 
               {isJob && !isPaid && (
                 <div>
-                  <label className={labelCls}><Upload size={12} /> Resume (Optional, max 5MB)</label>
+                  <label className={labelCls}><Upload size={12} /> {type === 'hotel_management' ? 'ID Proof / Documents (Optional, max 5MB)' : 'Resume (Optional, max 5MB)'}</label>
                   <label className="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-theme rounded-xl cursor-pointer hover:border-[#FFD700]/50 transition input-bg">
                     <Upload size={20} className="text-theme-muted mb-2" />
                     <span className="text-theme-muted text-xs px-4 text-center truncate max-w-full">

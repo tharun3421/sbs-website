@@ -35,6 +35,7 @@ app.use('/api/loans', require('./routes/loanRoutes'));
 app.use('/api/other-services', require('./routes/otherServiceRoutes'));
 app.use('/api/study-abroad', require('./routes/studyAbroadRoutes'));
 app.use('/api/resources', require('./routes/resourceRoutes'));
+app.use('/api/hotel-management', require('./routes/hotelManagementRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'SBS API running' }));

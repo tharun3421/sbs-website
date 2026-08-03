@@ -30,6 +30,7 @@ import StudyAbroad from './pages/public/StudyAbroad'
 import HotelManagementIndia from './pages/public/HotelManagementIndia'
 import HotelManagementMauritius from './pages/public/HotelManagementMauritius'
 import AdminStudyAbroad from './pages/admin/AdminStudyAbroad'
+import AdminHotelManagement from './pages/admin/AdminHotelManagement'
 import AdminContacts from './pages/admin/AdminContacts'
 
 
@@ -66,6 +67,7 @@ export default function App() {
         <Route path="other-services" element={<AdminOtherServices />} />
         <Route path="resources" element={<AdminResources />} />
         <Route path="study-abroad" element={<AdminStudyAbroad />} />
+        <Route path="hotel-management" element={<AdminHotelManagement />} />
         <Route path="contacts" element={<AdminContacts />} />
         <Route path="applications" element={<AdminApplications />} />
         <Route path="qr" element={<AdminQRCode />} />
