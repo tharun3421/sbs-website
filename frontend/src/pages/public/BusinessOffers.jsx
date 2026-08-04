@@ -26,20 +26,6 @@ export default function BusinessOffers() {
   return (
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
-
-        {/* Heading */}
-        <div className="flex items-center gap-4 mb-8">
-          <div
-            className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(255,215,0,0.08)' }}
-          >
-            <Tag size={22} strokeWidth={1.5} style={{ color: '#FFD700' }} />
-          </div>
-          <h1 className="text-theme-primary font-semibold text-xl leading-tight">
-            Business Offers
-          </h1>
-        </div>
-
         <div className="relative mb-8">
           <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
           <input type="text" placeholder="Search offers..."

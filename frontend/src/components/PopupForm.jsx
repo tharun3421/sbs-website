@@ -60,7 +60,7 @@ export default function PopupForm({ open, onClose, type, jobType, refId, refTitl
         const fd = new FormData()
         fd.append('name', form.name)
         fd.append('mobile', form.mobile)
-        fd.append('refId', refId)
+        if (refId) fd.append('refId', refId)
         fd.append('refTitle', refTitle)
         fd.append('type', type)
         if (resume) fd.append('resume', resume)

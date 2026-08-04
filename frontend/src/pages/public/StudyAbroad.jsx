@@ -24,20 +24,6 @@ export default function StudyAbroad() {
   return (
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-xl mx-auto px-4 py-8">
-
-        {/* Heading */}
-        <div className="flex items-center gap-4 mb-6">
-          <div
-            className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(34,197,255,0.08)' }}
-          >
-            <Plane size={22} strokeWidth={1.5} style={{ color: '#22C5FF' }} />
-          </div>
-          <div>
-            <h1 className="text-theme-primary font-semibold text-xl">Study + Work Abroad</h1>
-          </div>
-        </div>
-
         {/* Listings */}
         {loading ? (
           <div className="space-y-3">
