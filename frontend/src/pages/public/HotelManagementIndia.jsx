@@ -127,7 +127,7 @@ export default function HotelManagementIndia() {
         </p>
         <p className="text-center text-gray-700 text-sm md:text-base mb-4 leading-relaxed">
           10<sup>th</sup> / Inter Pass or Fail<br />
-          all are eligible for hotel Management Diploma.
+          all are eligible for Hotel Management Diploma.
         </p>
 
         <p className="text-center font-semibold text-sm md:text-base mb-8 leading-relaxed" style={{ color: RED }}>
