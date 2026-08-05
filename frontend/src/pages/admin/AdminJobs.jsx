@@ -98,7 +98,11 @@ export default function AdminJobs() {
                   <td className="px-5 py-3 text-theme-secondary whitespace-nowrap">{job.location}</td>
                   <td className="px-5 py-3 text-theme-secondary whitespace-nowrap">{job.salary}</td>
                   <td className="px-5 py-3">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${job.type === 'free' ? 'bg-[#44DD88]/10 text-[#44DD88]' : 'bg-[#FFD700]/10 text-[#FFD700]'}`}>
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                      job.type === 'free' ? 'bg-[#44DD88]/10 text-[#44DD88]'
+                      : job.type === 'tally' ? 'bg-[#2DD4BF]/10 text-[#2DD4BF]'
+                      : 'bg-[#FFD700]/10 text-[#FFD700]'
+                    }`}>
                       {job.type}
                     </span>
                   </td>
@@ -173,6 +177,7 @@ export default function AdminJobs() {
                     className={inputClass}>
                     <option value="free">Free</option>
                     <option value="paid">Paid/Training</option>
+                    <option value="tally">Tally</option>
                   </select>
                 </div>
               </div>

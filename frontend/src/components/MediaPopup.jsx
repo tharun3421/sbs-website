@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { X, Download, Share2 } from 'lucide-react'
 
 export default function MediaPopup({ resource, onClose, onDownload, onShare }) {
@@ -21,19 +22,27 @@ export default function MediaPopup({ resource, onClose, onDownload, onShare }) {
 
   if (!resource) return null
 
-  return (
+  // Rendered through a portal straight to <body> so this overlay is always
+  // positioned against the real viewport — never against an animated/
+  // transformed ancestor (e.g. the page's .page-enter wrapper), which is
+  // what was previously squeezing the modal into the content area instead
+  // of covering the full screen.
+  return createPortal(
     <div
-      className="fixed inset-0 z-[999] bg-black/90 backdrop-blur-sm flex items-center justify-center"
-      style={{ width: '100vw', height: '90dvh' }}
+      className="fixed inset-0 z-[999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
       onClick={onClose}
     >
-      <button className="absolute top-5 right-5 text-white/80 hover:text-white p-2 z-10" onClick={onClose} aria-label="Close preview">
-        <X size={22} />
+      <button
+        className="fixed top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 flex items-center justify-center rounded-full bg-black/60 border border-white/20 text-white hover:bg-black/80 hover:border-white/40 transition z-[1000]"
+        onClick={onClose}
+        aria-label="Close preview"
+      >
+        <X size={20} />
       </button>
 
       <div
-        className="flex flex-col items-center"
-        style={{ width: 'min(82vw, 620px)', maxHeight: '80dvh' }}
+        className="flex flex-col items-center w-full my-auto"
+        style={{ maxWidth: 'min(92vw, 620px)' }}
         onClick={(e) => e.stopPropagation()}
       >
         {resource.type === 'video' ? (
@@ -42,21 +51,21 @@ export default function MediaPopup({ resource, onClose, onDownload, onShare }) {
             controls
             autoPlay
             playsInline
-            style={{ width: '100%', maxHeight: '72dvh', objectFit: 'contain' }}
+            style={{ width: '100%', maxHeight: '70dvh', objectFit: 'contain' }}
             className="rounded-xl bg-black"
           />
         ) : (
           <img
             src={resource.url}
             alt={resource.title}
-            style={{ width: '100%', maxHeight: '72dvh', objectFit: 'contain' }}
+            style={{ width: '100%', maxHeight: '70dvh', objectFit: 'contain' }}
             className="rounded-xl"
           />
         )}
 
-        <p className="text-white text-sm font-medium text-center mt-3 line-clamp-1">{resource.title}</p>
+        <p className="text-white text-sm font-medium text-center mt-3 line-clamp-1 px-2">{resource.title}</p>
 
-        <div className="flex justify-center gap-3 mt-3">
+        <div className="flex justify-center gap-3 mt-3 pb-1">
           <button onClick={() => onDownload(resource)} className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#FFD700] text-[#0A0A0A] text-xs font-bold hover:bg-[#FFE44D] transition">
             <Download size={13} /> Download
           </button>
@@ -65,6 +74,7 @@ export default function MediaPopup({ resource, onClose, onDownload, onShare }) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }

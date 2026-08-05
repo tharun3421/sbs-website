@@ -7,7 +7,7 @@ const jobSchema = new mongoose.Schema({
   reelUrl: { type: String, default: '' },
   location: { type: String, required: true },
   salary: { type: String, default: 'Negotiable' },
-  type: { type: String, enum: ['free', 'paid'], default: 'free' },
+  type: { type: String, enum: ['free', 'paid', 'tally'], default: 'free' },
   category: { type: String, default: 'General' },
   description: { type: String, default: '' },
   experience: { type: String, default: 'Fresher' },

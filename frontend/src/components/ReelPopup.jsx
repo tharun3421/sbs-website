@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { X } from 'lucide-react'
 
 export default function ReelPopup({ job, onClose }) {
@@ -21,35 +22,40 @@ export default function ReelPopup({ job, onClose }) {
 
   if (!job) return null
 
-  return (
+  // Portal to <body> — keeps this truly fixed to the viewport regardless of
+  // any transformed/animated ancestor (e.g. the page's .page-enter wrapper).
+  return createPortal(
     <div
-      className="fixed inset-0 z-[999] bg-black/90 backdrop-blur-sm flex items-center justify-center"
-      style={{ width: '100vw', height: '90dvh' }}
+      className="fixed inset-0 z-[999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
       onClick={onClose}
     >
+      <button
+        className="fixed top-4 right-4 sm:top-5 sm:right-5 w-10 h-10 flex items-center justify-center rounded-full bg-black/60 border border-white/20 text-white hover:bg-black/80 hover:border-white/40 transition z-[1000]"
+        onClick={onClose}
+        aria-label="Close video"
+      >
+        <X size={20} />
+      </button>
+
       <div
-        className="relative flex flex-col items-center"
-        style={{ width: 'min(92vw, 420px)', maxHeight: '90dvh' }}
+        className="relative flex flex-col items-center w-full my-auto"
+        style={{ maxWidth: 'min(92vw, 420px)' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between w-full mb-3">
-          <p className="text-white font-semibold text-sm truncate pr-2">
-            {job.title} @ {job.company}
-          </p>
-          <button onClick={onClose} className="text-white/70 hover:text-white p-1 shrink-0" aria-label="Close video">
-            <X size={20} />
-          </button>
-        </div>
+        <p className="text-white font-semibold text-sm text-center mb-3 px-2 line-clamp-1">
+          {job.title} @ {job.company}
+        </p>
 
         <video
           src={job.reelUrl}
           controls
           autoPlay
           playsInline
-          style={{ width: '100%', maxHeight: '80dvh', objectFit: 'contain' }}
+          style={{ width: '100%', maxHeight: '72dvh', objectFit: 'contain' }}
           className="rounded-xl bg-black"
         />
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }

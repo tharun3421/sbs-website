@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Briefcase, GraduationCap, ArrowLeft } from 'lucide-react'
+import { Briefcase, GraduationCap, Calculator, ArrowLeft } from 'lucide-react'
 
 const OPTIONS = [
   {
@@ -17,6 +17,14 @@ const OPTIONS = [
     icon: GraduationCap,
     accent: '#FFD700',
     accentBg: 'rgba(255,215,0,0.08)',
+  },
+  {
+    to: '/jobs/tally',
+    label: 'Tally Jobs',
+    subtitle: 'Accounts & Finance',
+    icon: Calculator,
+    accent: '#2DD4BF',
+    accentBg: 'rgba(45,212,191,0.08)',
   },
 ]
 

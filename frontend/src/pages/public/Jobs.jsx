@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight, ArrowLeft, GraduationCap, Play, X } from 'lucide-react'
+import { Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight, ArrowLeft, GraduationCap, Play, X, Calculator } from 'lucide-react'
 import api from '../../api'
 import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
@@ -23,6 +23,15 @@ const TYPE_CONFIG = {
     icon: GraduationCap,
     applyLabel: 'Enquire Now',
     hoverColor: '#E6C200',
+  },
+  tally: {
+    label: 'Tally Jobs',
+    subtitle: 'Accounts & Finance',
+    color: '#2DD4BF',
+    accentBg: 'rgba(45,212,191,0.08)',
+    icon: Calculator,
+    applyLabel: 'Apply Now',
+    hoverColor: '#20B8A6',
   },
 }
 
