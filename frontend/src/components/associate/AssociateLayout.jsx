@@ -1,21 +1,12 @@
 import React, { useState } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Briefcase, GraduationCap, Tag, FileText, QrCode, Settings, LogOut, Menu, X, ChevronRight, Sun, Moon, ExternalLink, Landmark, LayoutGrid, Plane, Phone, Users, Users2, Hotel } from 'lucide-react'
+import { LayoutDashboard, Users2, KeyRound, LogOut, Menu, X, ChevronRight, Sun, Moon, ExternalLink } from 'lucide-react'
+import { associateApi } from '../../api'
+
 const NAV = [
-  { to: '/admin',                  label: 'Dashboard',      icon: LayoutDashboard, exact: true },
-  { to: '/admin/jobs',             label: 'Jobs',           icon: Briefcase },
-  { to: '/admin/degrees',          label: 'Online Degrees', icon: GraduationCap },
-  { to: '/admin/offers',           label: 'Business Offers',icon: Tag },
-  { to: '/admin/loans',            label: 'Loans',          icon: Landmark },
-  { to: '/admin/other-services',   label: 'Other Services', icon: LayoutGrid },
-  { to: '/admin/study-abroad',     label: 'Study Abroad',   icon: Plane },
-  { to: '/admin/hotel-management', label: 'Hotel Mgmt',     icon: Hotel },
-  { to: '/admin/resources',        label: 'Assoc. Resources', icon: Users },
-  { to: '/admin/associates',       label: 'Associates',     icon: Users2 },
-  { to: '/admin/contacts',         label: 'Contacts',       icon: Phone },
-  { to: '/admin/applications',     label: 'Applications',   icon: FileText },
-  { to: '/admin/qr',               label: 'QR Generator',   icon: QrCode },
-  { to: '/admin/settings',         label: 'Settings',       icon: Settings },
+  { to: '/associate', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { to: '/associate/leads', label: 'My Leads', icon: Users2 },
+  { to: '/associate/change-password', label: 'Change Password', icon: KeyRound },
 ]
 
 function useTheme() {
@@ -30,33 +21,36 @@ function useTheme() {
   return [dark, toggle]
 }
 
-export default function AdminLayout() {
-  const location  = useLocation()
-  const navigate  = useNavigate()
+export default function AssociateLayout() {
+  const location = useLocation()
+  const navigate = useNavigate()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [dark, toggleDark] = useTheme()
 
+  let associate = null
+  try { associate = JSON.parse(localStorage.getItem('sbs_associate') || 'null') } catch {}
+
   const isActive = (to, exact) => exact ? location.pathname === to : location.pathname.startsWith(to)
 
-  const handleLogout = () => {
-    localStorage.removeItem('sbs_token')
-    navigate('/admin/login')
+  const handleLogout = async () => {
+    try { await associateApi.post('/associate/logout') } catch {}
+    localStorage.removeItem('sbs_associate_token')
+    localStorage.removeItem('sbs_associate')
+    navigate('/associate/login')
   }
 
   const SidebarContent = ({ mobile = false }) => (
     <div className="flex flex-col h-full bg-theme-secondary border-r border-theme">
-      {/* Header */}
       <div className="p-5 border-b border-theme flex items-center justify-between">
         <Link to="/" onClick={() => mobile && setMobileOpen(false)} className="hover:opacity-80 transition">
           <div className="bg-[#FFD700] text-[#0A0A0A] font-black text-base px-3 py-1 rounded-lg inline-block">SBS</div>
-          <p className="text-theme-muted text-xs mt-1">Admin Portal</p>
+          <p className="text-theme-muted text-xs mt-1">Associate Portal</p>
         </Link>
         {mobile && (
           <button onClick={() => setMobileOpen(false)} className="text-theme-muted hover:text-theme-primary p-1"><X size={18} /></button>
         )}
       </div>
 
-      {/* Nav */}
       <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
         {NAV.map(({ to, label, icon: Icon, exact }) => {
           const active = isActive(to, exact)
@@ -73,22 +67,19 @@ export default function AdminLayout() {
         })}
       </nav>
 
-      {/* Footer */}
       <div className="p-3 border-t border-theme space-y-1">
-        {/* View public site */}
         <Link to="/" onClick={() => mobile && setMobileOpen(false)}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-theme-secondary hover:bg-theme-tertiary hover:text-theme-primary transition">
           <ExternalLink size={15} /> View Site
         </Link>
-        {/* Theme toggle */}
         <button onClick={toggleDark}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-theme-secondary hover:bg-theme-tertiary hover:text-theme-primary transition">
           {dark ? <Sun size={15} className="text-[#FFD700]" /> : <Moon size={15} className="text-[#4488FF]" />}
           {dark ? 'Light Mode' : 'Dark Mode'}
         </button>
         <div className="px-3 py-2">
-          <p className="text-theme-primary text-xs font-medium">{localStorage.getItem('sbs_email') || 'Admin'}</p>
-          <p className="text-theme-muted text-xs">Administrator</p>
+          <p className="text-theme-primary text-xs font-medium">{associate?.name || 'Associate'}</p>
+          <p className="text-theme-muted text-xs">ID: {associate?.associateId || '—'}</p>
         </div>
         <button onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-theme-secondary hover:bg-red-500/10 hover:text-red-400 transition">
@@ -100,12 +91,10 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-theme-primary flex">
-      {/* Desktop sidebar */}
       <div className="hidden md:flex flex-col w-56 flex-shrink-0 sticky top-0 h-screen">
         <SidebarContent />
       </div>
 
-      {/* Mobile sidebar */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden">
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
@@ -113,12 +102,10 @@ export default function AdminLayout() {
         </div>
       )}
 
-      {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile topbar */}
         <div className="md:hidden flex items-center gap-3 p-4 border-b border-theme bg-theme-secondary">
           <button onClick={() => setMobileOpen(true)} className="text-theme-secondary hover:text-theme-primary p-1"><Menu size={20} /></button>
-          <Link to="/" className="bg-[#FFD700] text-[#0A0A0A] font-black text-sm px-2.5 py-0.5 rounded-lg">SBS Admin</Link>
+          <Link to="/" className="bg-[#FFD700] text-[#0A0A0A] font-black text-sm px-2.5 py-0.5 rounded-lg">SBS Associate</Link>
           <div className="ml-auto">
             <button onClick={toggleDark} className="text-theme-secondary hover:text-[#FFD700] p-1.5 rounded-lg hover:bg-theme-tertiary transition">
               {dark ? <Sun size={17} /> : <Moon size={17} />}

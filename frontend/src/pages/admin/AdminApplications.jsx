@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Download, Filter, FileText, ExternalLink } from 'lucide-react'
+import { Download, Filter, FileText, ExternalLink, Trash2 } from 'lucide-react'
 import api from '../../api'
 import toast from 'react-hot-toast'
 
@@ -39,6 +39,15 @@ export default function AdminApplications() {
       setApps(prev => prev.map(a => a._id === id ? { ...a, status } : a))
       toast.success('Status updated')
     } catch { toast.error('Failed to update') }
+  }
+
+  const deleteApp = async (id) => {
+    if (!confirm('Delete this record? This cannot be undone.')) return
+    try {
+      await api.delete(`/applications/${id}`)
+      setApps(prev => prev.filter(a => a._id !== id))
+      toast.success('Record deleted')
+    } catch { toast.error('Failed to delete') }
   }
 
   const exportCSV = async () => {
@@ -100,12 +109,12 @@ export default function AdminApplications() {
 
       {/* Table */}
       <div className="bg-theme-card border border-theme rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto overflow-y-auto max-h-[65vh]">
           <table className="w-full text-sm">
-            <thead>
+            <thead className="sticky top-0 z-10 bg-theme-card">
               <tr className="border-b border-theme">
-                {['Name', 'Mobile', 'Type', 'Applied For', 'Resume', 'Status', 'Date'].map(h => (
-                  <th key={h} className="text-left px-5 py-3 text-theme-muted font-medium text-xs whitespace-nowrap">{h}</th>
+                {['Name', 'Mobile', 'Type', 'Applied For', 'Resume', 'Status', 'Date', 'Actions'].map(h => (
+                  <th key={h} className="text-left px-5 py-3 text-theme-muted font-medium text-xs whitespace-nowrap bg-theme-card">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -113,7 +122,7 @@ export default function AdminApplications() {
               {loading ? (
                 [...Array(6)].map((_, i) => (
                   <tr key={i} className="border-b border-theme">
-                    {[...Array(7)].map((_, j) => <td key={j} className="px-5 py-4"><div className="h-3 bg-theme-tertiary rounded animate-pulse" /></td>)}
+                    {[...Array(8)].map((_, j) => <td key={j} className="px-5 py-4"><div className="h-3 bg-theme-tertiary rounded animate-pulse" /></td>)}
                   </tr>
                 ))
               ) : apps.map(app => (
@@ -150,6 +159,13 @@ export default function AdminApplications() {
                   </td>
                   <td className="px-5 py-3 text-theme-muted text-xs whitespace-nowrap">
                     {new Date(app.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                  </td>
+                  <td className="px-5 py-3">
+                    <button onClick={() => deleteApp(app._id)}
+                      className="p-1.5 rounded-lg bg-theme-tertiary hover:bg-red-500/10 hover:text-red-400 text-theme-muted transition"
+                      title="Delete record">
+                      <Trash2 size={13} />
+                    </button>
                   </td>
                 </tr>
               ))}

@@ -5,6 +5,8 @@ const Offer = require('../models/Offer');
 const Application = require('../models/Application');
 const LoanCategory = require('../models/LoanCategory');
 const OtherService = require('../models/OtherService');
+const Associate = require('../models/Associate');
+const Lead = require('../models/Lead');
 
 exports.login = async (req, res) => {
   try {
@@ -38,5 +40,31 @@ exports.getDashboardStats = async (req, res) => {
     res.json({ totalJobs, totalDegrees, totalOffers, totalApplications, todayApplications, recentApps, totalLoans, totalOtherServices });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getAssociates = async (req, res) => {
+  try {
+    const associates = await Associate.find().sort({ createdAt: -1 }).select('-password');
+    const leadCounts = await Lead.aggregate([
+      { $group: { _id: '$associate', count: { $sum: 1 } } },
+    ]);
+    const countMap = Object.fromEntries(leadCounts.map(c => [String(c._id), c.count]));
+    const result = associates.map(a => ({ ...a.toObject(), leadCount: countMap[String(a._id)] || 0 }));
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.toggleAssociateActive = async (req, res) => {
+  try {
+    const associate = await Associate.findById(req.params.id);
+    if (!associate) return res.status(404).json({ message: 'Associate not found' });
+    associate.isActive = !associate.isActive;
+    await associate.save();
+    res.json({ isActive: associate.isActive });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
   }
 };

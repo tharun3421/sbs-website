@@ -1,0 +1,81 @@
+import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { Lock, User, Eye, EyeOff } from 'lucide-react'
+import { associateApi } from '../../api'
+import toast from 'react-hot-toast'
+
+export default function AssociateLogin() {
+  const [form, setForm] = useState({ associateId: '', password: '' })
+  const [show, setShow] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); setLoading(true)
+    try {
+      const res = await associateApi.post('/associate/login', form)
+      localStorage.setItem('sbs_associate_token', res.data.token)
+      localStorage.setItem('sbs_associate', JSON.stringify(res.data.associate))
+      toast.success(`Welcome back, ${res.data.associate.name}!`)
+      navigate('/associate')
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Invalid credentials')
+    } finally { setLoading(false) }
+  }
+
+  return (
+    <div className="min-h-screen bg-theme-primary flex items-center justify-center p-4">
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-8">
+          <Link to="/" className="inline-block hover:opacity-80 transition">
+            <div className="bg-[#FFD700] text-[#0A0A0A] font-black text-2xl px-5 py-2 rounded-xl inline-block mb-3">SBS</div>
+          </Link>
+          <h1 className="text-theme-primary font-bold text-xl">Associate Login</h1>
+          <p className="text-theme-secondary text-sm mt-1">Sign in to manage your leads</p>
+        </div>
+
+        <div className="bg-theme-card border border-theme rounded-2xl p-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="text-theme-secondary text-xs font-semibold uppercase tracking-wide mb-2 block">Associate ID / Mobile Number</label>
+              <div className="relative">
+                <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
+                <input type="text" placeholder="10-digit mobile number" value={form.associateId}
+                  onChange={e => setForm(f => ({ ...f, associateId: e.target.value }))}
+                  className="w-full input-bg border border-theme rounded-xl pl-10 pr-4 py-3 text-theme-primary text-sm placeholder-theme-muted focus:border-[#FFD700]/60" required />
+              </div>
+            </div>
+            <div>
+              <label className="text-theme-secondary text-xs font-semibold uppercase tracking-wide mb-2 block">Password</label>
+              <div className="relative">
+                <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
+                <input type={show ? 'text' : 'password'} placeholder="••••••••" value={form.password}
+                  onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+                  className="w-full input-bg border border-theme rounded-xl pl-10 pr-10 py-3 text-theme-primary text-sm placeholder-theme-muted focus:border-[#FFD700]/60" required />
+                <button type="button" onClick={() => setShow(s => !s)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-theme-muted hover:text-theme-secondary">
+                  {show ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+            </div>
+            <button type="submit" disabled={loading}
+              className="w-full bg-[#FFD700] text-[#0A0A0A] font-bold py-3.5 rounded-xl hover:bg-[#E6C200] transition mt-2 disabled:opacity-70">
+              {loading ? 'Signing in...' : 'Sign In'}
+            </button>
+            <div className='flex items-center justify-center'>
+              <p className='text-[11px] capitalize text-theme-muted'>Note: Use your registered mobile number as your password.</p>
+            </div>
+          </form>
+        </div>
+        <p className="text-center mt-4 text-theme-secondary text-xs">
+          New associate? <Link to="/associate/register" className="text-[#FFD700] hover:underline">Register here</Link>
+        </p>
+        <p className="text-center mt-2">
+          <Link to="/" className="text-theme-secondary text-xs hover:text-[#FFD700] transition">
+            ← Back to website
+          </Link>
+        </p>
+      </div>
+    </div>
+  )
+}

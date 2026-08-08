@@ -18,10 +18,20 @@ const platformIcon = (platform, size = 10) => {
   }
 }
 
+// Cloudinary free/basic plans typically cap video uploads around 100MB and
+// images around 10MB — check client-side so users get an immediate, clear
+// message instead of a confusing mid-upload connection reset.
+const MAX_SIZE_MB = { video: 100, image: 10 }
+
 // Uploads straight to Cloudinary from the browser using a short-lived
 // signature from our API, so large image/video files never pass through
 // our Vercel serverless function's ~4.5MB request body limit.
-const uploadToCloudinary = async (file, resourceType) => {
+const uploadToCloudinary = async (file, resourceType, attempt = 1) => {
+  const maxMb = MAX_SIZE_MB[resourceType] || 10
+  if (file.size > maxMb * 1024 * 1024) {
+    throw new Error(`File is too large (${(file.size / 1024 / 1024).toFixed(1)}MB). Max allowed is ${maxMb}MB for ${resourceType}s.`)
+  }
+
   const { data: sig } = await api.get(`/resources/upload-signature?resource_type=${resourceType}`)
   const fd = new FormData()
   fd.append('file', file)
@@ -30,10 +40,22 @@ const uploadToCloudinary = async (file, resourceType) => {
   fd.append('signature', sig.signature)
   fd.append('folder', sig.folder)
 
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${sig.cloudName}/${resourceType}/upload`, {
-    method: 'POST',
-    body: fd,
-  })
+  let res
+  try {
+    res = await fetch(`https://api.cloudinary.com/v1_1/${sig.cloudName}/${resourceType}/upload`, {
+      method: 'POST',
+      body: fd,
+    })
+  } catch (networkErr) {
+    // fetch() rejects (rather than resolving with a non-ok response) on
+    // connection-level failures like ERR_CONNECTION_RESET, DNS errors, etc.
+    if (attempt < 2) {
+      await new Promise(r => setTimeout(r, 1500))
+      return uploadToCloudinary(file, resourceType, attempt + 1)
+    }
+    throw new Error('Upload connection was interrupted. This usually happens with large files on an unstable connection — check your internet and try again, or try a smaller file.')
+  }
+
   const json = await res.json()
   if (!res.ok) throw new Error(json.error?.message || 'Upload failed')
   return json.secure_url

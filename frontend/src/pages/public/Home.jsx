@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronRight, Users, ShieldCheck, Search } from 'lucide-react'
+import { ChevronRight, Users, ShieldCheck, Search, UserPlus, LogIn } from 'lucide-react'
 import { CORE_SERVICES } from '../../constants/coreServices'
 
 export default function Home() {
@@ -31,6 +31,30 @@ export default function Home() {
             <ShieldCheck size={16} />
             Admin Login
           </Link>
+        </div>
+
+        {/* Associate Portal */}
+        <div className="bg-theme-card border border-theme rounded-2xl p-5 mb-6">
+          <p className="text-theme-primary font-bold text-sm mb-1">Associate Portal</p>
+          <p className="text-theme-secondary text-xs mb-4">
+            Register as an SBS associate to manage your own leads, track their progress, and grow your business with us.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-2.5">
+            <Link
+              to="/associate/register"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#FFD700] text-[#0A0A0A] text-sm font-semibold hover:bg-[#FFE44D] transition-all"
+            >
+              <UserPlus size={16} />
+              Associate Registration
+            </Link>
+            <Link
+              to="/associate/login"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-theme text-theme-secondary text-sm font-medium hover:text-theme-primary hover:border-theme-gold transition-all"
+            >
+              <LogIn size={16} />
+              Associate Login
+            </Link>
+          </div>
         </div>
 
         {/* Search */}
