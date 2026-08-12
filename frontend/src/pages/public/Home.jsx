@@ -18,7 +18,7 @@ export default function Home() {
         <div className="flex items-center justify-between mb-10">
           <Link
             to="/associate-resources"
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-theme text-theme-secondary text-sm font-medium hover:text-theme-primary hover:border-theme-gold transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-theme text-[#FFD700] text-sm font-medium hover:text-theme-primary hover:border-theme-gold transition-all"
           >
             <Users size={16} />
             Associate Resources
@@ -35,7 +35,7 @@ export default function Home() {
 
         {/* Associate Portal */}
         <div className="bg-theme-card border border-theme rounded-2xl p-5 mb-6">
-          <p className="text-theme-primary font-bold text-sm mb-1">Associate Portal</p>
+          <p className="text-[#FFD700] font-bold text-sm mb-1">Associate Portal</p>
           <p className="text-theme-secondary text-xs mb-4">
             Register as an SBS associate to manage your own leads, track their progress, and grow your business with us.
           </p>
@@ -49,7 +49,7 @@ export default function Home() {
             </Link>
             <Link
               to="/associate/login"
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-theme text-theme-secondary text-sm font-medium hover:text-theme-primary hover:border-theme-gold transition-all"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-theme text-[#FFD700] text-sm font-medium hover:text-theme-primary hover:border-theme-gold transition-all"
             >
               <LogIn size={16} />
               Associate Login

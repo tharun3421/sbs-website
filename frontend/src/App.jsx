@@ -61,6 +61,8 @@ export default function App() {
         <Route path="/hotel-management/mauritius" element={<HotelManagementMauritius />} />
         <Route path="/associate-resources" element={<AssociateResources />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/associate/login" element={<AssociateLogin />} />
+      <Route path="/associate/register" element={<AssociateRegister />} />
       </Route>
 
       {/* Admin auth */}
@@ -85,8 +87,7 @@ export default function App() {
       </Route>
 
       {/* Associate auth */}
-      <Route path="/associate/login" element={<AssociateLogin />} />
-      <Route path="/associate/register" element={<AssociateRegister />} />
+      
 
       {/* Associate protected */}
       <Route path="/associate" element={<AssociateRoute><AssociateLayout /></AssociateRoute>}>

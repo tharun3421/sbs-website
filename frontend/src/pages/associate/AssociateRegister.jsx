@@ -49,11 +49,10 @@ export default function AssociateRegister() {
   }
 
   return (
-    <div className="min-h-screen bg-theme-primary flex items-center justify-center p-4">
+    <div className="min-h-[80vh] bg-theme-primary flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link to="/" className="inline-block hover:opacity-80 transition">
-            <div className="bg-[#FFD700] text-[#0A0A0A] font-black text-2xl px-5 py-2 rounded-xl inline-block mb-3">SBS</div>
           </Link>
           <h1 className="text-theme-primary font-bold text-xl">Associate Registration</h1>
           <p className="text-theme-secondary text-sm mt-1">Join the SBS Associate Portal</p>
@@ -90,11 +89,6 @@ export default function AssociateRegister() {
         </div>
         <p className="text-center mt-4 text-theme-secondary text-xs">
           Already registered? <Link to="/associate/login" className="text-[#FFD700] hover:underline">Sign in</Link>
-        </p>
-        <p className="text-center mt-2">
-          <Link to="/" className="text-theme-secondary text-xs hover:text-[#FFD700] transition">
-            ← Back to website
-          </Link>
         </p>
       </div>
     </div>

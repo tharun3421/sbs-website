@@ -105,7 +105,6 @@ export default function AssociateLayout() {
       <div className="flex-1 flex flex-col min-w-0">
         <div className="md:hidden flex items-center gap-3 p-4 border-b border-theme bg-theme-secondary">
           <button onClick={() => setMobileOpen(true)} className="text-theme-secondary hover:text-theme-primary p-1"><Menu size={20} /></button>
-          <Link to="/" className="bg-[#FFD700] text-[#0A0A0A] font-black text-sm px-2.5 py-0.5 rounded-lg">SBS Associate</Link>
           <div className="ml-auto">
             <button onClick={toggleDark} className="text-theme-secondary hover:text-[#FFD700] p-1.5 rounded-lg hover:bg-theme-tertiary transition">
               {dark ? <Sun size={17} /> : <Moon size={17} />}
