@@ -90,15 +90,6 @@ export default function Home() {
         ) : (
           <p className="text-theme-muted text-sm text-center py-4">No services found.</p>
         )}
-
-        {/* More -> separate page */}
-        <Link
-          to="/more-services"
-          className="w-full flex items-center justify-center gap-1.5 mt-4 py-3 rounded-lg text-theme-secondary text-sm font-medium hover:text-[#FFD700] transition-colors"
-        >
-          More
-          <ChevronRight size={15} />
-        </Link>
       </section>
     </div>
   )

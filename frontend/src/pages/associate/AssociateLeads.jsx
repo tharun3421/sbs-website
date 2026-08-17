@@ -4,10 +4,10 @@ import { Plus, Edit, Trash2, X, Search, ChevronLeft, ChevronRight, Eye } from 'l
 import { associateApi } from '../../api'
 import toast from 'react-hot-toast'
 
-const EMPTY = { clientName: '', mobile: '', email: '', businessName: '', category: '', city: '', state: '', notes: '', status: 'new' }
+const EMPTY = { clientName: '', mobile: '', leadFor: '', status: 'new' }
 const STATUS_LABEL = { new: 'New', in_progress: 'In Progress', converted: 'Converted', rejected: 'Rejected' }
 const STATUS_COLORS = { new: '#4488FF', in_progress: '#FF8800', converted: '#44DD88', rejected: '#FF4444' }
-const EDITABLE_FIELDS = ['clientName', 'mobile', 'email', 'businessName', 'category', 'city', 'state', 'notes', 'status']
+const EDITABLE_FIELDS = ['clientName', 'mobile', 'leadFor', 'status']
 
 export default function AssociateLeads() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -17,11 +17,10 @@ export default function AssociateLeads() {
   const [totalPages, setTotalPages] = useState(1)
 
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('')
-  const [city, setCity] = useState('')
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortDir, setSortDir] = useState('desc')
   const [page, setPage] = useState(1)
+  const [limit] = useState(10)
 
   const [modal, setModal] = useState({ open: searchParams.get('new') === '1', lead: null })
   const [viewLead, setViewLead] = useState(null)
@@ -30,10 +29,8 @@ export default function AssociateLeads() {
 
   const load = useCallback(() => {
     setLoading(true)
-    const params = { page, limit: 10, sortBy, sortDir }
+    const params = { page, limit, sortBy, sortDir }
     if (search.trim()) params.search = search.trim()
-    if (status) params.status = status
-    if (city.trim()) params.city = city.trim()
 
     associateApi.get('/associate/leads', { params })
       .then(r => {
@@ -43,12 +40,12 @@ export default function AssociateLeads() {
       })
       .catch(() => toast.error('Failed to load leads'))
       .finally(() => setLoading(false))
-  }, [page, sortBy, sortDir, search, status, city])
+  }, [page, limit, sortBy, sortDir, search])
 
   useEffect(load, [load])
 
-  // Reset to page 1 whenever filters change
-  useEffect(() => { setPage(1) }, [search, status, city])
+  // Reset to page 1 whenever the search changes
+  useEffect(() => { setPage(1) }, [search])
 
   const openAdd = () => { setForm(EMPTY); setModal({ open: true, lead: null }) }
   const openEdit = (lead) => { setForm({ ...lead }); setModal({ open: true, lead }) }
@@ -101,21 +98,14 @@ export default function AssociateLeads() {
         </button>
       </div>
 
-      {/* Search & Filters */}
+      {/* Search */}
       <div className="flex flex-wrap gap-3 mb-4">
         <div className="relative flex-1 min-w-[220px]">
           <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
-          <input type="text" placeholder="Search by name, business, mobile, email..." value={search}
+          <input type="text" placeholder="Search by name, mobile, or lead for..." value={search}
             onChange={e => setSearch(e.target.value)}
             className="w-full input-bg border border-theme rounded-xl pl-10 pr-4 py-2.5 text-theme-primary text-sm placeholder-theme-muted focus:border-[#FFD700]/60" />
         </div>
-        <select value={status} onChange={e => setStatus(e.target.value)}
-          className="input-bg border border-theme rounded-xl px-3 py-2.5 text-theme-primary text-sm focus:border-[#FFD700]/60">
-          <option value="">All Statuses</option>
-          {Object.entries(STATUS_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-        </select>
-        <input type="text" placeholder="Filter by city" value={city} onChange={e => setCity(e.target.value)}
-          className="input-bg border border-theme rounded-xl px-3 py-2.5 text-theme-primary text-sm placeholder-theme-muted focus:border-[#FFD700]/60 w-36" />
       </div>
 
       {/* Table */}
@@ -125,12 +115,10 @@ export default function AssociateLeads() {
             <thead>
               <tr className="border-b border-theme">
                 {[
-                  { key: 'clientName', label: 'Client' },
-                  { key: null, label: 'Business' },
-                  { key: null, label: 'Mobile' },
-                  { key: 'city', label: 'City' },
-                  { key: 'status', label: 'Status' },
-                  { key: 'createdAt', label: 'Date' },
+                  { key: null, label: 'S.No' },
+                  { key: 'clientName', label: 'Name' },
+                  { key: null, label: 'Mobile Number' },
+                  { key: null, label: 'Lead For' },
                   { key: null, label: 'Actions' },
                 ].map(({ key, label }) => (
                   <th key={label} className="text-left px-5 py-3 text-theme-muted font-medium text-xs whitespace-nowrap">
@@ -147,22 +135,15 @@ export default function AssociateLeads() {
               {loading ? (
                 [...Array(5)].map((_, i) => (
                   <tr key={i} className="border-b border-theme">
-                    {[...Array(7)].map((_, j) => <td key={j} className="px-5 py-4"><div className="h-3 bg-theme-tertiary rounded animate-pulse" /></td>)}
+                    {[...Array(5)].map((_, j) => <td key={j} className="px-5 py-4"><div className="h-3 bg-theme-tertiary rounded animate-pulse" /></td>)}
                   </tr>
                 ))
-              ) : leads.map(lead => (
+              ) : leads.map((lead, idx) => (
                 <tr key={lead._id} className="border-b border-theme hover:bg-theme-tertiary transition">
+                  <td className="px-5 py-3 text-theme-muted whitespace-nowrap">{(page - 1) * limit + idx + 1}</td>
                   <td className="px-5 py-3 text-theme-primary font-medium whitespace-nowrap">{lead.clientName}</td>
-                  <td className="px-5 py-3 text-theme-secondary max-w-[160px] truncate">{lead.businessName || '—'}</td>
                   <td className="px-5 py-3 text-theme-secondary whitespace-nowrap">{lead.mobile}</td>
-                  <td className="px-5 py-3 text-theme-secondary whitespace-nowrap">{lead.city || '—'}</td>
-                  <td className="px-5 py-3">
-                    <span className="px-2.5 py-1 rounded-full text-xs font-semibold"
-                      style={{ background: `${STATUS_COLORS[lead.status]}15`, color: STATUS_COLORS[lead.status] }}>
-                      {STATUS_LABEL[lead.status]}
-                    </span>
-                  </td>
-                  <td className="px-5 py-3 text-theme-muted text-xs whitespace-nowrap">{new Date(lead.createdAt).toLocaleDateString()}</td>
+                  <td className="px-5 py-3 text-theme-secondary max-w-[200px] truncate">{lead.leadFor}</td>
                   <td className="px-5 py-3">
                     <div className="flex gap-2">
                       <button onClick={() => setViewLead(lead)} className="p-1.5 rounded-lg bg-theme-tertiary hover:bg-[#4488FF]/10 hover:text-[#4488FF] text-theme-muted transition">
@@ -211,13 +192,9 @@ export default function AssociateLeads() {
             </div>
             <form onSubmit={handleSave} className="p-5 space-y-4">
               {[
-                { key: 'clientName', label: 'Client Name', placeholder: 'e.g. Ramesh Kumar', required: true },
+                { key: 'clientName', label: 'Name', placeholder: 'e.g. Ramesh Kumar', required: true },
                 { key: 'mobile', label: 'Mobile Number', placeholder: 'e.g. 9876543210', required: true },
-                { key: 'email', label: 'Email', placeholder: 'e.g. ramesh@example.com' },
-                { key: 'businessName', label: 'Business Name', placeholder: 'e.g. Ramesh Traders' },
-                { key: 'category', label: 'Business Category', placeholder: 'e.g. Retail, Manufacturing' },
-                { key: 'city', label: 'City', placeholder: 'e.g. Hyderabad' },
-                { key: 'state', label: 'State', placeholder: 'e.g. Telangana' },
+                { key: 'leadFor', label: 'Lead For', placeholder: 'e.g. Business Loan, Hotel Management', required: true },
               ].map(({ key, label, placeholder, required }) => (
                 <div key={key}>
                   <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">{label}</label>
@@ -226,12 +203,6 @@ export default function AssociateLeads() {
                     className={inputClass} required={required} />
                 </div>
               ))}
-              <div>
-                <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Notes</label>
-                <textarea rows={3} placeholder="Additional notes..." value={form.notes ?? ''}
-                  onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                  className={`${inputClass} resize-none`} />
-              </div>
               <div>
                 <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Lead Status</label>
                 <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} className={inputClass}>
@@ -264,10 +235,8 @@ export default function AssociateLeads() {
             </div>
             <div className="p-5 space-y-3 text-sm">
               {[
-                ['Client Name', viewLead.clientName], ['Mobile', viewLead.mobile], ['Email', viewLead.email || '—'],
-                ['Business Name', viewLead.businessName || '—'], ['Category', viewLead.category || '—'],
-                ['City', viewLead.city || '—'], ['State', viewLead.state || '—'],
-                ['Status', STATUS_LABEL[viewLead.status]], ['Notes', viewLead.notes || '—'],
+                ['Name', viewLead.clientName], ['Mobile Number', viewLead.mobile], ['Lead For', viewLead.leadFor],
+                ['Status', STATUS_LABEL[viewLead.status]],
                 ['Created', new Date(viewLead.createdAt).toLocaleString()],
               ].map(([label, value]) => (
                 <div key={label} className="flex justify-between gap-4 border-b border-theme pb-2">

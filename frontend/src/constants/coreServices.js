@@ -9,7 +9,9 @@ export const CORE_SERVICES = [
   { to: '/online-degrees',             label: 'Online Degrees' },
   { to: '/business-offers',            label: 'Business Offers' },
   { to: '/hotel-management/india',     label: 'Hotel Management (India)' },
-  { to: '/hotel-management/mauritius', label: 'Hotel Management (Mauritius)' },
+  { to: '/hotel-management/mauritius', label: 'Hotel Management (Mauritius)' }, 
+  { to: '/loans',          label: 'Loans' },
+  { to: '/other-services', label: 'Other Services' },
 ]
 
 export const CORE_SERVICE_LABELS = CORE_SERVICES.map(s => s.label)

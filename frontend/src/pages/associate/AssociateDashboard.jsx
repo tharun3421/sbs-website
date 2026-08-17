@@ -84,7 +84,7 @@ export default function AssociateDashboard() {
               <thead>
                 <tr className="border-b border-theme">
                   <th className="text-left px-5 py-3 text-theme-secondary font-medium text-xs">Client</th>
-                  <th className="text-left px-5 py-3 text-theme-secondary font-medium text-xs">Business</th>
+                  <th className="text-left px-5 py-3 text-theme-secondary font-medium text-xs">Lead For</th>
                   <th className="text-left px-5 py-3 text-theme-secondary font-medium text-xs">Mobile</th>
                   <th className="text-left px-5 py-3 text-theme-secondary font-medium text-xs">Status</th>
                   <th className="text-left px-5 py-3 text-theme-secondary font-medium text-xs">Date</th>
@@ -94,7 +94,7 @@ export default function AssociateDashboard() {
                 {stats.recentLeads.map(lead => (
                   <tr key={lead._id} className="border-b border-theme hover:bg-theme-tertiary transition">
                     <td className="px-5 py-3 text-theme-primary font-medium">{lead.clientName}</td>
-                    <td className="px-5 py-3 text-theme-secondary max-w-[160px] truncate">{lead.businessName || '—'}</td>
+                    <td className="px-5 py-3 text-theme-secondary max-w-[160px] truncate">{lead.leadFor || '—'}</td>
                     <td className="px-5 py-3 text-theme-secondary">{lead.mobile}</td>
                     <td className="px-5 py-3">
                       <span className="px-2.5 py-1 rounded-full text-xs font-semibold"

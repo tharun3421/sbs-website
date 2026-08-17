@@ -172,7 +172,7 @@ export default function HotelManagementMauritius() {
         <div className="flex items-start justify-between gap-3 mb-6">
           <div className="flex gap-2.5">
             <button
-              onClick={() => setApplyOpen(true)}
+              onClick={() => setApplyOpen(false)}
               className="px-4 py-2.5 rounded-xl font-extrabold text-xs md:text-sm text-white shadow-sm"
               style={{ background: TEAL_DEEP }}
             >
@@ -385,7 +385,7 @@ export default function HotelManagementMauritius() {
 
         {/* ── Apply button ── */}
         <button
-          onClick={() => setApplyOpen(true)}
+          onClick={() => setApplyOpen(false)}
           className="w-full py-4 rounded-xl font-extrabold text-white text-base md:text-lg shadow-md flex items-center justify-center gap-2 mb-8 transition hover:opacity-90"
           style={{ background: TEAL_DEEP }}
         >

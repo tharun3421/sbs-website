@@ -1,13 +1,12 @@
 const Lead = require('../models/Lead');
 
-const EDITABLE_FIELDS = ['clientName', 'mobile', 'email', 'businessName', 'category', 'city', 'state', 'notes', 'status'];
+const EDITABLE_FIELDS = ['clientName', 'mobile', 'leadFor', 'status'];
 
 function buildFilter(query, base = {}) {
-  const { search, status, city, from, to } = query;
+  const { search, status, from, to } = query;
   const filter = { ...base };
 
   if (status) filter.status = status;
-  if (city) filter.city = new RegExp(city, 'i');
   if (from || to) {
     filter.createdAt = {};
     if (from) filter.createdAt.$gte = new Date(from);
@@ -15,7 +14,7 @@ function buildFilter(query, base = {}) {
   }
   if (search) {
     const re = new RegExp(search, 'i');
-    filter.$or = [{ clientName: re }, { businessName: re }, { mobile: re }, { email: re }];
+    filter.$or = [{ clientName: re }, { leadFor: re }, { mobile: re }];
   }
   return filter;
 }
@@ -23,7 +22,7 @@ function buildFilter(query, base = {}) {
 async function paginatedFind(filter, query, res) {
   const page = Math.max(parseInt(query.page) || 1, 1);
   const limit = Math.min(Math.max(parseInt(query.limit) || 10, 1), 100);
-  const sortField = ['clientName', 'createdAt', 'status', 'city'].includes(query.sortBy) ? query.sortBy : 'createdAt';
+  const sortField = ['clientName', 'createdAt', 'status'].includes(query.sortBy) ? query.sortBy : 'createdAt';
   const sortDir = query.sortDir === 'asc' ? 1 : -1;
 
   const [leads, totalCount] = await Promise.all([
@@ -42,10 +41,13 @@ exports.createLead = async (req, res) => {
     EDITABLE_FIELDS.forEach(k => { if (req.body[k] !== undefined) data[k] = req.body[k]; });
 
     if (!data.clientName || !data.clientName.trim()) {
-      return res.status(400).json({ message: 'Client name is required' });
+      return res.status(400).json({ message: 'Name is required' });
     }
     if (!data.mobile || !data.mobile.trim()) {
       return res.status(400).json({ message: 'Mobile number is required' });
+    }
+    if (!data.leadFor || !data.leadFor.trim()) {
+      return res.status(400).json({ message: 'Lead for is required' });
     }
 
     const lead = await Lead.create({
