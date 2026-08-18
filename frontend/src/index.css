@@ -167,3 +167,12 @@ html.light select:focus,
 html.light textarea:focus {
   box-shadow: 0 0 0 2px rgba(180,130,0,0.3);
 }
+
+
+.pulse-gold { animation: pulse-gold 6s infinite; }
+
+@keyframes pulse-call {
+  0%,100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.55); }
+  50%     { box-shadow: 0 0 0 10px rgba(37,211,102,0); }
+}
+.pulse-call { animation: pulse-call 2.2s infinite; }

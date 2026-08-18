@@ -4,7 +4,7 @@ import { LayoutDashboard, Users2, KeyRound, LogOut, Menu, X, ChevronRight, Sun, 
 import { associateApi } from '../../api'
 
 const NAV = [
-  { to: '/associate', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  // { to: '/associate', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { to: '/associate/leads', label: 'My Leads', icon: Users2 },
   { to: '/associate/change-password', label: 'Change Password', icon: KeyRound },
 ]

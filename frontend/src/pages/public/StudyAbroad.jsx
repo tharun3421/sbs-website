@@ -150,7 +150,7 @@ function EnquireButton({ onClick, dark = true, className = '' }) {
       onClick={onClick}
       className={`px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wide transition ${
         dark
-          ? 'bg-[#0A0A0A] text-white hover:bg-[#222]'
+          ? 'bg-[#0A0A0A] text-white '
           : 'border border-theme text-theme-primary hover:border-theme-secondary'
       } ${className}`}
     >
@@ -164,7 +164,7 @@ function EnquireButton({ onClick, dark = true, className = '' }) {
 export default function StudyAbroad() {
   const [enquiry, setEnquiry] = useState({ open: false, program: null })
 
-  const openEnquiry = (title) => setEnquiry({ open: true, program: title })
+  const openEnquiry = (title) => setEnquiry({ open: false, program: title })
 
   return (
     <div className="page-enter bg-theme-primary min-h-screen">

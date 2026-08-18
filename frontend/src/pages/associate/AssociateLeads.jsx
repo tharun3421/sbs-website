@@ -203,12 +203,12 @@ export default function AssociateLeads() {
                     className={inputClass} required={required} />
                 </div>
               ))}
-              <div>
+              {/* <div>
                 <label className="text-theme-muted text-xs font-semibold uppercase tracking-wide mb-1.5 block">Lead Status</label>
                 <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} className={inputClass}>
                   {Object.entries(STATUS_LABEL).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
-              </div>
+              </div> */}
 
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={closeModal}
@@ -236,7 +236,7 @@ export default function AssociateLeads() {
             <div className="p-5 space-y-3 text-sm">
               {[
                 ['Name', viewLead.clientName], ['Mobile Number', viewLead.mobile], ['Lead For', viewLead.leadFor],
-                ['Status', STATUS_LABEL[viewLead.status]],
+                // ['Status', STATUS_LABEL[viewLead.status]],
                 ['Created', new Date(viewLead.createdAt).toLocaleString()],
               ].map(([label, value]) => (
                 <div key={label} className="flex justify-between gap-4 border-b border-theme pb-2">

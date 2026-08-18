@@ -257,7 +257,7 @@ export default function BusinessOffers() {
 
   const openEnquiry = (project) => {
     setPanel({
-      open: true,
+      open: false,
       offer: {
         _id: project.number,
         title: project.title,

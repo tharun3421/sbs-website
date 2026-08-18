@@ -109,7 +109,7 @@ function OutlineButton({ children, onClick, className = '' }) {
 export default function OnlineDegrees() {
   const [panel, setPanel] = useState({ open: false, degree: null })
 
-  const openEnquiry = (title) => setPanel({ open: true, degree: { _id: title, title, university: 'SBS – Sai Business Services' } })
+  const openEnquiry = (title) => setPanel({ open: false, degree: { _id: title, title, university: 'SBS – Sai Business Services' } })
 
   return (
     <div className="page-enter bg-theme-primary min-h-screen">

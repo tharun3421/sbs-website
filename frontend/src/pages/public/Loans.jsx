@@ -274,7 +274,7 @@ export default function Loans() {
 
         {/* Enquire */}
         <button
-          onClick={() => setPanel(true)}
+          onClick={() => setPanel(false)}
           className="w-full py-3.5 rounded-xl font-bold text-sm bg-sbs-yellow text-sbs-black transition hover:bg-sbs-yellow-dark"
         >
           Enquire Now
