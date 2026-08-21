@@ -102,7 +102,7 @@ export default function AssociateLeads() {
       <div className="flex flex-wrap gap-3 mb-4">
         <div className="relative flex-1 min-w-[220px]">
           <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
-          <input type="text" placeholder="Search by name, mobile, or lead for..." value={search}
+          <input type="text" placeholder="Search by name, mobile, or lead " value={search}
             onChange={e => setSearch(e.target.value)}
             className="w-full input-bg border border-theme rounded-xl pl-10 pr-4 py-2.5 text-theme-primary text-sm placeholder-theme-muted focus:border-[#FFD700]/60" />
         </div>
@@ -119,7 +119,7 @@ export default function AssociateLeads() {
                   { key: 'clientName', label: 'Name' },
                   { key: null, label: 'Mobile Number' },
                   { key: null, label: 'Lead For' },
-                  { key: null, label: 'Actions' },
+                  { key: null, label: 'Delete' },
                 ].map(({ key, label }) => (
                   <th key={label} className="text-left px-5 py-3 text-theme-muted font-medium text-xs whitespace-nowrap">
                     {key ? (
@@ -146,12 +146,6 @@ export default function AssociateLeads() {
                   <td className="px-5 py-3 text-theme-secondary max-w-[200px] truncate">{lead.leadFor}</td>
                   <td className="px-5 py-3">
                     <div className="flex gap-2">
-                      <button onClick={() => setViewLead(lead)} className="p-1.5 rounded-lg bg-theme-tertiary hover:bg-[#4488FF]/10 hover:text-[#4488FF] text-theme-muted transition">
-                        <Eye size={13} />
-                      </button>
-                      <button onClick={() => openEdit(lead)} className="p-1.5 rounded-lg bg-theme-tertiary hover:bg-[#FFD700]/10 hover:text-[#FFD700] text-theme-muted transition">
-                        <Edit size={13} />
-                      </button>
                       <button onClick={() => handleDelete(lead._id)} className="p-1.5 rounded-lg bg-theme-tertiary hover:bg-red-500/10 hover:text-red-400 text-theme-muted transition">
                         <Trash2 size={13} />
                       </button>

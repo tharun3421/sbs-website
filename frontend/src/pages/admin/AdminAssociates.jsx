@@ -34,13 +34,6 @@ export default function AdminAssociates() {
 
   return (
     <div>
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
-        <div>
-          <h1 className="text-theme-primary font-black text-2xl">Associates</h1>
-          <p className="text-theme-secondary text-sm">{associates.length} registered associates</p>
-        </div>
-      </div>
-
       <div className="relative mb-4 max-w-sm">
         <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-theme-muted" />
         <input type="text" placeholder="Search by name or mobile..." value={search}

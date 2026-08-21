@@ -19,27 +19,18 @@ import AssociateResources from './pages/public/AssociateResources'
 
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
-import AdminJobs from './pages/admin/AdminJobs'
-import AdminDegrees from './pages/admin/AdminDegrees'
-import AdminOffers from './pages/admin/AdminOffers'
-import AdminLoans from './pages/admin/AdminLoans'
-import AdminOtherServices from './pages/admin/AdminOtherServices'
 import AdminResources from './pages/admin/AdminResources'
-import AdminApplications from './pages/admin/AdminApplications'
 import AdminQRCode from './pages/admin/AdminQRCode'
 import AdminSettings from './pages/admin/AdminSettings'
 import StudyAbroad from './pages/public/StudyAbroad'
 import HotelManagementIndia from './pages/public/HotelManagementIndia'
 import HotelManagementMauritius from './pages/public/HotelManagementMauritius'
-import AdminStudyAbroad from './pages/admin/AdminStudyAbroad'
-import AdminHotelManagement from './pages/admin/AdminHotelManagement'
 import AdminContacts from './pages/admin/AdminContacts'
 import AdminAssociates from './pages/admin/AdminAssociates'
 
 import AssociateLogin from './pages/associate/AssociateLogin'
 import AssociateRegister from './pages/associate/AssociateRegister'
 import AssociateChangePassword from './pages/associate/AssociateChangePassword'
-import AssociateDashboard from './pages/associate/AssociateDashboard'
 import AssociateLeads from './pages/associate/AssociateLeads'
 
 
@@ -71,27 +62,16 @@ export default function App() {
       {/* Admin protected */}
       <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
         <Route index element={<AdminDashboard />} />
-        <Route path="jobs" element={<AdminJobs />} />
-        <Route path="degrees" element={<AdminDegrees />} />
-        <Route path="offers" element={<AdminOffers />} />
-        <Route path="loans" element={<AdminLoans />} />
-        <Route path="other-services" element={<AdminOtherServices />} />
         <Route path="resources" element={<AdminResources />} />
-        <Route path="study-abroad" element={<AdminStudyAbroad />} />
-        <Route path="hotel-management" element={<AdminHotelManagement />} />
         <Route path="contacts" element={<AdminContacts />} />
-        <Route path="applications" element={<AdminApplications />} />
         <Route path="associates" element={<AdminAssociates />} />
         <Route path="qr" element={<AdminQRCode />} />
         <Route path="settings" element={<AdminSettings />} />
       </Route>
-
-      {/* Associate auth */}
       
 
       {/* Associate protected */}
       <Route path="/associate" element={<AssociateRoute><AssociateLayout /></AssociateRoute>}>
-        <Route index element={<AssociateDashboard />} />
         <Route path="leads" element={<AssociateLeads />} />
         <Route path="change-password" element={<AssociateChangePassword />} />
       </Route>

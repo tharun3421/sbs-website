@@ -1,10 +1,4 @@
 const jwt = require('jsonwebtoken');
-const Job = require('../models/Job');
-const Degree = require('../models/Degree');
-const Offer = require('../models/Offer');
-const Application = require('../models/Application');
-const LoanCategory = require('../models/LoanCategory');
-const OtherService = require('../models/OtherService');
 const Associate = require('../models/Associate');
 const Lead = require('../models/Lead');
 
@@ -26,18 +20,15 @@ exports.getDashboardStats = async (req, res) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const [totalJobs, totalDegrees, totalOffers, totalApplications, todayApplications, recentApps, totalLoans, totalOtherServices] = await Promise.all([
-      Job.countDocuments({ isActive: true }),
-      Degree.countDocuments({ isActive: true }),
-      Offer.countDocuments({ isActive: true }),
-      Application.countDocuments(),
-      Application.countDocuments({ createdAt: { $gte: today } }),
-      Application.find().sort({ createdAt: -1 }).limit(10),
-      LoanCategory.countDocuments({ isActive: true }),
-      OtherService.countDocuments({ isActive: true }),
+    const [totalAssociates, activeAssociates, totalLeads, todayLeads, recentLeads] = await Promise.all([
+      Associate.countDocuments(),
+      Associate.countDocuments({ isActive: true }),
+      Lead.countDocuments(),
+      Lead.countDocuments({ createdAt: { $gte: today } }),
+      Lead.find().sort({ createdAt: -1 }).limit(10),
     ]);
 
-    res.json({ totalJobs, totalDegrees, totalOffers, totalApplications, todayApplications, recentApps, totalLoans, totalOtherServices });
+    res.json({ totalAssociates, activeAssociates, totalLeads, todayLeads, recentLeads });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

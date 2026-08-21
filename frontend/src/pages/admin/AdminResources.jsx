@@ -177,17 +177,6 @@ export default function AdminResources() {
 
   return (
     <div>
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
-        <div>
-          <h1 className="text-theme-primary font-black text-2xl">Associate Resources</h1>
-          <p className="text-theme-secondary text-sm">{resources.length} total resources across {CORE_SERVICE_LABELS.length} services</p>
-        </div>
-        <button onClick={openAdd}
-          className="flex items-center gap-2 bg-[#FFD700] text-[#0A0A0A] font-bold px-4 py-2.5 rounded-xl hover:bg-[#E6C200] transition text-sm">
-          <Plus size={16} /> Add Resource
-        </button>
-      </div>
-
       {/* Grouped by category */}
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">

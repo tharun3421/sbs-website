@@ -23,19 +23,12 @@ app.use(express.json());
 app.get('/', (req, res) => res.json({ message: 'SBS API is running' }));
 
 // Routes
-app.use('/api/jobs', require('./routes/jobRoutes'));
-app.use('/api/degrees', require('./routes/degreeRoutes'));
-app.use('/api/offers', require('./routes/offerRoutes'));
+
 app.use('/api/contacts', require('./routes/contactRoutes'));
-app.use('/api/applications', require('./routes/applicationRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/qr', require('./routes/qrRoutes'));
 app.use('/api/settings', require('./routes/settingsRoutes'));
-app.use('/api/loans', require('./routes/loanRoutes'));
-app.use('/api/other-services', require('./routes/otherServiceRoutes'));
-app.use('/api/study-abroad', require('./routes/studyAbroadRoutes'));
 app.use('/api/resources', require('./routes/resourceRoutes'));
-app.use('/api/hotel-management', require('./routes/hotelManagementRoutes'));
 app.use('/api/associate', require('./routes/associateRoutes'));
 app.use('/api/associate/leads', require('./routes/leadRoutes'));
 

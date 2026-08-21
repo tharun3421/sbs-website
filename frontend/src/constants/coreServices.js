@@ -1,10 +1,6 @@
-// Single source of truth for the site's core services.
-// Home.jsx renders this list, and AssociateResources / AdminResources use
-// it to drive the exact set of categories a resource can belong to, so a
-// resource category always maps 1:1 to a real service.
+
 export const CORE_SERVICES = [
-  { to: '/jobs/free',                  label: 'Free Jobs' },
-  { to: '/jobs/tally',                 label: 'Tally Jobs' },
+  { to: '/jobs/free',                  label: 'Software -IT /Careers /Projects/ Internships /OJTs' },
   { to: '/study-abroad',               label: 'Abroad Study – Visit – PR' },
   { to: '/online-degrees',             label: 'Online Degrees' },
   { to: '/business-offers',            label: 'Business Offers' },

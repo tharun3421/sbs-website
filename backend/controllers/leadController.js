@@ -70,33 +70,6 @@ exports.getMyLeads = async (req, res) => {
   }
 };
 
-exports.getMyLead = async (req, res) => {
-  try {
-    const lead = await Lead.findOne({ _id: req.params.id, associate: req.associate.id });
-    if (!lead) return res.status(404).json({ message: 'Lead not found' });
-    res.json(lead);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-exports.updateMyLead = async (req, res) => {
-  try {
-    const update = {};
-    EDITABLE_FIELDS.forEach(k => { if (req.body[k] !== undefined) update[k] = req.body[k]; });
-
-    const lead = await Lead.findOneAndUpdate(
-      { _id: req.params.id, associate: req.associate.id },
-      update,
-      { new: true, runValidators: true }
-    );
-    if (!lead) return res.status(404).json({ message: 'Lead not found or not owned by you' });
-    res.json(lead);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
 exports.deleteMyLead = async (req, res) => {
   try {
     const lead = await Lead.findOneAndDelete({ _id: req.params.id, associate: req.associate.id });

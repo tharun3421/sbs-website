@@ -17,7 +17,7 @@ export default function AssociateLogin() {
       localStorage.setItem('sbs_associate_token', res.data.token)
       localStorage.setItem('sbs_associate', JSON.stringify(res.data.associate))
       toast.success(`Welcome back, ${res.data.associate.name}!`)
-      navigate('/associate')
+      navigate('/associate/leads')
     } catch (err) {
       toast.error(err?.response?.data?.message || 'Invalid credentials')
     } finally { setLoading(false) }
