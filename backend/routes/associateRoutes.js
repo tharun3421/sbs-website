@@ -5,7 +5,6 @@ const loginLimiter = require('../middleware/loginLimiter');
 
 router.post('/register', loginLimiter, ctrl.register);
 router.post('/login', loginLimiter, ctrl.login);
-router.post('/change-password', auth, ctrl.changePassword);
 router.post('/logout', auth, ctrl.logout);
 router.get('/profile', auth, ctrl.getProfile);
 router.get('/dashboard/stats', auth, ctrl.getDashboardStats);

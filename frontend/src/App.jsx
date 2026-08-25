@@ -30,7 +30,6 @@ import AdminAssociates from './pages/admin/AdminAssociates'
 
 import AssociateLogin from './pages/associate/AssociateLogin'
 import AssociateRegister from './pages/associate/AssociateRegister'
-import AssociateChangePassword from './pages/associate/AssociateChangePassword'
 import AssociateLeads from './pages/associate/AssociateLeads'
 
 
@@ -53,7 +52,12 @@ export default function App() {
         <Route path="/associate-resources" element={<AssociateResources />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/associate/login" element={<AssociateLogin />} />
-      <Route path="/associate/register" element={<AssociateRegister />} />
+        <Route path="/associate/register" element={<AssociateRegister />} />
+
+        {/* Associate protected — same navbar/footer chrome as the rest of the public site */}
+        <Route path="/associate" element={<AssociateRoute><AssociateLayout /></AssociateRoute>}>
+          <Route path="leads" element={<AssociateLeads />} />
+        </Route>
       </Route>
 
       {/* Admin auth */}
@@ -67,13 +71,6 @@ export default function App() {
         <Route path="associates" element={<AdminAssociates />} />
         <Route path="qr" element={<AdminQRCode />} />
         <Route path="settings" element={<AdminSettings />} />
-      </Route>
-      
-
-      {/* Associate protected */}
-      <Route path="/associate" element={<AssociateRoute><AssociateLayout /></AssociateRoute>}>
-        <Route path="leads" element={<AssociateLeads />} />
-        <Route path="change-password" element={<AssociateChangePassword />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />

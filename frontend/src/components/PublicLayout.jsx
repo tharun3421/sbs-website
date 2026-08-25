@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { Phone, MapPin, Headset, Sun, Moon, Home } from 'lucide-react'
-import api from '../api'
+import api, { associateLogout } from '../api'
 import logo from '../assets/logo-sbs.jpeg'
 import FloatingCallButton from './FloatingCallButton'
 
@@ -28,12 +28,23 @@ function useTheme() {
 export default function PublicLayout() {
   const [cities, setCities] = useState(['Vizag','Eluru','Khammam','Hyderabad','Vijayawada','Guntur','Warangal'])
   const [dark, setDark] = useTheme()
+  const navigate = useNavigate()
 
   useEffect(() => {
     api.get('/settings').then(r => {
       if (r.data.cities) setCities(r.data.cities)
     }).catch(() => {})
   }, [])
+
+  // If an associate is signed in, clicking Home should securely end that
+  // session before returning to the public site — not just navigate away
+  // while the session is still live.
+  const handleHomeClick = async (e) => {
+    const associateToken = localStorage.getItem('sbs_associate_token')
+    if (!associateToken) return
+    e.preventDefault()
+    await associateLogout(navigate)
+  }
 
   const ticker = [...cities, ...cities]
 
@@ -72,6 +83,7 @@ export default function PublicLayout() {
             {/* Home */}
             <Link
               to="/"
+              onClick={handleHomeClick}
               title="Home"
               aria-label="Home"
               className={`p-2 rounded-lg transition-all duration-200 ${iconBtn}`}

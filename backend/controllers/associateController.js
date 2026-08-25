@@ -89,35 +89,6 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.changePassword = async (req, res) => {
-  try {
-    const { currentPassword, newPassword, confirmPassword } = req.body;
-    const associate = await Associate.findById(req.associate.id);
-    if (!associate) return res.status(404).json({ message: 'Associate not found' });
-
-    const match = await bcrypt.compare(currentPassword || '', associate.password);
-    if (!match) return res.status(401).json({ message: 'Current password is incorrect' });
-
-    if (!newPassword || newPassword.length < 6) {
-      return res.status(400).json({ message: 'New password must be at least 6 characters' });
-    }
-    if (newPassword !== confirmPassword) {
-      return res.status(400).json({ message: 'New password and confirm password do not match' });
-    }
-    if (newPassword === associate.mobile) {
-      return res.status(400).json({ message: 'New password cannot be the same as the default password' });
-    }
-
-    associate.password = await bcrypt.hash(newPassword, 10);
-    associate.isDefaultPassword = false;
-    await associate.save();
-
-    const token = signToken(associate);
-    res.json({ message: 'Password updated successfully', token, associate: sanitize(associate) });
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
 
 exports.logout = async (req, res) => {
   // Stateless JWT — client discards the token. Endpoint kept for API completeness.

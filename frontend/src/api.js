@@ -41,4 +41,16 @@ associateApi.interceptors.response.use(
   }
 )
 
+// Securely ends the associate session and sends the associate to the public
+// homepage. Uses `replace: true` so the protected page is dropped from
+// browser history — pressing Back afterwards cannot land on it again, and
+// AssociateRoute re-checks the token on every render/back-forward restore
+// as a second layer of protection.
+export const associateLogout = async (navigate) => {
+  try { await associateApi.post('/associate/logout') } catch {}
+  localStorage.removeItem('sbs_associate_token')
+  localStorage.removeItem('sbs_associate')
+  navigate('/', { replace: true })
+}
+
 export default api
