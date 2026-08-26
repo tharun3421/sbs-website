@@ -229,13 +229,6 @@ export default function OnlineDegrees() {
           <RedButton onClick={() => openEnquiry('Online Courses — Apply')}>Apply Now</RedButton>
         </div>
 
-        <div className="border-t border-theme pt-6 mb-6">
-          {/* <p className="font-semibold mb-1 text-[#3B0808] dark:text-white">SBS – Sai Business Services</p> */}
-          <p className="text-theme-secondary text-sm">
-            SBS website: <span className="underline">www.sbs.ind.in</span>
-          </p>
-        </div>
-
         <div className="rounded-xl p-5 text-left bg-[#FBEAE8] dark:bg-[#3B0808]/40">
           <p className="text-theme-secondary text-sm leading-relaxed">
             <strong className="text-[#3B0808] dark:text-[#FF6E5F]">Note:</strong> Course availability, fees,
