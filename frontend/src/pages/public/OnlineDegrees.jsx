@@ -230,9 +230,9 @@ export default function OnlineDegrees() {
         </div>
 
         <div className="border-t border-theme pt-6 mb-6">
-          <p className="font-semibold mb-1 text-[#3B0808] dark:text-white">SBS – Sai Business Services</p>
+          {/* <p className="font-semibold mb-1 text-[#3B0808] dark:text-white">SBS – Sai Business Services</p> */}
           <p className="text-theme-secondary text-sm">
-            Website: <span className="underline">www.sbs.ind.in</span> &nbsp;|&nbsp; Phone: +91 63717 97847
+            SBS website: <span className="underline">www.sbs.ind.in</span>
           </p>
         </div>
 
