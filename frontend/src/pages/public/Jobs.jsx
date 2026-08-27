@@ -2,21 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import {
   Search, MapPin, Briefcase, IndianRupee, ChevronLeft, ChevronRight,
-  GraduationCap, Play, Calculator, Code, BarChart3, Cloud, Network,
-  Bug, Server, ChevronRight as ChevronRightIcon
+  GraduationCap, Play, Calculator,
 } from 'lucide-react'
 import api from '../../api'
 import PopupForm from '../../components/PopupForm'
 import LogoScroller from '../../components/LogoScroller'
 import ReelPopup from '../../components/ReelPopup'
-import {
-  ServerRoomIllustration,
-  DeskCharacterIllustration,
-  EngineerBoardIllustration,
-  DevOpsDashboardIllustration,
-  QATestingIllustration,
-  ITSupportIllustration,
-} from './JobsIllustrations'
 
 const TYPE_CONFIG = {
   free: {
@@ -47,356 +38,343 @@ const TYPE_CONFIG = {
   },
 }
 
-/* ---------------------------------------------------------
-   FREE JOBS = static "IT Jobs & Career Opportunities" deck UI
---------------------------------------------------------- */
-function FreeJobsPdfView() {
-  return (
-    <div className="bg-white text-[#1a1a1a]">
+/* ------------------------------- IMAGES -------------------------------
+   Free-to-use stock images (StockCake, no attribution required)
+------------------------------------------------------------------------ */
+const PLACEMENT_IMG = 'https://images.stockcake.com/public/3/1/4/31456344-3c38-485b-abae-42d33005fba2_large/colleagues-casual-meeting-stockcake.jpg'
+const OPENINGS_IMG = 'https://images.stockcake.com/public/1/7/3/173b981f-165c-4779-8ba5-95a330a1689b_large/creative-team-meeting-stockcake.jpg'
+const DEVELOPER_IMG = 'https://images.stockcake.com/public/7/e/d/7ed265a6-b6a4-47b3-8b0c-1679741c0901_large/coding-creative-professional-stockcake.jpg'
 
-      {/* SLIDE 1 — Hero */}
-      <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <h1 className="text-5xl font-light leading-tight mb-6">
-            IT Jobs & Career<br />Opportunities
-          </h1>
-          <p className="text-gray-500 text-lg mb-8">Build Your Skills. Build Your Career.</p>
-          <div className="flex flex-wrap gap-3">
-            {['Software', 'Data', 'Cloud', 'DevOps', 'IT Operations'].map((tag, i) => (
+/* -------------------------------- PALETTE --------------------------------
+   Fixed navy / yellow / red brand palette from the reference PDF. These are
+   literal fills (photo overlays, solid panels) so they read correctly,
+   unchanged, on both a light and a dark page — there's no plain "page
+   background" text sitting directly on bg-theme-primary in this design.
+--------------------------------------------------------------------------- */
+const NAVY_DEEP = '#0F1030'
+const NAVY = '#1B1E52'
+const BLUE = '#2B3FA8'
+const BLUE_LIGHT = '#3D6FE0'
+const YELLOW = '#F6C90E'
+const YELLOW_DEEP = '#E8B800'
+const RED = '#E3241C'
+
+const trainingTags = ['CORE JAVA', 'ADV. JAVA', 'DBMS', 'DEV', 'AWS']
+const locations = ['Hyderabad', 'Bangalore', 'Pune', 'Vizag']
+const openings = [
+  'Associate System Engineer',
+  'Software Engineer',
+  'Operations Associate',
+  'Senior S/W Engineer',
+  'Analyst',
+  'Dev Engineer',
+]
+const stagesTop = [
+  { n: 1, title: 'Resume Forwarding' },
+  { n: 2, title: 'Assessment/ Tests' },
+  { n: 3, title: 'Interview/ Tech Profile' },
+  { n: 4, title: 'One to One AI Rounds' },
+  { n: 5, title: 'Documentation' },
+  { n: 6, title: 'Back Ground verification' },
+]
+const stagesBottom = [
+  { n: 7, title: 'Offer Letter' },
+  { n: 8, title: 'Joining' },
+]
+const weProvide = [
+  { title: 'Career Solutions', desc: 'Fresher to experienced with gaps or shifts and those who are looking for career growth.' },
+  { title: 'Projects', desc: 'Real Time Projects, Academic projects and simulation projects and also we develop projects for your business or research.' },
+  { title: 'Internships', desc: 'Both paid & non-paid internships with start-up & MNCs.' },
+  { title: 'OJTs', desc: 'On The Job opportunities for students with paid & experienced purpose.' },
+]
+
+/* ---------------------------------------------------------
+   FREE JOBS = static "Software – IT" deck UI
+--------------------------------------------------------- */
+function FreeJobsPdfView({ openEnquiry }) {
+  return (
+    <div className="bg-theme-primary">
+
+      {/* ---------------- HERO ---------------- */}
+      <section
+        className="relative overflow-hidden px-6 py-16 sm:py-20 lg:py-28"
+        style={{
+          background: `linear-gradient(135deg, ${NAVY_DEEP} 0%, ${NAVY} 100%)`,
+        }}
+      >
+        {/* faint decorative "code" texture */}
+        <div
+          className="absolute inset-0 opacity-[0.07] pointer-events-none select-none"
+          style={{
+            backgroundImage: `repeating-linear-gradient(0deg, ${BLUE_LIGHT} 0px, ${BLUE_LIGHT} 1px, transparent 1px, transparent 26px)`,
+          }}
+        />
+        <div className="relative max-w-6xl mx-auto grid lg:grid-cols-[1.2fr_1fr] gap-12 items-center">
+          <div>
+            <h1 className="text-white font-extrabold text-4xl sm:text-6xl lg:text-7xl leading-tight mb-4">
+              Software – IT
+            </h1>
+            <p className="text-white/90 font-semibold text-lg sm:text-2xl lg:text-3xl">
+              Career | Projects | Internships | OJTs
+            </p>
+          </div>
+          {/* decorative terminal card — fills the extra width on large screens */}
+          <div
+            className="hidden lg:block rounded-2xl p-6 font-mono text-sm leading-relaxed shadow-2xl border"
+            style={{ backgroundColor: `${NAVY_DEEP}cc`, borderColor: `${BLUE_LIGHT}44` }}
+          >
+            <div className="flex gap-1.5 mb-4">
+              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FF5F56' }} />
+              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFBD2E' }} />
+              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#27C93F' }} />
+            </div>
+            <p style={{ color: BLUE_LIGHT }}>const <span style={{ color: YELLOW }}>career</span> = {'{'}</p>
+            <p className="pl-4 text-white/70">domains: <span style={{ color: YELLOW }}>'software, cloud, devops'</span>,</p>
+            <p className="pl-4 text-white/70">training: <span style={{ color: YELLOW }}>'online + offline'</span>,</p>
+            <p className="pl-4 text-white/70">support: <span style={{ color: YELLOW }}>'freshers + experienced'</span>,</p>
+            <p style={{ color: BLUE_LIGHT }}>{'}'}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- SOFTWARE PLACEMENT SERVICE ---------------- */}
+      <section
+        className="relative bg-cover bg-no-repeat min-h-[320px] lg:min-h-[420px] flex items-center"
+        style={{ backgroundImage: `url(${PLACEMENT_IMG})`, backgroundPosition: 'center 20%' }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{ background: `linear-gradient(100deg, ${NAVY_DEEP}e6 40%, ${BLUE}66 100%)` }}
+        />
+        <div className="relative max-w-6xl mx-auto px-6 py-16 w-full">
+          <div className="max-w-xl lg:max-w-2xl">
+            <span
+              className="inline-block rounded-full px-5 py-2 text-white font-bold text-sm lg:text-base mb-4"
+              style={{ backgroundColor: NAVY }}
+            >
+              SOFTWARE PLACEMENT SERVICE
+            </span>
+            <p className="text-white/90 leading-relaxed lg:text-lg">
+              We offer software placement service to freshers &amp; experienced in all domains and
+              technologies. Our placement services are both start-up companies &amp; MNCs.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- ONLINE & OFFLINE TRAINING ---------------- */}
+      <section className="px-6 py-14 lg:py-20" style={{ backgroundColor: NAVY }}>
+        <div className="max-w-6xl mx-auto grid sm:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] gap-6 lg:gap-12 items-center">
+          <div className="rounded-2xl p-6 lg:p-8 text-center font-extrabold text-2xl lg:text-3xl leading-snug" style={{ backgroundColor: BLUE, color: YELLOW }}>
+            ONLINE<br />&amp;<br />OFFLINE<br />TRAINING
+          </div>
+          <div>
+            <div className="flex flex-wrap gap-3 lg:gap-4 mb-4">
+              {trainingTags.map((tag, i) => (
+                <span
+                  key={i}
+                  className="px-5 py-2.5 lg:px-7 lg:py-3.5 rounded-lg font-bold text-white text-sm lg:text-base"
+                  style={{ backgroundColor: BLUE_LIGHT }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <p className="text-white/80 text-sm lg:text-base">
+              SAP, .NET, ORACLE, TESTING<br />
+              <span className="font-semibold text-white/95">Trending Courses Offered..</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- PLACEMENT SERVICE LOCATIONS ---------------- */}
+      <section className="px-6 py-12 lg:py-16" style={{ backgroundColor: YELLOW }}>
+        <div className="max-w-6xl mx-auto">
+          <h2 className="font-extrabold text-2xl sm:text-3xl lg:text-4xl mb-6 lg:mb-8" style={{ color: NAVY_DEEP }}>
+            PLACEMENT SERVICE LOCATIONS
+          </h2>
+          <div className="flex flex-wrap items-center gap-3 lg:gap-4">
+            {locations.map(loc => (
               <span
-                key={tag}
-                className={`px-4 py-2 rounded-full border text-sm ${
-                  i === 0 ? 'bg-gray-100 border-gray-300' : 'border-gray-300 text-gray-600'
-                }`}
+                key={loc}
+                className="flex items-center gap-2 rounded-full px-5 py-2.5 lg:px-7 lg:py-3.5 font-bold text-white text-sm lg:text-base"
+                style={{ backgroundColor: BLUE }}
               >
-                {tag.toUpperCase()}
+                <MapPin size={14} style={{ color: YELLOW }} />
+                {loc}
               </span>
             ))}
+            <span className="font-semibold text-sm lg:text-base" style={{ color: NAVY_DEEP }}>&amp; all major cities</span>
           </div>
-        </div>
-        <div className="bg-[#e9eaf0] rounded-2xl h-72 flex items-center justify-center overflow-hidden">
-          <ServerRoomIllustration className="w-full h-full" />
         </div>
       </section>
 
-      {/* SLIDE 2 — Today's IT Job Opportunities */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-light mb-3">Today's IT Job Opportunities</h2>
-        <p className="text-gray-500 mb-1">
-          The IT industry offers diverse opportunities across software development, data, cloud,
-          DevOps, testing, systems, and operations.
-        </p>
-        <p className="font-semibold mb-8">Multiple Roles. Multiple Career Paths.</p>
+      {/* ---------------- TOP OPENINGS WE DEAL WITH ---------------- */}
+      <section
+        className="relative bg-cover bg-no-repeat min-h-[320px] lg:min-h-[440px] flex items-center"
+        style={{ backgroundImage: `url(${OPENINGS_IMG})`, backgroundPosition: 'center 35%' }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{ background: `linear-gradient(100deg, ${NAVY_DEEP}f0 45%, ${NAVY_DEEP}55 100%)` }}
+        />
+        <div className="relative max-w-6xl mx-auto px-6 py-14 w-full">
+          <span
+            className="inline-block rounded-full px-5 py-2 text-white font-bold text-sm lg:text-base mb-6"
+            style={{ backgroundColor: NAVY }}
+          >
+            Top Openings We Deal with
+          </span>
+          <ul className="grid sm:grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-3 max-w-xs lg:max-w-2xl">
+            {openings.map(o => (
+              <li key={o} className="text-white/90 text-sm lg:text-base flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-white/70 shrink-0" />
+                {o}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-        <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8">
-          {[
-            { icon: Code, title: 'Software Development', desc: 'Build applications and digital products using modern programming languages and frameworks.' },
-            { icon: BarChart3, title: 'Data & Analytics', desc: 'Analyze, interpret, and visualize data to drive business decisions and strategy.' },
-            { icon: Cloud, title: 'Cloud & DevOps', desc: 'Deploy and manage scalable infrastructure across AWS, Azure, and GCP platforms.' },
-            { icon: Network, title: 'IT Operations', desc: 'Keep systems, networks, and infrastructure running reliably around the clock.' },
-            { icon: Bug, title: 'Software Testing', desc: 'Ensure application quality, reliability, and performance through rigorous testing.' },
-            { icon: Server, title: 'Systems & Infrastructure', desc: 'Design and maintain the foundational technology backbone of organizations.' },
-          ].map(({ icon: I, title, desc }) => (
-            <div key={title} className="flex gap-4">
-              <div className="w-9 h-9 shrink-0 rounded-full border border-gray-300 flex items-center justify-center">
-                <I size={16} strokeWidth={1.5} />
-              </div>
-              <div>
-                <h3 className="font-medium text-[#3a4a8a] mb-1">{title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
+      {/* ---------------- PLACEMENT SERVICE STAGES ---------------- */}
+      <section className="px-6 py-14 lg:py-20" style={{ backgroundColor: YELLOW }}>
+        <div className="max-w-6xl mx-auto">
+          <h2 className="font-extrabold text-2xl sm:text-3xl lg:text-4xl mb-10 lg:mb-16" style={{ color: NAVY_DEEP }}>
+            PLACEMENT SERVICE STAGES
+          </h2>
+
+          {/* mobile / tablet: two-row zigzag layout */}
+          <div className="lg:hidden">
+            <div className="flex flex-wrap items-start gap-x-2 gap-y-8 mb-8">
+              {stagesTop.map((s, i) => (
+                <React.Fragment key={s.n}>
+                  <div className="flex flex-col items-center w-20 sm:w-24 text-center">
+                    <div
+                      className="w-14 h-14 rounded-full flex items-center justify-center font-extrabold text-lg text-white border-2 mb-2"
+                      style={{ borderColor: BLUE, backgroundColor: i % 2 === 0 ? BLUE : YELLOW_DEEP, color: i % 2 === 0 ? YELLOW : NAVY_DEEP }}
+                    >
+                      {s.n}
+                    </div>
+                    <p className="text-xs font-semibold" style={{ color: NAVY_DEEP }}>{s.title}</p>
+                  </div>
+                  {i < stagesTop.length - 1 && (
+                    <div className="flex-1 min-w-[16px] border-t-2 border-dashed self-center mt-[-28px]" style={{ borderColor: NAVY }} />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+            <div className="flex justify-end">
+              <div className="flex items-start gap-2">
+                {stagesBottom.slice().reverse().map((s, i) => (
+                  <React.Fragment key={s.n}>
+                    {i > 0 && (
+                      <div className="w-8 sm:w-12 border-t-2 border-dashed self-center mt-[-28px]" style={{ borderColor: NAVY }} />
+                    )}
+                    <div className="flex flex-col items-center w-20 sm:w-24 text-center">
+                      <div
+                        className="w-14 h-14 rounded-full flex items-center justify-center font-extrabold text-lg mb-2"
+                        style={{ backgroundColor: BLUE, color: YELLOW }}
+                      >
+                        {s.n}
+                      </div>
+                      <p className="text-xs font-semibold" style={{ color: NAVY_DEEP }}>{s.title}</p>
+                    </div>
+                  </React.Fragment>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SLIDE 3 — Software Career Hierarchy */}
-      <section className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-10">
-        <div>
-          <h2 className="text-3xl font-light mb-2">Software Career Hierarchy</h2>
-          <p className="text-gray-500 mb-8">A clear path from entry-level roles to senior leadership positions</p>
-          <div className="bg-[#f3f4f7] rounded-2xl h-64 flex items-center justify-center overflow-hidden">
-            <DeskCharacterIllustration className="w-full h-full" />
           </div>
-        </div>
-        <div>
-          <span className="inline-block bg-gray-100 text-xs font-medium px-3 py-1 rounded-md mb-4">SOFTWARE JOBS</span>
-          <div className="divide-y divide-gray-200">
-            {[
-              { n: 1, title: 'Software Programmer', desc: 'Write and maintain code for applications and systems.' },
-              { n: 2, title: 'Software Engineer', desc: 'Design scalable solutions and lead technical development.' },
-              { n: 3, title: 'Software Developer', desc: 'Build and ship full-featured digital products end-to-end.' },
-              { n: 4, title: 'Software Architect', desc: 'Define system structure, standards, and technical vision.' },
-            ].map(({ n, title, desc }) => (
-              <div key={n} className="flex gap-5 py-5">
-                <div className="w-14 h-14 shrink-0 rounded-lg bg-[#e5e6ec] flex items-center justify-center text-xl text-gray-600">
-                  {n}
+
+          {/* large screens: single straight row, 1 through 8 */}
+          <div className="hidden lg:flex items-start gap-x-1">
+            {[...stagesTop, ...stagesBottom].map((s, i, all) => (
+              <React.Fragment key={s.n}>
+                <div className="flex flex-col items-center flex-1 text-center px-1">
+                  <div
+                    className="w-16 h-16 xl:w-20 xl:h-20 rounded-full flex items-center justify-center font-extrabold text-xl border-2 mb-3"
+                    style={{ borderColor: NAVY, backgroundColor: i % 2 === 0 ? BLUE : YELLOW_DEEP, color: i % 2 === 0 ? YELLOW : NAVY_DEEP }}
+                  >
+                    {s.n}
+                  </div>
+                  <p className="text-sm font-semibold leading-snug" style={{ color: NAVY_DEEP }}>{s.title}</p>
                 </div>
-                <div>
-                  <h3 className="font-medium mb-1">{title}</h3>
-                  <p className="text-sm text-gray-500">{desc}</p>
-                </div>
-              </div>
+                {i < all.length - 1 && (
+                  <div className="flex-1 max-w-[48px] border-t-2 border-dashed self-start mt-8" style={{ borderColor: NAVY }} />
+                )}
+              </React.Fragment>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SLIDE 4 — From Entry Level to Leadership */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-light mb-2">From Entry Level to Leadership</h2>
-        <p className="text-gray-500 mb-10">Your IT career progression path — from trainee to technical leader</p>
-
-        <div className="relative w-full max-w-3xl" style={{ paddingBottom: '50%' }}>
-          <svg
-            viewBox="0 0 1200 600"
-            className="absolute inset-0 w-full h-full"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* concentric rings */}
-            <circle cx="320" cy="300" r="220" fill="#5b5f9c" />
-            <circle cx="320" cy="300" r="165" fill="#6f74ad" />
-            <circle cx="320" cy="300" r="70" fill="#14152b" />
-
-            {/* leader lines */}
-            <line x1="461" y1="131" x2="780" y2="120" stroke="#c7c9e0" strokeWidth="2" />
-            <line x1="485" y1="300" x2="780" y2="300" stroke="#c7c9e0" strokeWidth="2" />
-            <line x1="344" y1="366" x2="780" y2="480" stroke="#c7c9e0" strokeWidth="2" />
-
-            {/* dots */}
-            <circle cx="780" cy="120" r="6" fill="#5b5f9c" />
-            <circle cx="780" cy="300" r="6" fill="#6f74ad" />
-            <circle cx="780" cy="480" r="6" fill="#14152b" />
-          </svg>
-
-          {/* labels, aligned to the SVG coordinate system above */}
-          <div className="absolute" style={{ left: '67%', top: '20%', transform: 'translateY(-50%)' }}>
-            <h3 className="font-medium text-lg whitespace-nowrap">High Level</h3>
-            <p className="text-gray-500 text-sm whitespace-nowrap">Project Manager &amp; Technical Leadership</p>
-          </div>
-          <div className="absolute" style={{ left: '67%', top: '50%', transform: 'translateY(-50%)' }}>
-            <h3 className="font-medium text-lg whitespace-nowrap">Mid Level</h3>
-            <p className="text-gray-500 text-sm whitespace-nowrap">Software Analyst to Senior Engineers</p>
-          </div>
-          <div className="absolute" style={{ left: '67%', top: '80%', transform: 'translateY(-50%)' }}>
-            <h3 className="font-medium text-lg whitespace-nowrap">Entry Level</h3>
-            <p className="text-gray-500 text-sm whitespace-nowrap">Trainee &amp; Junior Engineer roles</p>
-          </div>
-        </div>
-
-        <p className="text-gray-500 mt-10 max-w-3xl">
-          Every IT career starts with foundational roles and grows through continuous learning,
-          hands-on experience, and demonstrated technical leadership.
-        </p>
+      {/* ---------------- CTA STRIP ---------------- */}
+      <section className="py-6 lg:py-10 px-6 text-center" style={{ backgroundColor: NAVY }}>
+        <button
+          onClick={() => openEnquiry('Software – IT Career Guidance')}
+          className="font-bold text-white text-base sm:text-lg lg:text-2xl hover:underline"
+        >
+          Talk To Our Experts For Career Guidance
+        </button>
       </section>
 
-      {/* SLIDE 5 — Software Developer */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-light mb-2">Software Developer</h2>
-        <p className="text-gray-600 mb-8">
-          <span className="font-semibold">Build. Code. Test. Deliver.</span> — Software Developers
-          design, build, test, maintain, and improve software applications and digital solutions.
-        </p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            { title: 'Programming Languages', desc: 'Python, Java, JavaScript, C++' },
-            { title: 'Data Structures', desc: 'Arrays, trees, graphs, queues' },
-            { title: 'Databases', desc: 'SQL, NoSQL, query design' },
-            { title: 'APIs & Version Control', desc: 'REST, Git, GitHub workflows' },
-            { title: 'Problem Solving', desc: 'Algorithms, debugging, logic' },
-            { title: 'SDLC', desc: 'Agile, Scrum, release cycles' },
-          ].map(({ title, desc }) => (
-            <div key={title} className="bg-[#e9eaf0] rounded-xl p-5">
-              <h3 className="font-medium mb-2">{title}</h3>
-              <p className="text-sm text-gray-500">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SLIDE 6 — Software Engineer */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-light mb-2">Software Engineer</h2>
-        <p className="text-gray-600 mb-8">
-          <span className="font-semibold">Engineering Solutions That Scale</span> — Software Engineers
-          focus on building scalable, maintainable solutions across application development, system
-          design, and architecture.
-        </p>
-
-        <div className="grid md:grid-cols-2 gap-10">
-          <div>
-            <span className="text-xs font-semibold text-red-400 tracking-wide">ROLE FOCUS</span>
-            <div className="grid grid-cols-2 gap-4 mt-4 mb-8">
-              {['Application Development', 'System Design', 'Performance Optimization', 'Code Quality', 'Architecture Planning'].map(t => (
-                <div key={t} className="border-l-2 border-gray-800 pl-3 py-1 text-sm">{t}</div>
-              ))}
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {['Programming Languages', 'Algorithms', 'Databases', 'Cloud Technologies'].map((t, i) => (
-                <div key={t} className="bg-[#e5e6ec] rounded-full text-center py-3 text-sm">
-                  {i + 1}<br /><span className="text-xs">{t}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-[#f3f4f7] rounded-2xl h-64 flex items-center justify-center overflow-hidden">
-            <EngineerBoardIllustration className="w-full h-full" />
-          </div>
-        </div>
-      </section>
-
-      {/* SLIDE 7 — Analyst Career Path */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-light mb-2">Analyst Career Path</h2>
-        <p className="text-gray-500 mb-10">
-          Three connected roles in the analyst career progression — from data foundations to senior technical coordination
-        </p>
-        <div className="grid md:grid-cols-3 gap-1">
-          {[
-            { n: '01', title: 'Analyst', desc: 'Data analysis, SQL, debugging, reporting, and problem solving.' },
-            { n: '02', title: 'Software Analyst', desc: 'Application analysis, requirements, testing, and business/technical coordination.' },
-            { n: '03', title: 'Senior Software Analyst', desc: 'Advanced analysis, solution planning, technical coordination, and team support.' },
-          ].map(({ n, title, desc }, i) => (
-            <div key={n} className="relative">
-              <div className="bg-[#e5e6ec] h-16 flex items-center justify-center text-gray-500 mb-4"
-                style={{ clipPath: i < 2 ? 'polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%)' : 'none' }}>
-                {i + 1}
-              </div>
-              <span className="text-xs bg-gray-100 px-2 py-1 rounded">{n}</span>
-              <h3 className="font-medium mt-2 mb-1">{title}</h3>
-              <p className="text-sm text-gray-500">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SLIDE 8 — DevOps Engineer */}
-      <section className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-10 items-start">
-        <div>
-          <h2 className="text-3xl font-light mb-4">DevOps Engineer</h2>
-          <span className="inline-block bg-gray-100 text-xs font-medium px-3 py-1 rounded-md mb-4">DEVELOPMENT + OPERATIONS</span>
-          <p className="text-gray-500 mb-8">
-            DevOps Engineers bridge development and operations teams to enable faster, more reliable
-            software delivery through automation, deployment pipelines, and infrastructure management.
+      {/* ---------------- DEVELOPER PHOTO ---------------- */}
+      <section
+        className="relative h-64 sm:h-80 lg:h-[420px] bg-cover bg-no-repeat"
+        style={{ backgroundImage: `url(${DEVELOPER_IMG})`, backgroundPosition: 'center 15%' }}
+      >
+        <div
+          className="absolute inset-0 hidden lg:block"
+          style={{ background: `linear-gradient(90deg, ${NAVY_DEEP}cc 0%, transparent 45%)` }}
+        />
+        <div className="hidden lg:flex relative max-w-6xl mx-auto h-full items-center px-6">
+          <p className="text-white font-extrabold text-3xl xl:text-4xl max-w-md leading-tight">
+            Skilled talent, ready to build.
           </p>
-          <div className="grid grid-cols-2 gap-6 text-sm">
-            <div><h4 className="font-medium mb-1">Kubernetes & Docker</h4><p className="text-gray-500">Container orchestration and deployment at scale.</p></div>
-            <div><h4 className="font-medium mb-1">CI/CD Pipelines</h4><p className="text-gray-500">Automate build, test, and release workflows.</p></div>
-            <div><h4 className="font-medium mb-1">Infrastructure Automation</h4><p className="text-gray-500">Terraform for provisioning and managing cloud resources.</p></div>
-            <div><h4 className="font-medium mb-1">Monitoring & Logging</h4><p className="text-gray-500">Ensure system reliability and rapid incident response.</p></div>
-          </div>
-        </div>
-        <div className="bg-[#14152b] rounded-2xl h-72 flex items-center justify-center overflow-hidden">
-          <DevOpsDashboardIllustration className="w-full h-full" />
         </div>
       </section>
 
-      {/* SLIDE 9 — Cloud & Systems Careers */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-light mb-2">Cloud & Systems Careers</h2>
-        <p className="text-gray-500 mb-10">Related roles in cloud and infrastructure — the backbone of modern enterprise technology</p>
+      {/* ---------------- WE PROVIDE ---------------- */}
+      <section style={{ backgroundColor: NAVY_DEEP }}>
+        <div className="max-w-6xl mx-auto px-6 py-12 lg:py-20">
+          <h2 className="text-white font-extrabold text-3xl sm:text-4xl lg:text-5xl mb-8 lg:mb-12">WE PROVIDE</h2>
 
-        <div className="grid md:grid-cols-2 gap-10">
-          <div>
-            <span className="text-xs font-semibold text-red-400 tracking-wide">CAREER ROLES</span>
-            <div className="grid grid-cols-2 gap-3 mt-4">
-              {['Cloud Engineer', 'DevOps Engineer', 'Systems Engineer', 'Infrastructure Engineer', 'Associate Systems Engineer'].map(t => (
-                <div key={t} className="bg-[#e5e6ec] rounded-full text-center py-3 text-sm">{t}</div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <span className="text-xs font-semibold text-red-400 tracking-wide">KEY SKILLS</span>
-            <div className="grid grid-cols-2 gap-3 mt-4">
-              {[
-                { t: 'Cloud Platforms', d: 'AWS, Azure, GCP' },
-                { t: 'Linux & Networking', d: 'Core system administration fundamentals' },
-                { t: 'Infrastructure Automation', d: 'IaC tools and configuration management' },
-                { t: 'Security & Compliance', d: 'Identity, access, and regulatory standards' },
-              ].map(({ t, d }) => (
-                <div key={t} className="border border-gray-200 rounded-lg p-3">
-                  <h4 className="font-medium text-sm mb-1">{t}</h4>
-                  <p className="text-xs text-gray-500">{d}</p>
+          <div className="flex flex-col lg:hidden mb-10 rounded-2xl overflow-hidden">
+            {weProvide.map((item, i) => (
+              <div key={item.title}>
+                <div className="px-5 py-3 font-bold text-white" style={{ backgroundColor: i % 2 === 0 ? BLUE : BLUE_LIGHT }}>
+                  {item.title}
                 </div>
-              ))}
-              <div className="col-span-2 border border-gray-200 rounded-lg p-3">
-                <h4 className="font-medium text-sm mb-1">Monitoring & Troubleshooting</h4>
-                <p className="text-xs text-gray-500">Observability, alerting, incident resolution</p>
+                <div className="px-5 py-4 text-white/80 text-sm leading-relaxed" style={{ backgroundColor: NAVY_DEEP }}>
+                  {item.desc}
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        </div>
-      </section>
 
-      {/* SLIDE 10 — Software Testing & Quality */}
-      <section className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-10 items-start">
-        <div>
-          <h2 className="text-3xl font-light mb-4">Software Testing & Quality</h2>
-          <p className="text-gray-600 mb-8">
-            <span className="font-semibold">BUILD IT. TEST IT. IMPROVE IT.</span> — Testing professionals
-            ensure applications are reliable, functional, secure, and ready for users. Quality assurance
-            is critical to software success.
-          </p>
-          <div className="grid grid-cols-2 gap-8">
-            <div>
-              <span className="text-xs font-semibold text-red-400 tracking-wide">CAREER ROLES</span>
-              <ul className="mt-3 space-y-2 text-sm text-gray-600">
-                {['QA Engineer', 'Software Tester', 'Automation Tester', 'Test Engineer', 'Quality Analyst'].map(t => (
-                  <li key={t} className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-gray-400" />{t}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <span className="text-xs font-semibold text-red-400 tracking-wide">KEY SKILLS</span>
-              <ul className="mt-3 space-y-2 text-sm text-gray-600">
-                {['Manual & Automation Testing', 'Test Case Design', 'Debugging & Root Cause Analysis', 'API Testing', 'SDLC Knowledge'].map(t => (
-                  <li key={t} className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-gray-400" />{t}</li>
-                ))}
-              </ul>
-            </div>
+          {/* large screens: balanced card grid instead of full-bleed stripes */}
+          <div className="hidden lg:grid grid-cols-2 gap-6 mb-12">
+            {weProvide.map((item, i) => (
+              <div key={item.title} className="rounded-2xl overflow-hidden">
+                <div className="px-6 py-4 font-bold text-white text-lg" style={{ backgroundColor: i % 2 === 0 ? BLUE : BLUE_LIGHT }}>
+                  {item.title}
+                </div>
+                <div className="px-6 py-5 text-white/80 leading-relaxed" style={{ backgroundColor: `${BLUE}22` }}>
+                  {item.desc}
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-        <div className="bg-[#f3f4f7] rounded-2xl h-72 flex items-center justify-center overflow-hidden">
-          <QATestingIllustration className="w-full h-full" />
-        </div>
-      </section>
 
-      {/* SLIDE 11 — IT Operations & Support */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-light mb-4">IT Operations & Support</h2>
-        <p className="text-gray-600 mb-8">
-          <span className="font-semibold">KEEPING TECHNOLOGY RUNNING</span> — IT Operations professionals
-          ensure systems, networks, and infrastructure run smoothly. They provide critical support and
-          maintain technology reliability.
-        </p>
-
-        <div className="grid md:grid-cols-2 gap-10 mb-10">
-          <div className="bg-[#e9eaf0] rounded-2xl h-48 flex items-center justify-center overflow-hidden">
-            <ITSupportIllustration className="w-full h-full" />
+          <div className="flex justify-center">
+            <button
+              onClick={() => openEnquiry('Software – IT — We Provide')}
+              className="px-8 py-3 lg:px-10 lg:py-4 rounded-xl font-extrabold text-white text-base lg:text-lg shadow-md hover:opacity-90 transition"
+              style={{ backgroundColor: RED }}
+            >
+              Enquiry Now
+            </button>
           </div>
-          <div>
-            <span className="text-xs font-semibold text-red-400 tracking-wide">CAREER ROLES / KEY SKILLS</span>
-            <ul className="mt-3 space-y-2 text-sm text-gray-600">
-              {['Communication & Troubleshooting', 'System Administration', 'Networking & Technical Support', 'Problem Solving'].map(t => (
-                <li key={t} className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-gray-400" />{t}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="grid sm:grid-cols-3 lg:grid-cols-5 gap-6 border-t border-gray-200 pt-6">
-          {[
-            { n: '01', t: 'Operations Associate' },
-            { n: '02', t: 'IT Support Engineer' },
-            { n: '03', t: 'Systems Administrator' },
-            { n: '04', t: 'Technical Support Specialist' },
-            { n: '05', t: 'Infrastructure Support' },
-          ].map(({ n, t }) => (
-            <div key={n}>
-              <span className="text-xs text-gray-400">{n}</span>
-              <p className="font-medium text-sm mt-1 border-b border-gray-200 pb-3">{t}</p>
-            </div>
-          ))}
         </div>
       </section>
     </div>
@@ -548,9 +526,24 @@ function JobListingView({ type, config }) {
 export default function Jobs() {
   const { type = 'free' } = useParams()
   const config = TYPE_CONFIG[type] || TYPE_CONFIG.free
+  const [panel, setPanel] = useState({ open: false, degree: null })
+
+  const openEnquiry = (title) =>
+    setPanel({ open: false, degree: { _id: title, title, university: 'SBS – Sai Business Services' } })
 
   if (type === 'free') {
-    return <FreeJobsPdfView />
+    return (
+      <div className="page-enter">
+        <FreeJobsPdfView openEnquiry={openEnquiry} />
+        <PopupForm
+          open={panel.open}
+          onClose={() => setPanel({ open: false, degree: null })}
+          type="degree"
+          refId={panel.degree?._id}
+          refTitle={panel.degree ? panel.degree.title : ''}
+        />
+      </div>
+    )
   }
 
   return <JobListingView type={type} config={config} />
