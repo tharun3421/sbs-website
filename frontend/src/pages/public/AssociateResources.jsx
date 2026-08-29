@@ -4,7 +4,7 @@ import { ArrowLeft, Download, Share2, X, Image as ImageIcon, Video as VideoIcon,
 import api from '../../api'
 import toast from 'react-hot-toast'
 import MediaPopup from '../../components/MediaPopup'
-import { CORE_SERVICE_LABELS } from '../../constants/coreServices'
+import { RESOURCE_CATEGORY_LABELS } from '../../constants/coreServices'
 
 const platformIcon = (platform, size = 14) => {
   switch (platform) {
@@ -28,11 +28,11 @@ export default function AssociateResources() {
       .finally(() => setLoading(false))
   }, [])
 
-  // Categories on this page are exactly the site's core services, in the
-  // same order they're presented on the home page. A resource only shows
-  // up here if its category matches one of those services.
+  // Categories on this page are the resource categories (core services plus
+  // any resource-only categories like Freelancer/WFH), in a fixed order. A
+  // resource only shows up here if its category matches one of these.
   const grouped = useMemo(() => {
-    return CORE_SERVICE_LABELS
+    return RESOURCE_CATEGORY_LABELS
       .map(label => [label, resources.filter(r => r.category === label)])
       .filter(([, items]) => items.length > 0)
   }, [resources])

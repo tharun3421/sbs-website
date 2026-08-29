@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Plus, Edit, Trash2, X, Upload, Image as ImageIcon, Video as VideoIcon, Link2, Youtube, Instagram, Facebook, MessageCircle, ExternalLink } from 'lucide-react'
 import api from '../../api'
 import toast from 'react-hot-toast'
-import { CORE_SERVICE_LABELS } from '../../constants/coreServices'
+import { RESOURCE_CATEGORY_LABELS } from '../../constants/coreServices'
 
 const PLATFORMS = ['YouTube', 'Instagram', 'Facebook', 'WhatsApp', 'Other']
 
@@ -78,9 +78,10 @@ export default function AdminResources() {
   }
   useEffect(load, [])
 
-  // Every service gets its own section, in CORE_SERVICES order, even if it
-  // has no resources yet. Anything left over with an old/unmatched category
-  // (from before categories were locked to services) is grouped at the end.
+  // Every category gets its own section, in RESOURCE_CATEGORY_LABELS order,
+  // even if it has no resources yet. Anything left over with an old/unmatched
+  // category (from before categories were locked to this list) is grouped
+  // at the end.
   const grouped = useMemo(() => {
     const byCategory = new Map()
     resources.forEach(r => {
@@ -89,9 +90,9 @@ export default function AdminResources() {
       byCategory.get(key).push(r)
     })
 
-    const groups = CORE_SERVICE_LABELS.map(label => [label, byCategory.get(label) || []])
+    const groups = RESOURCE_CATEGORY_LABELS.map(label => [label, byCategory.get(label) || []])
     byCategory.forEach((items, key) => {
-      if (!CORE_SERVICE_LABELS.includes(key)) groups.push([key || 'Uncategorized', items])
+      if (!RESOURCE_CATEGORY_LABELS.includes(key)) groups.push([key || 'Uncategorized', items])
     })
     return groups
   }, [resources])
@@ -274,7 +275,7 @@ export default function AdminResources() {
                   onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
                   className={inputClass} required>
                   <option value="" disabled>Select a service</option>
-                  {CORE_SERVICE_LABELS.map(label => (
+                  {RESOURCE_CATEGORY_LABELS.map(label => (
                     <option key={label} value={label}>{label}</option>
                   ))}
                 </select>
