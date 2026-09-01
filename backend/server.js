@@ -31,6 +31,8 @@ app.use('/api/settings', require('./routes/settingsRoutes'));
 app.use('/api/resources', require('./routes/resourceRoutes'));
 app.use('/api/associate', require('./routes/associateRoutes'));
 app.use('/api/associate/leads', require('./routes/leadRoutes'));
+app.use('/api/posters', require('./routes/posterRoutes'));
+app.use('/api/tutors', require('./routes/tutorRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'SBS API running' }));

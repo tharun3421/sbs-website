@@ -5,6 +5,7 @@ import { ChevronRight, ChevronLeft } from 'lucide-react'
 const MORE_SERVICES = [
   { to: '/loans',          label: 'Loans' },
   { to: '/other-services', label: 'Other Services' },
+  { to: '/phd-admissions', label: 'Ph.D Admissions' },
 ]
 
 export default function MoreServices() {

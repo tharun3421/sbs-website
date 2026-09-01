@@ -1,0 +1,20 @@
+const router = require('express').Router();
+const ctrl = require('../controllers/tutorController');
+const auth = require('../middleware/authMiddleware');
+
+// Admin-only, placed before the public `/` route's siblings so specific
+// paths aren't swallowed by anything more general.
+router.get('/upload-signature', auth, ctrl.getUploadSignature);
+router.get('/filters', ctrl.getFilterOptions);
+
+// Public — active listings only, supports ?subject=&level=&language=&q=
+router.get('/', ctrl.getTutors);
+
+// Admin — every listing, including hidden ones, same optional filters.
+router.get('/all', auth, ctrl.getAllTutors);
+
+router.post('/', auth, ctrl.createTutor);
+router.put('/:id', auth, ctrl.updateTutor);
+router.delete('/:id', auth, ctrl.deleteTutor);
+
+module.exports = router;

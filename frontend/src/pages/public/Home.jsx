@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronRight, Users, ShieldCheck, Search, UserPlus, LogIn } from 'lucide-react'
-import { CORE_SERVICES } from '../../constants/coreServices'
+import { CORE_SERVICES, HOME_EXTRA_SERVICES } from '../../constants/coreServices'
+
+
+const ALL_HOME_SERVICES = [...CORE_SERVICES, ...HOME_EXTRA_SERVICES]
+
 
 export default function Home() {
   const [query, setQuery] = useState('')
 
-  const filteredServices = CORE_SERVICES.filter(({ label }) =>
+  const filteredServices = ALL_HOME_SERVICES.filter(({ label }) =>
     label.toLowerCase().includes(query.trim().toLowerCase())
   )
 
@@ -76,13 +80,13 @@ export default function Home() {
         {filteredServices.length > 0 ? (
           <ul className="grid grid-cols-2 gap-x-6 gap-y-1">
             {filteredServices.map(({ to, label }) => (
-              <li key={to}>
+              <li key={to} className="min-w-0">
                 <Link
                   to={to}
-                  className="flex items-center gap-2 py-2 px-1 text-theme-primary text-sm group"
+                  className="whitespace-pre-line flex items-start gap-2 py-2 px-1 text-theme-primary text-sm group min-w-0"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0" />
-                  <span className="group-hover:text-[#FFD700] transition-colors">{label}</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0 mt-1.5" />
+                  <span className="group-hover:text-[#FFD700] transition-colors break-words">{label}</span>
                 </Link>
               </li>
             ))}

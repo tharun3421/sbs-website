@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, QrCode, Settings, LogOut, Menu, X, ChevronRight, Sun, Moon, ExternalLink, Landmark, LayoutGrid, Plane, Phone, Users, Users2, Hotel } from 'lucide-react'
+import { LayoutDashboard, QrCode, Settings, LogOut, Menu, X, ChevronRight, Sun, Moon, ExternalLink, Landmark, LayoutGrid, Plane, Phone, Users, Users2, Hotel, Briefcase, GraduationCap } from 'lucide-react'
 const NAV = [
   { to: '/admin',                  label: 'Dashboard',      icon: LayoutDashboard, exact: true },
   { to: '/admin/resources',        label: 'Assoc. Resources', icon: Users },
+  { to: '/admin/visa-posters',     label: 'Visa Posters',   icon: Plane },
+  { to: '/admin/freelance-posters', label: 'Freelance Posters', icon: Briefcase },
+  { to: '/admin/tutors',           label: 'Tutors/Mentors', icon: GraduationCap },
   { to: '/admin/associates',       label: 'Associates',     icon: Users2 },
   { to: '/admin/contacts',         label: 'Contacts',       icon: Phone },
   { to: '/admin/qr',               label: 'QR Generator',   icon: QrCode },

@@ -13,6 +13,7 @@ import OnlineDegrees from './pages/public/OnlineDegrees'
 import BusinessOffers from './pages/public/BusinessOffers'
 import Loans from './pages/public/Loans'
 import OtherServices from './pages/public/OtherServices'
+import PhdAdmissions from './pages/public/PhdAdmissions'
 import MoreServices from './pages/public/MoreServices'
 import Contact from './pages/public/Contact'
 import AssociateResources from './pages/public/AssociateResources'
@@ -31,6 +32,17 @@ import AdminAssociates from './pages/admin/AdminAssociates'
 import AssociateLogin from './pages/associate/AssociateLogin'
 import AssociateRegister from './pages/associate/AssociateRegister'
 import AssociateLeads from './pages/associate/AssociateLeads'
+import TradingCourse from './pages/public/TradingCourse'
+import FastTrackDegrees from './pages/public/FastTrackDegrees'
+import ExtraIncome from './pages/public/ExtraIncome'
+
+
+import Visas from './pages/public/Visas'
+import Freelance from './pages/public/Freelance'
+import AdminVisaPosters from './pages/admin/AdminVisaPosters'
+import AdminFreelancePosters from './pages/admin/AdminFreelancePosters'
+import Tutors from './pages/public/Tutors'
+import AdminTutors from './pages/admin/AdminTutors'
 
 
 export default function App() {
@@ -45,6 +57,7 @@ export default function App() {
         <Route path="/business-offers" element={<BusinessOffers />} />
         <Route path="/loans" element={<Loans />} />
         <Route path="/other-services" element={<OtherServices />} />
+        <Route path="/phd-admissions" element={<PhdAdmissions />} />
         <Route path="/more-services" element={<MoreServices />} />
         <Route path="/study-abroad" element={<StudyAbroad />} />
         <Route path="/hotel-management/india" element={<HotelManagementIndia />} />
@@ -53,6 +66,12 @@ export default function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/associate/login" element={<AssociateLogin />} />
         <Route path="/associate/register" element={<AssociateRegister />} />
+        <Route path="/trading-course" element={<TradingCourse />} />
+        <Route path="/fast-track-degrees" element={<FastTrackDegrees />} />
+        <Route path="/extra-income" element={<ExtraIncome />} />
+        <Route path="/visas" element={<Visas />} />
+        <Route path="/freelance" element={<Freelance />} />
+        <Route path="/tutors" element={<Tutors />} />
 
         {/* Associate protected — same navbar/footer chrome as the rest of the public site */}
         <Route path="/associate" element={<AssociateRoute><AssociateLayout /></AssociateRoute>}>
@@ -71,6 +90,9 @@ export default function App() {
         <Route path="associates" element={<AdminAssociates />} />
         <Route path="qr" element={<AdminQRCode />} />
         <Route path="settings" element={<AdminSettings />} />
+        <Route path="tutors" element={<AdminTutors />} />
+        <Route path="visa-posters" element={<AdminVisaPosters />} />
+        <Route path="freelance-posters" element={<AdminFreelancePosters />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
