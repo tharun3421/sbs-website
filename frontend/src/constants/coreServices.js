@@ -6,9 +6,9 @@ export const CORE_SERVICES = [
   { to: '/hotel-management/india',     label: 'Hotel Management (India)' },
   { to: '/hotel-management/mauritius', label: 'Hotel Management (Mauritius)' },
   { to: '/loans',          label: 'Loans Personal /Business /Home/ Plot/Education /Third Party /Reloan/ Takeover/ Private Finance' },
-  { to: '/phd-admissions', label: 'Ph. D Admissions \nFullTime/PartTime/Online Ph.D/FullFunded/Research/ Honorary Ph. D' },
+  { to: '/phd-admissions', label: 'Ph. D Admissions \nFullTime/PartTime/ \n Online Ph.D/FullFunded/ \n Research/Honorary Ph.D' },
   { to: '/other-services', label: 'Other Services' },
-  { to: '/trading-course', label: 'Learn & Earn \n Stocks/Gold&Silver/Crypto/ NIFTY/SENSEX' },
+  { to: '/trading-course', label: 'Learn & Earn \n Stocks/Gold&Silver/\n Crypto/ NIFTY/SENSEX' },
   { to: '/fast-track-degrees', label: 'Fast Track Degrees \n BA/BCOM/BBA/BCA/ MA/MCOM/MBA/MCA' },
   { to: '/extra-income',       label: 'Need Extra Income? \n Become Online Tutor/Trainer/ Coach/Mentor' },
 ]
@@ -28,5 +28,5 @@ export const RESOURCE_CATEGORY_LABELS = [
 export const HOME_EXTRA_SERVICES = [
   { to: '/visas',     label: 'Visas \n Work Visas/ Visit Visas/PR' },
   { to: '/freelance', label: 'Become Associate \n Freelancer /Work From Home / Extra Income/ Business Income' },
-  { to: '/tutors',    label: 'Find your Online Tutor/Trainer \n Teacher/Coach/Mentor/Advisor/Counsellor' },
+  { to: '/tutors',    label: 'Find your Online Tutor/Trainer \n Teacher/Coach/Mentor/\n Advisor/Counsellor' },
 ]

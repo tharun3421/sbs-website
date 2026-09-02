@@ -58,8 +58,25 @@ export default function TutorDirectory() {
   return (
     <div className="page-enter bg-theme-primary min-h-screen">
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-theme-primary font-black text-2xl mb-1">Find your Online Tutor</h1>
-        <p className="text-theme-secondary text-sm mb-6">Trainer / Teacher / Coach / Mentor / Advisor / Counsellor — browse listings published by SBS</p>
+       {/* Header with Unsplash background image */}
+<div
+  className="relative rounded-2xl overflow-hidden mb-6 px-4 py-10 sm:py-14"
+  style={{
+    backgroundImage: `url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }}
+>
+  {/* Dark overlay so text stays readable over the photo */}
+  <div className="absolute inset-0 bg-black/60" />
+
+  <div className="relative z-10">
+    <h1 className="text-white font-black text-2xl mb-1">Find your </h1>
+    <p className="text-white text-[14px] uppercase">
+      Online Tutor / Trainer / Teacher / Coach / Mentor / Advisor / Counsellor
+    </p>
+  </div>
+</div>
 
         {/* Search + filters */}
         <div className="bg-theme-card border border-theme rounded-2xl p-4 mb-6 space-y-3">
@@ -69,7 +86,7 @@ export default function TutorDirectory() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search by name or keyword..."
+              placeholder="Search ..."
               className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-transparent border border-theme text-theme-primary text-sm placeholder:text-theme-muted focus:outline-none focus:border-[#FFD700] transition-colors"
             />
           </div>
