@@ -156,14 +156,7 @@ export default function TutorDirectory() {
             {tutors.map(t => (
               <div key={t._id} className="bg-theme-card border border-theme rounded-2xl overflow-hidden flex flex-col card-hover">
                 <div className="flex gap-3 p-3">
-                  <div className="w-20 h-20 rounded-xl overflow-hidden bg-black/20 shrink-0">
-                    <img
-                      src={t.imageUrl || NO_PHOTO_PLACEHOLDER}
-                      alt={t.name}
-                      className="w-full h-full object-cover"
-                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = NO_PHOTO_PLACEHOLDER }}
-                    />
-                  </div>
+                
                   <div className="min-w-0">
                     <p className="text-theme-primary font-bold text-sm truncate">{t.name}</p>
                     {t.subjects?.length > 0 && (

@@ -76,7 +76,7 @@ export default function Home() {
         <div className="bg-theme-card border border-theme rounded-2xl p-5 mb-6">
           <p className="text-[#FFD700]  font-bold text-sm mb-1">Associate Portal</p>
           <p className="text-theme-secondary text-xs mb-4">
-            Register as associate to manage your own leads, track their progress, and grow your business with us.
+            Register as associate to manage your leads, track their progress, and grow your business with us.
           </p>
           <div className="flex flex-col sm:flex-row gap-2.5">
             <Link

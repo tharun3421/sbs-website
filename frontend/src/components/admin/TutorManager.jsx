@@ -211,7 +211,7 @@ export default function TutorManager() {
                   className={inputClass} />
               </div>
 
-              <div>
+              {/* <div>
                 <label className={labelClass}>Photo (optional)</label>
                 <label className="flex items-center gap-3 p-3 border border-dashed border-theme rounded-xl cursor-pointer hover:border-[#FFD700]/40 transition input-bg">
                   <Upload size={16} className="text-theme-muted shrink-0" />
@@ -226,7 +226,7 @@ export default function TutorManager() {
                     View current photo
                   </a>
                 )}
-              </div>
+              </div> */}
 
               <div>
                 <label className={labelClass}>Subject/s</label>
