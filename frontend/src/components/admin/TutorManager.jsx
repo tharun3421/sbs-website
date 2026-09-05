@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, X, Upload, Phone, Mail } from 'lucide-react'
+import { Plus, Edit, Trash2, X, Upload, Phone, Mail, User } from 'lucide-react'
 import api from '../../api'
 import toast from 'react-hot-toast'
 
@@ -80,7 +80,6 @@ export default function TutorManager() {
   const handleSave = async (e) => {
     e.preventDefault()
     if (!form.name.trim()) return toast.error('Please enter a name')
-    if (!modal.tutor && !file) return toast.error('Please choose a photo')
     if (!form.contactPhone.trim() && !form.contactEmail.trim()) {
       return toast.error('Add at least a phone number or an email so visitors can get in touch')
     }
@@ -160,7 +159,14 @@ export default function TutorManager() {
           {tutors.map(t => (
             <div key={t._id} className="bg-theme-card border border-theme rounded-2xl overflow-hidden flex flex-col">
               <div className="relative h-32 sm:h-36 bg-black/20 overflow-hidden">
-                <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" />
+                {t.imageUrl ? (
+                  <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-1 bg-theme-tertiary">
+                    <User size={28} className="text-theme-muted" />
+                    <span className="text-theme-muted text-[9px]">No Photo</span>
+                  </div>
+                )}
                 <span className={`absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded-full text-[9px] font-semibold ${t.isActive ? 'bg-[#44DD88]/90 text-[#0A0A0A]' : 'bg-red-500/90 text-white'}`}>
                   {t.isActive ? 'Active' : 'Hidden'}
                 </span>
@@ -206,11 +212,11 @@ export default function TutorManager() {
               </div>
 
               <div>
-                <label className={labelClass}>Photo</label>
+                <label className={labelClass}>Photo (optional)</label>
                 <label className="flex items-center gap-3 p-3 border border-dashed border-theme rounded-xl cursor-pointer hover:border-[#FFD700]/40 transition input-bg">
                   <Upload size={16} className="text-theme-muted shrink-0" />
                   <span className="text-theme-secondary text-sm truncate">
-                    {file ? file.name : (modal.tutor ? 'Replace existing photo' : 'Upload a photo')}
+                    {file ? file.name : (modal.tutor ? 'Replace existing photo' : 'Upload a photo (optional)')}
                   </span>
                   <input type="file" accept="image/*" onChange={e => setFile(e.target.files[0])} className="hidden" />
                 </label>

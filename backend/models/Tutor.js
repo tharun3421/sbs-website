@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 // offer them as filter dropdowns.
 const tutorSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
-  imageUrl: { type: String, required: true },
+  imageUrl: { type: String, default: '' },
   subjects: { type: [String], default: [], set: arr => (arr || []).map(s => s.trim()).filter(Boolean) },
   levels: { type: [String], default: [], set: arr => (arr || []).map(s => s.trim()).filter(Boolean) },
   languages: { type: [String], default: [], set: arr => (arr || []).map(s => s.trim()).filter(Boolean) },

@@ -8,7 +8,7 @@ const phdTypes = [
 ]
 
 const weHelpYou = [
-  'University Collection',
+  'University Selection',
   'Eligibility Test',
   'Research Topic',
   'Synopsis',

@@ -89,6 +89,20 @@ body.no-scroll {
   width: max-content;
   animation: marquee 55s linear infinite;
 }
+
+/* ─── SERVICES POINTER (Home page) ───
+   Subtle continuous side-to-side wiggle so the pointing-hand emoji feels
+   alive without ever overlapping the row above/below it. Position (top/left)
+   is animated separately, in JS, via a CSS transition on the element. */
+@keyframes services-pointer-wiggle {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  50%      { transform: translateX(3px) rotate(-6deg); }
+}
+.services-pointer {
+  animation: services-pointer-wiggle 1.1s ease-in-out infinite;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35));
+}
+
 .marquee-track:hover { animation-play-state: paused; }
 
 /* ─── CARD HOVER ─── */

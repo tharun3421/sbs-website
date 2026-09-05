@@ -3,6 +3,17 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, Search, GraduationCap, Phone, Mail, X, MessageCircle } from 'lucide-react'
 import api from '../../api'
 
+// Shown in place of a tutor's photo when the admin hasn't uploaded one.
+// Inline SVG data URI so no extra asset/build step is needed.
+const NO_PHOTO_PLACEHOLDER =
+  "data:image/svg+xml;utf8," + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+      <rect width="200" height="200" fill="#2A2A2A"/>
+      <circle cx="100" cy="78" r="34" fill="#5A5A5A"/>
+      <path d="M100 122c-40 0-68 22-68 50v6h136v-6c0-28-28-50-68-50z" fill="#5A5A5A"/>
+    </svg>
+  `)
+
 // Public "Find your Online Tutor / Trainer / Teacher / Coach / Mentor /
 // Advisor / Counsellor" directory. Unlike the static poster galleries, this
 // section is fully dynamic: listings, and the filter dropdown options
@@ -11,10 +22,15 @@ export default function TutorDirectory() {
   const [tutors, setTutors] = useState([])
   const [filterOptions, setFilterOptions] = useState({ subjects: [], levels: [], languages: [] })
   const [loading, setLoading] = useState(true)
+  // Draft values bound to the inputs — changing these does NOT trigger a
+  // search. They only take effect once the visitor clicks "Search".
   const [query, setQuery] = useState('')
   const [subject, setSubject] = useState('')
   const [level, setLevel] = useState('')
   const [language, setLanguage] = useState('')
+  // The filters actually applied to the last fetch. Starts empty so the
+  // page loads showing every published listing by default.
+  const [appliedFilters, setAppliedFilters] = useState({ q: '', subject: '', level: '', language: '' })
   const [contactTutor, setContactTutor] = useState(null)
 
   useEffect(() => {
@@ -24,20 +40,25 @@ export default function TutorDirectory() {
   useEffect(() => {
     setLoading(true)
     const params = {}
-    if (query.trim()) params.q = query.trim()
-    if (subject) params.subject = subject
-    if (level) params.level = level
-    if (language) params.language = language
+    if (appliedFilters.q.trim()) params.q = appliedFilters.q.trim()
+    if (appliedFilters.subject) params.subject = appliedFilters.subject
+    if (appliedFilters.level) params.level = appliedFilters.level
+    if (appliedFilters.language) params.language = appliedFilters.language
 
-    const handle = setTimeout(() => {
-      api.get('/tutors', { params })
-        .then(r => setTutors(r.data))
-        .catch(() => setTutors([]))
-        .finally(() => setLoading(false))
-    }, 300) // debounce so typing in the search box doesn't fire a request per keystroke
+    api.get('/tutors', { params })
+      .then(r => setTutors(r.data))
+      .catch(() => setTutors([]))
+      .finally(() => setLoading(false))
+  }, [appliedFilters])
 
-    return () => clearTimeout(handle)
-  }, [query, subject, level, language])
+  const handleSearch = () => {
+    setAppliedFilters({ q: query, subject, level, language })
+  }
+
+  const handleClearFilters = () => {
+    setQuery(''); setSubject(''); setLevel(''); setLanguage('')
+    setAppliedFilters({ q: '', subject: '', level: '', language: '' })
+  }
 
   useEffect(() => {
     if (!contactTutor) return
@@ -46,8 +67,12 @@ export default function TutorDirectory() {
     return () => window.removeEventListener('keydown', onKey)
   }, [contactTutor])
 
-  const hasActiveFilters = query || subject || level || language
+  const hasActiveFilters = appliedFilters.q || appliedFilters.subject || appliedFilters.level || appliedFilters.language
   const selectClass = "w-full px-3 py-2.5 rounded-lg bg-transparent border border-theme text-theme-primary text-sm focus:outline-none focus:border-[#FFD700] transition-colors"
+  // Native <option> lists always render on a plain white/system background
+  // regardless of our dark theme, so force dark text here — otherwise the
+  // theme's light "text-theme-primary" color makes options unreadable.
+  const optionStyle = { color: '#111111', backgroundColor: '#FFFFFF' }
 
   const waLink = useMemo(() => {
     if (!contactTutor?.contactPhone) return null
@@ -80,38 +105,36 @@ export default function TutorDirectory() {
 
         {/* Search + filters */}
         <div className="bg-theme-card border border-theme rounded-2xl p-4 mb-6 space-y-3">
-          <div className="relative">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-theme-muted" />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search ..."
-              className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-transparent border border-theme text-theme-primary text-sm placeholder:text-theme-muted focus:outline-none focus:border-[#FFD700] transition-colors"
-            />
-          </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <select value={subject} onChange={e => setSubject(e.target.value)} className={selectClass}>
-              <option value="">All Subject/s</option>
-              {filterOptions.subjects.map(s => <option key={s} value={s}>{s}</option>)}
+              <option value="" style={optionStyle}>All Subject/s</option>
+              {filterOptions.subjects.map(s => <option key={s} value={s} style={optionStyle}>{s}</option>)}
             </select>
             <select value={level} onChange={e => setLevel(e.target.value)} className={selectClass}>
-              <option value="">All Level/s</option>
-              {filterOptions.levels.map(l => <option key={l} value={l}>{l}</option>)}
+              <option value="" style={optionStyle}>All Level/s</option>
+              {filterOptions.levels.map(l => <option key={l} value={l} style={optionStyle}>{l}</option>)}
             </select>
             <select value={language} onChange={e => setLanguage(e.target.value)} className={selectClass}>
-              <option value="">All Language/s</option>
-              {filterOptions.languages.map(l => <option key={l} value={l}>{l}</option>)}
+              <option value="" style={optionStyle}>All Language/s</option>
+              {filterOptions.languages.map(l => <option key={l} value={l} style={optionStyle}>{l}</option>)}
             </select>
           </div>
-          {hasActiveFilters && (
+          <div className="flex items-center gap-4">
             <button
-              onClick={() => { setQuery(''); setSubject(''); setLevel(''); setLanguage('') }}
-              className="text-xs text-[#FFD700] hover:underline"
+              onClick={handleSearch}
+              className="px-5 py-2.5 rounded-lg bg-[#FFD700] text-[#0A0A0A] text-sm font-bold hover:bg-[#E6C200] transition"
             >
-              Clear filters
+              Search
             </button>
-          )}
+            {hasActiveFilters && (
+              <button
+                onClick={handleClearFilters}
+                className="text-xs text-[#FFD700] hover:underline"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Results */}
@@ -134,7 +157,12 @@ export default function TutorDirectory() {
               <div key={t._id} className="bg-theme-card border border-theme rounded-2xl overflow-hidden flex flex-col card-hover">
                 <div className="flex gap-3 p-3">
                   <div className="w-20 h-20 rounded-xl overflow-hidden bg-black/20 shrink-0">
-                    <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" />
+                    <img
+                      src={t.imageUrl || NO_PHOTO_PLACEHOLDER}
+                      alt={t.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = NO_PHOTO_PLACEHOLDER }}
+                    />
                   </div>
                   <div className="min-w-0">
                     <p className="text-theme-primary font-bold text-sm truncate">{t.name}</p>

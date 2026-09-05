@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronRight, Users, ShieldCheck, Search, UserPlus, LogIn } from 'lucide-react'
 import { CORE_SERVICES, HOME_EXTRA_SERVICES } from '../../constants/coreServices'
@@ -6,13 +6,48 @@ import { CORE_SERVICES, HOME_EXTRA_SERVICES } from '../../constants/coreServices
 
 const ALL_HOME_SERVICES = [...CORE_SERVICES, ...HOME_EXTRA_SERVICES]
 
+// How long the pointer rests on each service before moving to the next one.
+const POINTER_INTERVAL_MS = 2200
 
 export default function Home() {
   const [query, setQuery] = useState('')
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [pointerPos, setPointerPos] = useState(null) // { top, left, height }
+  const listRef = useRef(null)
+  const itemRefs = useRef([])
 
   const filteredServices = ALL_HOME_SERVICES.filter(({ label }) =>
     label.toLowerCase().includes(query.trim().toLowerCase())
   )
+
+  // Whenever the visible list changes (e.g. the visitor types a search
+  // query), snap the pointer back to the first result so it never points
+  // at a service that's no longer shown.
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [query])
+
+  // Continuously cycle the pointer through the visible services.
+  useEffect(() => {
+    if (filteredServices.length < 2) return
+    const id = setInterval(() => {
+      setActiveIndex(i => (i + 1) % filteredServices.length)
+    }, POINTER_INTERVAL_MS)
+    return () => clearInterval(id)
+  }, [filteredServices.length])
+
+  // Measure the highlighted item's position so the pointer can smoothly
+  // glide to it. Re-measures on resize too, since the grid can reflow.
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = itemRefs.current[activeIndex]
+      if (!el) { setPointerPos(null); return }
+      setPointerPos({ top: el.offsetTop, left: el.offsetLeft, height: el.offsetHeight })
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [activeIndex, filteredServices.length])
 
   return (
     <div className="page-enter bg-theme-primary min-h-full flex flex-col items-center px-4 py-10">
@@ -78,12 +113,26 @@ export default function Home() {
 
         {/* Services list - two columns, bulleted */}
         {filteredServices.length > 0 ? (
-          <ul className="grid grid-cols-2 gap-x-6 gap-y-1">
-            {filteredServices.map(({ to, label }) => (
-              <li key={to} className="min-w-0">
+          <ul ref={listRef} className="relative grid grid-cols-2 gap-x-6 gap-y-1">
+            {pointerPos && (
+              <span
+                aria-hidden="true"
+                className="services-pointer absolute text-base leading-none select-none pointer-events-none transition-all duration-700 ease-in-out"
+                style={{
+                  top: pointerPos.top + pointerPos.height / 2 - 9,
+                  left: Math.max(pointerPos.left - 20, 2),
+                }}
+              >
+                👆
+              </span>
+            )}
+            {filteredServices.map(({ to, label }, i) => (
+              <li key={to} ref={el => (itemRefs.current[i] = el)} className="min-w-0">
                 <Link
                   to={to}
-                  className="whitespace-pre-line flex items-start gap-2 py-2 px-1 text-theme-primary text-sm group min-w-0"
+                  className={`whitespace-pre-line flex items-start gap-2 py-2 px-1 rounded-lg text-sm group min-w-0 transition-colors duration-500 ${
+                    i === activeIndex ? 'bg-[#FFD700]/10 text-[#FFD700]' : 'text-theme-primary'
+                  }`}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FFD700] shrink-0 mt-1.5" />
                   <span className="group-hover:text-[#FFD700] transition-colors break-words">{label}</span>
@@ -97,4 +146,4 @@ export default function Home() {
       </section>
     </div>
   )
-}
+} 

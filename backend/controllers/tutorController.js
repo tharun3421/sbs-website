@@ -95,11 +95,10 @@ exports.createTutor = async (req, res) => {
   try {
     const { name, imageUrl, subjects, levels, languages, profileInfo, contactPhone, contactEmail, isActive, order } = req.body;
     if (!name || !name.trim()) return res.status(400).json({ message: 'Name is required' });
-    if (!imageUrl || !imageUrl.trim()) return res.status(400).json({ message: 'A photo is required' });
 
     const tutor = await Tutor.create({
       name: name.trim(),
-      imageUrl: imageUrl.trim(),
+      imageUrl: (imageUrl || '').trim(),
       subjects: toArray(subjects),
       levels: toArray(levels),
       languages: toArray(languages),
