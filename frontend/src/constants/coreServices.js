@@ -29,4 +29,8 @@ export const HOME_EXTRA_SERVICES = [
   { to: '/visas',     label: 'Visas \n Work Visas/ Visit Visas/PR' },
   { to: '/freelance', label: 'Become Associate \n Freelancer /Work From Home / Extra Income/ Business Income' },
   { to: '/tutors',    label: 'Find your Online Tutor/Trainer \n Teacher/Coach/Mentor/\n Advisor/Counsellor' },
+  { to: '/ice-cream-parlour', label: 'Ice-Cream Parlour \n Franchise/Outlet/Bulk Supply/ Investment Opportunity' },
+  { to: '/imports-exports',   label: 'Imports & Exports \n Investment Opportunity / Partner/ Finance' },
+  { to: '/bio-cng',           label: 'Bio-CNG \n Agro Waste to CNG / CBG / High Demand / Investment Opportunity / Company Share' },
+  { to: '/agri-investments',  label: 'Clothes Recycling /Polyhouse Farming/Tank Fish Farming \n Investment Opportunity / Partnership/Good ROI' },
 ]

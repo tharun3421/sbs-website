@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Search, GraduationCap, Phone, Mail, X, MessageCircle } from 'lucide-react'
+import { ArrowLeft, GraduationCap, Phone, Mail, X, MessageCircle } from 'lucide-react'
 import api from '../../api'
 
-// Shown in place of a tutor's photo when the admin hasn't uploaded one.
-// Inline SVG data URI so no extra asset/build step is needed.
-const NO_PHOTO_PLACEHOLDER =
-  "data:image/svg+xml;utf8," + encodeURIComponent(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-      <rect width="200" height="200" fill="#2A2A2A"/>
-      <circle cx="100" cy="78" r="34" fill="#5A5A5A"/>
-      <path d="M100 122c-40 0-68 22-68 50v6h136v-6c0-28-28-50-68-50z" fill="#5A5A5A"/>
-    </svg>
-  `)
+/* -------------------------------- PALETTE --------------------------------
+   Matches the vivid blue poster theme used on the other static service
+   pages (Ice Cream Parlour, Imports & Exports, Bio-CNG, Agri Investments).
+   PAGE_BG is a gradient (not a flat near-black navy) so the page reads as
+   clearly blue rather than blending into the site's black header/nav. */
+const PAGE_BG = 'linear-gradient(180deg, #1E63B8 0%, #123A7A 45%, #0A1E3F 100%)'
+const NAVY = '#0a1e3f'
+const CARD = '#173a72'
+const BLUE = '#1e3a8a'
+const YELLOW = '#f4c542'
 
 // Public "Find your Online Tutor / Trainer / Teacher / Coach / Mentor /
 // Advisor / Counsellor" directory. Unlike the static poster galleries, this
@@ -22,15 +22,14 @@ export default function TutorDirectory() {
   const [tutors, setTutors] = useState([])
   const [filterOptions, setFilterOptions] = useState({ subjects: [], levels: [], languages: [] })
   const [loading, setLoading] = useState(true)
-  // Draft values bound to the inputs — changing these does NOT trigger a
+  // Draft values bound to the dropdowns — changing these does NOT trigger a
   // search. They only take effect once the visitor clicks "Search".
-  const [query, setQuery] = useState('')
   const [subject, setSubject] = useState('')
   const [level, setLevel] = useState('')
   const [language, setLanguage] = useState('')
   // The filters actually applied to the last fetch. Starts empty so the
   // page loads showing every published listing by default.
-  const [appliedFilters, setAppliedFilters] = useState({ q: '', subject: '', level: '', language: '' })
+  const [appliedFilters, setAppliedFilters] = useState({ subject: '', level: '', language: '' })
   const [contactTutor, setContactTutor] = useState(null)
 
   useEffect(() => {
@@ -40,7 +39,6 @@ export default function TutorDirectory() {
   useEffect(() => {
     setLoading(true)
     const params = {}
-    if (appliedFilters.q.trim()) params.q = appliedFilters.q.trim()
     if (appliedFilters.subject) params.subject = appliedFilters.subject
     if (appliedFilters.level) params.level = appliedFilters.level
     if (appliedFilters.language) params.language = appliedFilters.language
@@ -52,12 +50,12 @@ export default function TutorDirectory() {
   }, [appliedFilters])
 
   const handleSearch = () => {
-    setAppliedFilters({ q: query, subject, level, language })
+    setAppliedFilters({ subject, level, language })
   }
 
   const handleClearFilters = () => {
-    setQuery(''); setSubject(''); setLevel(''); setLanguage('')
-    setAppliedFilters({ q: '', subject: '', level: '', language: '' })
+    setSubject(''); setLevel(''); setLanguage('')
+    setAppliedFilters({ subject: '', level: '', language: '' })
   }
 
   useEffect(() => {
@@ -67,11 +65,12 @@ export default function TutorDirectory() {
     return () => window.removeEventListener('keydown', onKey)
   }, [contactTutor])
 
-  const hasActiveFilters = appliedFilters.q || appliedFilters.subject || appliedFilters.level || appliedFilters.language
-  const selectClass = "w-full px-3 py-2.5 rounded-lg bg-transparent border border-theme text-theme-primary text-sm focus:outline-none focus:border-[#FFD700] transition-colors"
+  const hasActiveFilters = appliedFilters.subject || appliedFilters.level || appliedFilters.language
+  const selectClass = "w-full px-3 py-2.5 rounded-lg bg-transparent text-sm focus:outline-none transition-colors"
+  const selectStyle = { color: '#fff', border: '1px solid rgba(244,197,66,0.35)' }
   // Native <option> lists always render on a plain white/system background
-  // regardless of our dark theme, so force dark text here — otherwise the
-  // theme's light "text-theme-primary" color makes options unreadable.
+  // regardless of our theme, so force dark text here — otherwise light
+  // option text becomes unreadable against that white background.
   const optionStyle = { color: '#111111', backgroundColor: '#FFFFFF' }
 
   const waLink = useMemo(() => {
@@ -81,55 +80,73 @@ export default function TutorDirectory() {
   }, [contactTutor])
 
   return (
-    <div className="page-enter bg-theme-primary min-h-screen">
+    <div className="page-enter min-h-screen" style={{ background: PAGE_BG }}>
+      {/* Header hero — full-bleed edge-to-edge photo, matching the other
+          static service pages, instead of a rounded card inset in the
+          padded container. */}
+      <div className="relative overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80"
+          alt="Online tutoring"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Navy overlay so text stays readable over the photo, matching
+            the other poster pages' hero treatment */}
+        <div
+          className="absolute inset-0"
+          style={{ background: `linear-gradient(180deg, ${NAVY}99 0%, ${NAVY}cc 55%, ${NAVY} 100%)` }}
+        />
+
+        <div className="relative z-10 max-w-6xl mx-auto px-4 py-10 sm:py-14">
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 mb-4"
+            style={{ backgroundColor: 'rgba(244,197,66,0.12)', border: `1px solid ${YELLOW}55` }}
+          >
+            <GraduationCap size={14} style={{ color: YELLOW }} />
+            <span className="text-[11px] font-bold tracking-wide" style={{ color: YELLOW }}>
+              FIND YOUR EXPERT
+            </span>
+          </div>
+          <h1 className="text-white font-black text-2xl mb-1">Find your </h1>
+          <p className="text-white/80 text-[14px] uppercase">
+            Online Tutor / Trainer / Teacher / Coach / Mentor / Advisor / Counsellor
+          </p>
+        </div>
+      </div>
+
       <div className="max-w-6xl mx-auto px-4 py-8">
-       {/* Header with Unsplash background image */}
-<div
-  className="relative rounded-2xl overflow-hidden mb-6 px-4 py-10 sm:py-14"
-  style={{
-    backgroundImage: `url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80')`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  }}
->
-  {/* Dark overlay so text stays readable over the photo */}
-  <div className="absolute inset-0 bg-black/60" />
-
-  <div className="relative z-10">
-    <h1 className="text-white font-black text-2xl mb-1">Find your </h1>
-    <p className="text-white text-[14px] uppercase">
-      Online Tutor / Trainer / Teacher / Coach / Mentor / Advisor / Counsellor
-    </p>
-  </div>
-</div>
-
         {/* Search + filters */}
-        <div className="bg-theme-card border border-theme rounded-2xl p-4 mb-6 space-y-3">
+        <div
+          className="rounded-2xl p-4 mb-6 space-y-3"
+          style={{ border: `1.5px solid rgba(244,197,66,0.35)`, backgroundColor: 'rgba(244,197,66,0.06)' }}
+        >
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <select value={subject} onChange={e => setSubject(e.target.value)} className={selectClass}>
-              <option value="" style={optionStyle}>All Subject/s</option>
+            <select value={subject} onChange={e => setSubject(e.target.value)} className={selectClass} style={selectStyle}>
+              <option value="" style={optionStyle}>Subject/s</option>
               {filterOptions.subjects.map(s => <option key={s} value={s} style={optionStyle}>{s}</option>)}
             </select>
-            <select value={level} onChange={e => setLevel(e.target.value)} className={selectClass}>
-              <option value="" style={optionStyle}>All Level/s</option>
+            <select value={level} onChange={e => setLevel(e.target.value)} className={selectClass} style={selectStyle}>
+              <option value="" style={optionStyle}>Level/s</option>
               {filterOptions.levels.map(l => <option key={l} value={l} style={optionStyle}>{l}</option>)}
             </select>
-            <select value={language} onChange={e => setLanguage(e.target.value)} className={selectClass}>
-              <option value="" style={optionStyle}>All Language/s</option>
+            <select value={language} onChange={e => setLanguage(e.target.value)} className={selectClass} style={selectStyle}>
+              <option value="" style={optionStyle}>Language/s</option>
               {filterOptions.languages.map(l => <option key={l} value={l} style={optionStyle}>{l}</option>)}
             </select>
           </div>
           <div className="flex items-center gap-4">
             <button
               onClick={handleSearch}
-              className="px-5 py-2.5 rounded-lg bg-[#FFD700] text-[#0A0A0A] text-sm font-bold hover:bg-[#E6C200] transition"
+              className="px-5 py-2.5 rounded-lg text-sm font-bold transition hover:opacity-90"
+              style={{ backgroundColor: YELLOW, color: NAVY }}
             >
               Search
             </button>
             {hasActiveFilters && (
               <button
                 onClick={handleClearFilters}
-                className="text-xs text-[#FFD700] hover:underline"
+                className="text-xs hover:underline"
+                style={{ color: YELLOW }}
               >
                 Clear filters
               </button>
@@ -141,42 +158,54 @@ export default function TutorDirectory() {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-theme-card border border-theme rounded-2xl h-64 animate-pulse" />
+              <div key={i} className="rounded-2xl h-64 animate-pulse" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }} />
             ))}
           </div>
         ) : tutors.length === 0 ? (
           <div className="text-center py-20">
-            <GraduationCap size={40} className="text-gray-400 mx-auto mb-4" />
-            <p className="text-theme-secondary">
+            <GraduationCap size={40} className="mx-auto mb-4" style={{ color: 'rgba(255,255,255,0.3)' }} />
+            <p className="text-white/70">
               {hasActiveFilters ? 'No listings match your search.' : 'No listings available yet. Check back soon.'}
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {tutors.map(t => (
-              <div key={t._id} className="bg-theme-card border border-theme rounded-2xl overflow-hidden flex flex-col card-hover">
+              <div
+                key={t._id}
+                className="rounded-2xl overflow-hidden flex flex-col card-hover"
+                style={{ border: '1.5px solid rgba(255,255,255,0.12)', backgroundColor: CARD }}
+              >
                 <div className="flex gap-3 p-3">
-                
                   <div className="min-w-0">
-                    <p className="text-theme-primary font-bold text-sm truncate">{t.name}</p>
+                    <p className="text-white font-bold text-sm truncate">{t.name}</p>
                     {t.subjects?.length > 0 && (
-                      <p className="text-theme-muted text-xs mt-1 line-clamp-2"><span className="font-semibold">Subject/s:</span> {t.subjects.join(', ')}</p>
+                      <p className="text-white/60 text-xs mt-1 line-clamp-2">
+                        <span className="font-semibold" style={{ color: YELLOW }}>Subject/s:</span> {t.subjects.join(', ')}
+                      </p>
                     )}
                   </div>
                 </div>
                 <div className="px-3 pb-3 flex-1 flex flex-col gap-1.5">
                   {t.levels?.length > 0 && (
-                    <p className="text-theme-secondary text-xs"><span className="font-semibold text-theme-primary">Level/s:</span> {t.levels.join(', ')}</p>
+                    <p className="text-white/70 text-xs">
+                      <span className="font-semibold" style={{ color: YELLOW }}>Level/s:</span> {t.levels.join(', ')}
+                    </p>
                   )}
                   {t.languages?.length > 0 && (
-                    <p className="text-theme-secondary text-xs"><span className="font-semibold text-theme-primary">Language/s:</span> {t.languages.join(', ')}</p>
+                    <p className="text-white/70 text-xs">
+                      <span className="font-semibold" style={{ color: YELLOW }}>Language/s:</span> {t.languages.join(', ')}
+                    </p>
                   )}
                   {t.profileInfo && (
-                    <p className="text-theme-secondary text-xs line-clamp-3"><span className="font-semibold text-theme-primary">Profile/More Info:</span> {t.profileInfo}</p>
+                    <p className="text-white/70 text-xs line-clamp-3">
+                      <span className="font-semibold" style={{ color: YELLOW }}>Profile/More Info:</span> {t.profileInfo}
+                    </p>
                   )}
                   <button
                     onClick={() => setContactTutor(t)}
-                    className="mt-auto pt-2 w-full py-2 rounded-lg bg-[#FFD700] text-[#0A0A0A] text-xs font-bold hover:bg-[#E6C200] transition"
+                    className="mt-auto pt-2 w-full py-2 rounded-lg text-xs font-bold transition hover:opacity-90"
+                    style={{ backgroundColor: YELLOW, color: NAVY }}
                   >
                     CONTACT
                   </button>
@@ -194,34 +223,49 @@ export default function TutorDirectory() {
           onClick={() => setContactTutor(null)}
         >
           <div
-            className="bg-theme-secondary border border-theme rounded-2xl w-full max-w-sm"
+            className="rounded-2xl w-full max-w-sm"
+            style={{ backgroundColor: CARD, border: '1px solid rgba(255,255,255,0.1)' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-5 border-b border-theme">
-              <h3 className="text-theme-primary font-bold">Contact {contactTutor.name}</h3>
-              <button onClick={() => setContactTutor(null)} className="text-theme-muted hover:text-theme-primary p-1"><X size={18} /></button>
+            <div className="flex items-center justify-between p-5" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+              <h3 className="text-white font-bold">Contact {contactTutor.name}</h3>
+              <button
+                onClick={() => setContactTutor(null)}
+                className="p-1.5 rounded-lg text-white/60 hover:text-white transition"
+              >
+                <X size={18} />
+              </button>
             </div>
             <div className="p-5 space-y-2.5">
               {contactTutor.contactPhone && (
-                <a href={`tel:${contactTutor.contactPhone.replace(/\s+/g, '')}`}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-theme hover:border-[#FFD700]/50 transition text-theme-primary text-sm">
-                  <Phone size={16} className="text-[#FFD700]" /> {contactTutor.contactPhone}
+                <a
+                  href={`tel:${contactTutor.contactPhone.replace(/\s+/g, '')}`}
+                  className="flex items-center gap-3 p-3 rounded-xl text-white text-sm transition"
+                  style={{ border: '1px solid rgba(244,197,66,0.35)' }}
+                >
+                  <Phone size={16} style={{ color: YELLOW }} /> {contactTutor.contactPhone}
                 </a>
               )}
               {contactTutor.contactPhone && waLink && (
-                <a href={waLink} target="_blank" rel="noreferrer"
-                  className="flex items-center gap-3 p-3 rounded-xl border border-theme hover:border-[#FFD700]/50 transition text-theme-primary text-sm">
-                  <MessageCircle size={16} className="text-[#FFD700]" /> Message on WhatsApp
+                <a
+                  href={waLink} target="_blank" rel="noreferrer"
+                  className="flex items-center gap-3 p-3 rounded-xl text-white text-sm transition"
+                  style={{ border: '1px solid rgba(244,197,66,0.35)' }}
+                >
+                  <MessageCircle size={16} style={{ color: YELLOW }} /> Message on WhatsApp
                 </a>
               )}
               {contactTutor.contactEmail && (
-                <a href={`mailto:${contactTutor.contactEmail}`}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-theme hover:border-[#FFD700]/50 transition text-theme-primary text-sm">
-                  <Mail size={16} className="text-[#FFD700]" /> {contactTutor.contactEmail}
+                <a
+                  href={`mailto:${contactTutor.contactEmail}`}
+                  className="flex items-center gap-3 p-3 rounded-xl text-white text-sm transition"
+                  style={{ border: '1px solid rgba(244,197,66,0.35)' }}
+                >
+                  <Mail size={16} style={{ color: YELLOW }} /> {contactTutor.contactEmail}
                 </a>
               )}
               {!contactTutor.contactPhone && !contactTutor.contactEmail && (
-                <p className="text-theme-muted text-sm">No contact details available for this listing.</p>
+                <p className="text-white/60 text-sm">No contact details available for this listing.</p>
               )}
             </div>
           </div>
